@@ -1,52 +1,67 @@
-bmc
-bolsa comisionista (ente regulador)
-Recibe facturas
-Tiene varios sectores
-Cobro de comisiones por factura
-- Facturas o  por lotes de facturas 
+# BMC - Bolsa Comisionista
 
-- Bakend APIs
-- Bases de dAtos (migracion) de Productos 60M - Google
+## Sistema Regulatorio
 
-Desaagraacion por producto
-BAse de productos 16.000
-Calculos de factura lotest y factura por factura
+**Entidad:** Bolsa Comisionista (Ente Regulador)
+**Función Principal:** Procesamiento de facturas y cálculo de comisiones
 
-front cuenta con varios formularios
-tiene opciones de exportar listas en pdf y excel
+## Características del Sistema
 
-Tiene una opcion de subir archivos:
-por archivos
-por zip
-facuras se puede repetir
-Estos proceso se realizan en background
+### Volumen de Datos
+- **Productos:** 60M registros migrados desde Google Cloud
+- **Tipos de Productos:** 16,000 categorías
+- **Procesamiento:** Facturas individuales y por lotes
 
-Clasificacion de conceptos de la dian
-1- lceche carne, huevos
-2- Camtidad 
-3- Unidad
+### Funcionalidades Backend
+- APIs para procesamiento de facturas
+- Base de datos de productos (migración desde Google)
+- Desagregación por producto
+- Cálculos de comisión (lote y individual)
 
-cmparacion de productos con base de prodcutos
-tiene una clasificacion en 
-produto
-cantindad 
-unida
+### Funcionalidades Frontend
+- Formularios web para carga de datos
+- Opciones de exportación (PDF y Excel)
+- Sistema de carga de archivos:
+  - Archivos individuales
+  - Archivos ZIP
+  - Facturas pueden repetirse
+- Procesamiento en background
 
-Otra validacin
-produto
-calsifiscacion de producto
-unidad
+### Clasificación DIAN
+**Categorías principales:**
+1. Alimentos (leche, carne, huevos)
+2. Cantidad
+3. Unidad
 
-Base de datos
-postgres
-redsihift
-Proceso de text  
+### Validaciones del Sistema
+**Primera validación:**
+- Producto
+- Cantidad 
+- Unidad
 
+**Segunda validación:**
+- Producto
+- Clasificación de producto
+- Unidad
 
-Al no encontraro se deja vacio
+### Arquitectura de Base de Datos
+**Transaccional:**
+- PostgreSQL principal
 
-Se carga en una tabla de las facturas y tiene un boton de calcular la comision de acuerdo a reglas de negocio
+**Analítica:**
+- Redshift para reportería
 
-Despues de calular se debe genar un certitifcado y se pueda descargar o enviar por correo
+**Procesamiento:**
+- Text processing para clasificación
+- Búsqueda y matching de productos
+- Campos vacíos cuando no se encuentra coincidencia
 
-como bolsa como puedo integrame a otros sistemas de transmisiones de archivo, como sftp
+### Flujo de Negocio
+1. **Carga de facturas** → Tabla de facturas
+2. **Botón calcular** → Aplicación de reglas de negocio
+3. **Generación de certificado** → PDF descargable o envío por correo
+
+### Integraciones Externas
+**SFTP Integration:**
+- Transmisión de archivos con otros sistemas
+- Intercambio de datos regulatorios
