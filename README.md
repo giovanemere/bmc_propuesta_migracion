@@ -1,62 +1,135 @@
-# BMC Propuesta de Migración a AWS
+# BMC AWS Architecture - Diagram Generator
 
-Metodología MCP (Model Context Protocol) para la migración del sistema BMC (Bolsa Comisionista) desde Google Cloud a AWS.
+Generador automatizado de diagramas de arquitectura AWS para el proyecto BMC (Bolsa Mercantil de Colombia).
 
-## Descripción del Sistema
+## 🚀 Generación Rápida
 
-BMC es un sistema regulatorio que procesa:
-- 60M de productos con clasificación DIAN
-- Facturas individuales y por lotes
-- Cálculo de comisiones por reglas de negocio
-- Generación de certificados PDF
-- Integración SFTP con sistemas externos
-
-## Metodología MCP
-
-### Fase 1: Precaracterización
 ```bash
-python3 mcp-precaracterizacion.py proposal   # Propuesta inicial
-python3 mcp-precaracterizacion.py inventory  # Inventario de aplicaciones  
-python3 mcp-precaracterizacion.py baseline   # Baseline técnico
+# Generar todos los diagramas
+./scripts/generate_diagrams.sh
 ```
 
-### Fase 2: Estructuración
-```bash
-python3 mcp-estructuracion.py architecture   # Patrones arquitectónicos
-python3 mcp-estructuracion.py data          # Arquitectura de datos
-python3 mcp-estructuracion.py flows         # Flujos de integración
+## 📁 Estructura del Proyecto
+
+```
+├── docs/                           # Documentación
+│   ├── mcp-diagrams-architecture.md   # MCP principal
+│   ├── diagramas-aws-mermaid.md       # Diagramas Mermaid
+│   └── README-DIAGRAMAS-BMC.md        # Guía de uso
+├── infrastructure/
+│   ├── diagrams/                   # Generadores Python
+│   │   ├── generate_complete.py       # Generador principal
+│   │   ├── generate_final_version.sh  # Script de generación
+│   │   └── requirements.txt           # Dependencias
+│   └── terraform/                  # Infrastructure as Code (futuro)
+├── output/
+│   ├── png/                        # Diagramas PNG generados
+│   └── drawio/                     # Archivos Draw.io generados
+├── scripts/
+│   └── generate_diagrams.sh           # Script principal
+└── archive/                        # Archivos obsoletos
+
 ```
 
-### Fase 3: Catálogo de Aplicaciones
+## 🎯 Características
+
+- **60M productos** en base de datos PostgreSQL
+- **OCR >95% precisión** con Amazon Textract
+- **10K facturas/hora** de throughput
+- **99.9% disponibilidad** con Multi-AZ
+- **Auto-scaling** 2-15 instancias por servicio
+
+## 📊 Diagramas Generados
+
+### PNG (para presentaciones)
+- `bmc_complete_architecture.png` - Arquitectura completa
+- `bmc_microservices_complete.png` - Detalle microservicios
+
+### Draw.io (para edición)
+- `bmc_complete_architecture.drawio` - Editable en https://app.diagrams.net
+
+## 🔧 Desarrollo
+
+### Requisitos
+- Python 3.9+
+- Graphviz
+- Virtual environment
+
+### Instalación
 ```bash
-python3 mcp-catalogo.py catalog       # Catálogo completo
-python3 mcp-catalogo.py dependencies  # Matriz de dependencias
-python3 mcp-catalogo.py migration     # Plan de migración
+cd infrastructure/diagrams
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-### Fase 4: Lineamientos
+### Generar Diagramas
 ```bash
-python3 mcp-lineamientos.py standards    # Estándares de desarrollo
-python3 mcp-lineamientos.py security     # Guías de seguridad
-python3 mcp-lineamientos.py deployment   # Procedimientos de despliegue
-python3 mcp-lineamientos.py monitoring   # Métricas y monitoreo
+# Método 1: Script principal
+./scripts/generate_diagrams.sh
+
+# Método 2: Manual
+cd infrastructure/diagrams
+source venv/bin/activate
+python3 generate_complete.py
 ```
 
-## Arquitectura Objetivo
+## 📋 MCP (Model Context Protocol)
 
-- **Patrón:** Event-Driven Microservices
-- **Compute:** AWS Lambda + ECS Fargate
-- **Database:** RDS PostgreSQL + Redshift + ElastiCache
-- **Integration:** API Gateway + EventBridge + Transfer Family
-- **Frontend:** React SPA + CloudFront
+El proyecto utiliza MCP para definir la arquitectura:
+- **Archivo principal**: `docs/mcp-diagrams-architecture.md`
+- **Servicios AWS**: 16 servicios implementados
+- **Microservicios**: 5 servicios en ECS Fargate
+- **Métricas**: KPIs y targets de rendimiento
 
-## Servicios Principales
+## 🏗️ Servicios AWS
 
-1. **Invoice Service** - Procesamiento de facturas
-2. **Product Service** - Gestión de 60M productos
-3. **Commission Service** - Cálculo de comisiones
-4. **Certificate Service** - Generación de certificados
+### Compute
+- ECS Fargate (microservicios)
+- Lambda (procesamiento)
 
-## Versión
+### Storage  
+- RDS PostgreSQL (60M productos)
+- ElastiCache Redis (cache)
+- S3 (documentos)
 
-Todos los MCPs están en versión 1.0.0
+### Network
+- API Gateway
+- CloudFront CDN
+- Application Load Balancer
+
+### Security
+- Cognito (auth)
+- WAF (firewall)
+- KMS (encryption)
+
+### AI/ML
+- Textract (OCR >95%)
+
+### Integration
+- EventBridge (eventos)
+- SQS/SNS (mensajería)
+
+### Monitoring
+- CloudWatch (métricas)
+- X-Ray (tracing)
+
+## 📈 Métricas
+
+- **OCR Processing**: <5s
+- **Product Lookup**: <500ms (60M records)
+- **Throughput**: 10K invoices/hour
+- **Availability**: >99.9%
+- **Cost**: $8,650/month
+
+## 🔄 Versionado
+
+- **v2.0.0**: Actual - MCP + generación automatizada
+- **v1.0.0**: Inicial - Diagramas Mermaid básicos
+
+## 📞 Soporte
+
+Para modificar diagramas:
+1. Editar `docs/mcp-diagrams-architecture.md`
+2. Actualizar `infrastructure/diagrams/generate_complete.py`
+3. Ejecutar `./scripts/generate_diagrams.sh`
