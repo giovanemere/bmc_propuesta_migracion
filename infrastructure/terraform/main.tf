@@ -1,198 +1,418 @@
-# BMC AWS Infrastructure - Main Configuration
+# Terraform skeleton for AWS architecture: Invoice ingestion, OCR, matching, calculations, analytics
+# NOTE: This is a high-level, deployable skeleton. Replace placeholder values (e.g. lambda S3 keys, subnet ids,
+#       KMS keys, and adjust instance sizes) before applying in production.
+# Provider
 terraform {
-  required_version = ">= 1.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
   }
+  required_version = ">= 1.2.0"
 }
 
 provider "aws" {
   region = var.aws_region
-  
-  default_tags {
-    tags = {
-      Project     = "BMC-Migration"
-      Environment = var.environment
-      ManagedBy   = "Terraform"
-      Owner       = "BMC-Team"
+}
+
+#########################
+# Variables
+#########################
+variable "aws_region" { default = "us-east-1" }
+variable "project"    { default = "invoice-arch" }
+variable "vpc_id"     { 
+  type = string
+  description = "The ID of the VPC where resources will be created"
+  # Example: vpc-1234567890abcdef0
+}
+variable "private_subnet_ids" { 
+  type = list(string)
+  description = "List of private subnet IDs where RDS and other private resources will be deployed"
+  default = [] # Replace with your subnet IDs
+  # Example: ["subnet-private1", "subnet-private2"]
+}
+variable "public_subnet_ids"  { 
+  type = list(string)
+  description = "List of public subnet IDs where public resources will be deployed"
+  default = [] # Replace with your subnet IDs
+  # Example: ["subnet-public1", "subnet-public2"]
+}
+
+#########################
+# S3 buckets (raw/processed/lake)
+#########################
+resource "aws_s3_bucket" "invoices_raw" {
+  bucket = "${var.project}-invoices-raw-${random_id.suffix.hex}"
+}
+
+resource "aws_s3_bucket_acl" "invoices_raw_acl" {
+  bucket = aws_s3_bucket.invoices_raw.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "invoices_raw_versioning" {
+  bucket = aws_s3_bucket.invoices_raw.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "invoices_raw_encryption" {
+  bucket = aws_s3_bucket.invoices_raw.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
 
-# Data sources
-data "aws_availability_zones" "available" {
-  state = "available"
+resource "aws_s3_bucket" "invoices_processed" {
+  bucket = "${var.project}-invoices-processed-${random_id.suffix.hex}"
 }
 
-data "aws_caller_identity" "current" {}
+resource "aws_s3_bucket_acl" "invoices_processed_acl" {
+  bucket = aws_s3_bucket.invoices_processed.id
+  acl    = "private"
+}
 
-# Local values
-locals {
-  name_prefix = "${var.project_name}-${var.environment}"
-  azs         = slice(data.aws_availability_zones.available.names, 0, 3)
-  
-  common_tags = {
-    Project     = var.project_name
-    Environment = var.environment
-    ManagedBy   = "Terraform"
+resource "aws_s3_bucket_versioning" "invoices_processed_versioning" {
+  bucket = aws_s3_bucket.invoices_processed.id
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
-# VPC and Networking
-module "vpc" {
-  source = "./modules/vpc"
-  
-  name_prefix = local.name_prefix
-  cidr_block  = var.vpc_cidr
-  azs         = local.azs
-  
-  tags = local.common_tags
+resource "aws_s3_bucket_server_side_encryption_configuration" "invoices_processed_encryption" {
+  bucket = aws_s3_bucket.invoices_processed.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
 
-# Security Groups
-module "security_groups" {
-  source = "./modules/security"
-  
-  name_prefix = local.name_prefix
-  vpc_id      = module.vpc.vpc_id
-  
-  tags = local.common_tags
+resource "aws_s3_bucket" "data_lake" {
+  bucket = "${var.project}-data-lake-${random_id.suffix.hex}"
 }
 
-# RDS PostgreSQL (60M Products)
-module "rds" {
-  source = "./modules/rds"
-  
-  name_prefix           = local.name_prefix
-  vpc_id               = module.vpc.vpc_id
-  private_subnet_ids   = module.vpc.private_subnet_ids
-  security_group_ids   = [module.security_groups.rds_sg_id]
-  
-  instance_class       = var.rds_instance_class
-  allocated_storage    = var.rds_allocated_storage
-  max_allocated_storage = var.rds_max_allocated_storage
-  
-  tags = local.common_tags
+resource "aws_s3_bucket_acl" "data_lake_acl" {
+  bucket = aws_s3_bucket.data_lake.id
+  acl    = "private"
 }
 
-# ElastiCache Redis
-module "elasticache" {
-  source = "./modules/elasticache"
-  
-  name_prefix        = local.name_prefix
-  vpc_id            = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  security_group_ids = [module.security_groups.redis_sg_id]
-  
-  node_type         = var.redis_node_type
-  num_cache_nodes   = var.redis_num_nodes
-  
-  tags = local.common_tags
+resource "aws_s3_bucket_versioning" "data_lake_versioning" {
+  bucket = aws_s3_bucket.data_lake.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
-# S3 Buckets
-module "s3" {
-  source = "./modules/s3"
-  
-  name_prefix = local.name_prefix
-  environment = var.environment
-  
-  tags = local.common_tags
+resource "aws_s3_bucket_server_side_encryption_configuration" "data_lake_encryption" {
+  bucket = aws_s3_bucket.data_lake.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
 
-# ECS Fargate Cluster
-module "ecs" {
-  source = "./modules/ecs"
-  
-  name_prefix        = local.name_prefix
-  vpc_id            = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  public_subnet_ids  = module.vpc.public_subnet_ids
-  security_group_ids = [module.security_groups.ecs_sg_id]
-  
-  tags = local.common_tags
+resource "random_id" "suffix" { byte_length = 4 }
+
+#########################
+# IAM roles and policies for Lambdas, Step Functions, Glue, Textract, etc.
+#########################
+resource "aws_iam_role" "lambda_role" {
+  name = "${var.project}-lambda-role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
 }
 
-# API Gateway
-module "api_gateway" {
-  source = "./modules/api_gateway"
-  
-  name_prefix = local.name_prefix
-  environment = var.environment
-  
-  tags = local.common_tags
+data "aws_iam_policy_document" "lambda_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
 }
 
-# Lambda Functions
-module "lambda" {
-  source = "./modules/lambda"
-  
-  name_prefix        = local.name_prefix
-  vpc_id            = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  security_group_ids = [module.security_groups.lambda_sg_id]
-  
-  s3_bucket_name = module.s3.documents_bucket_name
-  
-  tags = local.common_tags
+resource "aws_iam_role_policy_attachment" "lambda_basic_exec" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-# EventBridge
-module "eventbridge" {
-  source = "./modules/eventbridge"
-  
-  name_prefix = local.name_prefix
-  
-  tags = local.common_tags
+# Inline policy giving Lambdas access to S3, Textract, DynamoDB, StepFunctions, OpenSearch and RDS
+resource "aws_iam_policy" "lambda_app_policy" {
+  name   = "${var.project}-lambda-app-policy"
+  policy = data.aws_iam_policy_document.lambda_app_policy.json
 }
 
-# SQS Queues
-module "sqs" {
-  source = "./modules/sqs"
-  
-  name_prefix = local.name_prefix
-  
-  tags = local.common_tags
+data "aws_iam_policy_document" "lambda_app_policy" {
+  statement {
+    actions = [
+      "s3:GetObject", "s3:PutObject", "s3:ListBucket",
+      "textract:*",
+      "dynamodb:GetItem", "dynamodb:Query", "dynamodb:PutItem",
+      "states:StartExecution",
+      "es:ESHttpPost", "es:ESHttpGet", "es:ESHttpPut",
+      "rds-data:ExecuteStatement", "rds-data:BatchExecuteStatement"
+    ]
+    resources = ["*"]
+  }
 }
 
-# SNS Topics
-module "sns" {
-  source = "./modules/sns"
-  
-  name_prefix = local.name_prefix
-  
-  tags = local.common_tags
+resource "aws_iam_role_policy_attachment" "attach_lambda_app_policy" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_app_policy.arn
 }
 
-# CloudWatch
-module "cloudwatch" {
-  source = "./modules/cloudwatch"
-  
-  name_prefix = local.name_prefix
-  
-  tags = local.common_tags
+#########################
+# DynamoDB for SKU/GTIN exact lookups
+#########################
+resource "aws_dynamodb_table" "sku_lookup" {
+  name           = "${var.project}-sku-lookup"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "product_id"
+  attribute {
+    name = "product_id"
+    type = "S"
+  }
+  attribute {
+    name = "sku"
+    type = "S"
+  }
+  global_secondary_index {
+    name               = "sku-index"
+    hash_key           = "sku"
+    projection_type    = "ALL"
+  }
 }
 
-# Cognito
-module "cognito" {
-  source = "./modules/cognito"
-  
-  name_prefix = local.name_prefix
-  
-  tags = local.common_tags
+#########################
+# Aurora Serverless (RDS) - cluster for OLTP (facturas, productos, reglas)
+#########################
+resource "aws_rds_cluster" "aurora_cluster" {
+  cluster_identifier = "${var.project}-aurora-cluster"
+  engine             = "aurora-postgresql"
+  engine_mode        = "serverless"
+  backup_retention_period = 7
+  skip_final_snapshot = true
 }
 
-# Transfer Family (SFTP)
-module "transfer_family" {
-  source = "./modules/transfer_family"
-  
-  name_prefix        = local.name_prefix
-  vpc_id            = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  s3_bucket_arn     = module.s3.sftp_bucket_arn
-  
-  tags = local.common_tags
+resource "aws_rds_cluster_instance" "aurora_instances" {
+  count              = 2
+  identifier         = "${var.project}-aurora-idx-${count.index}"
+  cluster_identifier = aws_rds_cluster.aurora_cluster.id
+  engine             = "aurora-postgresql"
+  instance_class     = "db.serverless" # placeholder; adjust per provider support
 }
+
+#########################
+# OpenSearch domain (for hybrid text + vector search)
+#########################
+resource "aws_opensearch_domain" "products_index" {
+  domain_name = "${var.project}-products-os"
+  engine_version = "OpenSearch_2.3"
+  cluster_config {
+    instance_type = "r6g.large.search"
+    instance_count = 2
+  }
+  ebs_options {
+    ebs_enabled = true
+    volume_size = 50
+  }
+  advanced_options = {
+    "rest.action.multi.allow_explicit_index" = "true"
+  }
+  node_to_node_encryption { enabled = true }
+  encrypt_at_rest { enabled = true }
+}
+
+#########################
+# Redshift cluster for analytics (or consider Redshift Serverless)
+#########################
+resource "aws_redshift_cluster" "redshift" {
+  cluster_identifier = "${var.project}-rs-cluster"
+  node_type          = "dc2.large"
+  number_of_nodes    = 2
+  database_name      = "analytics"
+  master_username    = "admin"
+  master_password    = "ChangeMe123!" # replace with secrets manager in prod
+}
+
+#########################
+# AWS Glue Catalog and Job (ETL from S3 -> Redshift)
+#########################
+resource "aws_glue_catalog_database" "data_lake_db" {
+  name = "${var.project}_lake_db"
+}
+
+resource "aws_glue_job" "invoices_etl" {
+  name     = "${var.project}-invoices-etl"
+  role_arn = aws_iam_role.glue_role.arn
+  command {
+    name            = "glueetl"
+    python_version  = "3"
+    script_location = "s3://${aws_s3_bucket.data_lake.id}/scripts/invoices_etl.py"
+  }
+  max_retries = 1
+  glue_version = "3.0"
+}
+
+resource "aws_iam_role" "glue_role" {
+  name = "${var.project}-glue-role"
+  assume_role_policy = data.aws_iam_policy_document.glue_assume.json
+}
+
+data "aws_iam_policy_document" "glue_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type = "Service"
+      identifiers = ["glue.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "glue_service_policy" {
+  role       = aws_iam_role.glue_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+}
+
+#########################
+# Step Functions state machine (orchestration)
+#########################
+resource "aws_iam_role" "sfn_role" {
+  name = "${var.project}-sfn-role"
+  assume_role_policy = data.aws_iam_policy_document.sfn_assume.json
+}
+
+data "aws_iam_policy_document" "sfn_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type = "Service"
+      identifiers = ["states.${data.aws_region.current.name}.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_region" "current" {}
+
+resource "aws_sfn_state_machine" "ingest_workflow" {
+  name     = "${var.project}-ingest-workflow"
+  role_arn = aws_iam_role.sfn_role.arn
+  definition = <<JSON
+{
+  "Comment": "Ingest workflow: Textract -> Normalize -> Match -> Calc -> Persist",
+  "StartAt": "CallTextract",
+  "States": {
+    "CallTextract": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": { "FunctionName": "${aws_lambda_function.textract_invoke.arn}", "Payload.$": "$" },
+      "Next": "NormalizeLines"
+    },
+    "NormalizeLines": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": { "FunctionName": "${aws_lambda_function.normalize.arn}", "Payload.$": "$" },
+      "Next": "MatchProducts"
+    },
+    "MatchProducts": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": { "FunctionName": "${aws_lambda_function.matcher.arn}", "Payload.$": "$" },
+      "Next": "CalcCommissions"
+    },
+    "CalcCommissions": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": { "FunctionName": "${aws_lambda_function.calculator.arn}", "Payload.$": "$" },
+      "End": true
+    }
+  }
+}
+JSON
+}
+
+#########################
+# Lambdas (placeholders) - textract_invoke, normalize, matcher, calculator
+#########################
+resource "aws_lambda_function" "textract_invoke" {
+  function_name = "${var.project}-textract-invoke"
+  role          = aws_iam_role.lambda_role.arn
+  runtime       = "python3.9"
+  handler       = "handler.lambda_handler"
+  s3_bucket     = aws_s3_bucket.data_lake.id
+  s3_key        = "lambdas/textract_invoke.zip" # upload code to this location
+  memory_size   = 1024
+  timeout       = 300
+}
+
+resource "aws_lambda_function" "normalize" {
+  function_name = "${var.project}-normalize"
+  role          = aws_iam_role.lambda_role.arn
+  runtime       = "python3.9"
+  handler       = "handler.lambda_handler"
+  s3_bucket     = aws_s3_bucket.data_lake.id
+  s3_key        = "lambdas/normalize.zip"
+  memory_size   = 512
+  timeout       = 120
+}
+
+resource "aws_lambda_function" "matcher" {
+  function_name = "${var.project}-matcher"
+  role          = aws_iam_role.lambda_role.arn
+  runtime       = "python3.9"
+  handler       = "handler.lambda_handler"
+  s3_bucket     = aws_s3_bucket.data_lake.id
+  s3_key        = "lambdas/matcher.zip"
+  memory_size   = 1024
+  timeout       = 120
+}
+
+resource "aws_lambda_function" "calculator" {
+  function_name = "${var.project}-calculator"
+  role          = aws_iam_role.lambda_role.arn
+  runtime       = "python3.9"
+  handler       = "handler.lambda_handler"
+  s3_bucket     = aws_s3_bucket.data_lake.id
+  s3_key        = "lambdas/calculator.zip"
+  memory_size   = 1024
+  timeout       = 300
+}
+
+#########################
+# S3 event notification: raw bucket triggers Step Function via Lambda starter
+#########################
+resource "aws_lambda_function_event_invoke_config" "invoke_config" {
+  function_name = aws_lambda_function.textract_invoke.function_name
+}
+
+# NOTE: For simplicity we attach a bucket notification using lambda permission and aws_s3_bucket_notification is not fully defined here.
+
+#########################
+# Outputs
+#########################
+output "s3_raw_bucket" { value = aws_s3_bucket.invoices_raw.bucket }
+output "s3_processed_bucket" { value = aws_s3_bucket.invoices_processed.bucket }
+output "opensearch_endpoint" { value = aws_opensearch_domain.products_index.endpoint }
+output "redshift_endpoint" { value = aws_redshift_cluster.redshift.endpoint }
+output "aurora_cluster_arn" { value = aws_rds_cluster.aurora_cluster.arn }
+
+# End of terraform file
+# --------------------
+# This HCL file describes the main resources and integration points for:
+# - S3 raw/processed/data-lake
+# - Lambda functions to orchestrate Textract, normalization, matching and calculations
+# - Step Functions orchestration
+# - DynamoDB for fast lookups
+# - Aurora (OLTP) and Redshift (analytics)
+# - OpenSearch for hybrid text+vector search
+# - Glue job for ETL (S3 -> Redshift)
+
+# To render this visually you can use tools that convert terraform plans to diagrams
+# (eg. terragrunt graph, terraform graph, or external tools like cloudcraft or Hava) or
+# run `terraform plan` and use graphviz. Replace placeholders before applying.
