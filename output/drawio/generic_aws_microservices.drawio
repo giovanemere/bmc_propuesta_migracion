@@ -1,22 +1,22 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="Generic AWS Architecture" id="diagram">
+  <diagram name="Generic AWS Microservices" id="diagram">
     <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
         
         <!-- Title -->
-        <mxCell id="title" value="Generic AWS Architecture" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+        <mxCell id="title" value="Generic AWS Microservices" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="50" y="20" width="1500" height="50" as="geometry"/>
         </mxCell>
         
         <!-- Note -->
-        <mxCell id="note" value="This Draw.io file corresponds to: generic_aws_architecture.png&#10;&#10;Edit this diagram at: https://app.diagrams.net&#10;&#10;Generated automatically from PNG file." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5FE;strokeColor=#0277BD;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="note" value="This Draw.io file corresponds to: generic_aws_microservices.png&#10;&#10;Edit this diagram at: https://app.diagrams.net&#10;&#10;Generated automatically from PNG file." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5FE;strokeColor=#0277BD;fontSize=12;align=left;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="50" y="100" width="400" height="120" as="geometry"/>
         </mxCell>
         
         <!-- AWS Cloud Placeholder -->
-        <mxCell id="aws" value="AWS Cloud Architecture&#10;&#10;Components from generic_aws_architecture.png:&#10;• Microservices&#10;• Databases&#10;• Security Layers&#10;• Network Topology" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;" vertex="1" parent="1">
+        <mxCell id="aws" value="AWS Cloud Architecture&#10;&#10;Components from generic_aws_microservices.png:&#10;• Microservices&#10;• Databases&#10;• Security Layers&#10;• Network Topology" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;" vertex="1" parent="1">
           <mxGeometry x="500" y="100" width="800" height="400" as="geometry"/>
         </mxCell>
         

@@ -184,7 +184,7 @@ class DiagramGenerator:
         return output_file
     
     def generate_all(self, project_name: str = "Architecture") -> Dict[str, str]:
-        """Genera todos los diagramas"""
+        """Genera todos los diagramas PNG y Draw.io"""
         
         # Crear directorios de salida
         os.makedirs(f"{self.output_dir}/png", exist_ok=True)
@@ -204,10 +204,13 @@ class DiagramGenerator:
             f"{project_name.lower()}_microservices"
         )
         
-        # Archivo Draw.io
-        results["drawio"] = self.generate_drawio(
-            f"{project_name} - AWS Architecture",
-            f"{project_name.lower()}_architecture"
-        )
+        # Generar archivos Draw.io equivalentes
+        from .complete_drawio_generator import CompleteDrawioGenerator
+        drawio_generator = CompleteDrawioGenerator(self.config, self.output_dir)
+        drawio_results = drawio_generator.generate_all_drawio_files(project_name)
+        
+        # Combinar resultados
+        for key, value in drawio_results.items():
+            results[f"drawio_{key}"] = value
         
         return results

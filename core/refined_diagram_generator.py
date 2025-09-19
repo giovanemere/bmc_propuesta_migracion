@@ -415,7 +415,7 @@ class RefinedDiagramGenerator:
         return f"{self.output_dir}/png/{filename}.png"
     
     def generate_all_refined(self, project_name: str = "BMC") -> Dict[str, str]:
-        """Genera todos los diagramas refinados"""
+        """Genera todos los diagramas refinados PNG y Draw.io"""
         
         # Crear directorios
         os.makedirs(f"{self.output_dir}/png", exist_ok=True)
@@ -425,32 +425,40 @@ class RefinedDiagramGenerator:
         
         print("🎨 Generating refined diagrams...")
         
-        # Diagrama de red y VPC
+        # Diagramas PNG
         results["network"] = self.create_network_diagram(
             f"{project_name} - Network Architecture & VPC",
             f"{project_name.lower()}_network_architecture"
         )
         print("✓ Network architecture diagram generated")
         
-        # Diagrama de microservicios detallado
         results["microservices"] = self.create_microservices_diagram(
             f"{project_name} - Microservices Architecture",
             f"{project_name.lower()}_microservices_detailed"
         )
         print("✓ Microservices detailed diagram generated")
         
-        # Diagrama de seguridad
         results["security"] = self.create_security_diagram(
             f"{project_name} - Security Architecture",
             f"{project_name.lower()}_security_architecture"
         )
         print("✓ Security architecture diagram generated")
         
-        # Diagrama de flujo de datos
         results["data_flow"] = self.create_data_flow_diagram(
             f"{project_name} - Data Flow Architecture",
             f"{project_name.lower()}_data_flow"
         )
         print("✓ Data flow diagram generated")
+        
+        # Generar archivos Draw.io equivalentes
+        from .complete_drawio_generator import CompleteDrawioGenerator
+        drawio_generator = CompleteDrawioGenerator(self.config, self.output_dir)
+        drawio_results = drawio_generator.generate_all_drawio_files(project_name)
+        
+        # Combinar resultados
+        for key, value in drawio_results.items():
+            results[f"drawio_{key}"] = value
+        
+        print("✓ Draw.io files generated")
         
         return results
