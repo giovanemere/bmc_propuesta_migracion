@@ -145,6 +145,109 @@ class BMCWorkflow:
             }
         }
     
+    def generate_mermaid_diagrams(self) -> Dict[str, Any]:
+        """Generate Mermaid diagrams for architecture visualization"""
+        base_data = self.index_data.get('parsed_content', {})
+        
+        return {
+            "phase": "Mermaid Architecture Diagrams",
+            "context_diagram": """
+graph TB
+    Users[👥 Usuarios BMC<br/>Operadores]
+    External[🏢 Sistemas Externos<br/>SFTP Integration]
+    
+    BMC[🏛️ Sistema BMC<br/>Regulatory Platform]
+    
+    DIAN[🏛️ DIAN<br/>Tax Authority]
+    Regulatory[📋 Entidades Regulatorias<br/>Financial Oversight]
+    
+    Users --> BMC
+    External --> BMC
+    BMC --> DIAN
+    BMC --> Regulatory
+    
+    style BMC fill:#e1f5fe
+    style DIAN fill:#fff3e0
+            """,
+            "container_diagram": """
+graph TB
+    subgraph "🌐 Frontend Layer"
+        WebApp[📱 Web Frontend<br/>React SPA]
+        AdminPortal[🔧 Admin Portal<br/>Management UI]
+    end
+    
+    subgraph "🚪 API Layer"
+        APIGateway[🚪 API Gateway<br/>Central Routing]
+    end
+    
+    subgraph "⚙️ Microservices Layer"
+        InvoiceService[📄 Invoice Service<br/>Processing & OCR]
+        ProductService[🏷️ Product Service<br/>60M Records]
+        OCRService[👁️ OCR Service<br/>Textract Integration]
+        CommissionService[💰 Commission Service<br/>Business Rules]
+    end
+    
+    subgraph "💾 Data Layer"
+        RDS[(🗄️ RDS PostgreSQL<br/>Transactional Data)]
+        Redis[(⚡ ElastiCache Redis<br/>Caching)]
+        S3[(📦 S3<br/>Document Storage)]
+    end
+    
+    WebApp --> APIGateway
+    APIGateway --> InvoiceService
+    APIGateway --> ProductService
+    InvoiceService --> OCRService
+    ProductService --> Redis
+    InvoiceService --> RDS
+    OCRService --> S3
+            """,
+            "sequence_diagram": """
+sequenceDiagram
+    participant User as 👤 User
+    participant Frontend as 📱 Frontend
+    participant API as 🚪 API Gateway
+    participant Invoice as 📄 Invoice Service
+    participant OCR as 👁️ OCR Service
+    participant Product as 🏷️ Product Service
+    
+    User->>Frontend: Upload Invoice
+    Frontend->>API: POST /invoices/upload
+    API->>Invoice: Process Upload
+    Invoice->>OCR: Extract Text/Data
+    OCR-->>Invoice: Structured Data
+    Invoice->>Product: Match Products (60M lookup)
+    Product-->>Invoice: Matched Products
+    Invoice-->>API: Processing Complete
+            """,
+            "data_flow_diagram": """
+graph LR
+    subgraph "Data Sources"
+        Upload[📁 File Upload]
+        Images[🖼️ Images/PDFs]
+    end
+    
+    subgraph "Processing"
+        OCR[👁️ OCR Processing]
+        Validation[✅ Validation]
+        Matching[🔍 Product Matching]
+    end
+    
+    subgraph "Storage"
+        RDS[(🗄️ PostgreSQL<br/>60M Products)]
+        S3[(📦 S3 Storage)]
+        Cache[(⚡ Redis Cache)]
+    end
+    
+    Upload --> OCR
+    Images --> OCR
+    OCR --> Validation
+    Validation --> Matching
+    Matching --> RDS
+    OCR --> S3
+    Matching --> Cache
+            """
+        }
+
     def run_complete_workflow(self) -> Dict[str, Any]:
         """Run all phases using index.md data"""
         return {
@@ -154,11 +257,12 @@ class BMCWorkflow:
                 "precharacterization": self.run_precharacterization(),
                 "estructuracion": self.run_estructuracion(),
                 "catalogo": self.run_catalogo(),
-                "lineamientos": self.run_lineamientos()
+                "lineamientos": self.run_lineamientos(),
+                "mermaid_diagrams": self.generate_mermaid_diagrams()
             },
             "next_steps": [
                 "Review generated specifications",
-                "Validate with stakeholders",
+                "Validate with stakeholders", 
                 "Begin implementation planning",
                 "Set up AWS environment"
             ]
@@ -178,15 +282,17 @@ def main():
             print(json.dumps(workflow.run_catalogo(), indent=2, ensure_ascii=False))
         elif command == "lineamientos":
             print(json.dumps(workflow.run_lineamientos(), indent=2, ensure_ascii=False))
+        elif command == "mermaid":
+            print(json.dumps(workflow.generate_mermaid_diagrams(), indent=2, ensure_ascii=False))
         elif command == "complete":
             print(json.dumps(workflow.run_complete_workflow(), indent=2, ensure_ascii=False))
         elif command == "version":
             print(f"BMC Integrated Workflow v{__version__}")
         else:
-            print("Available commands: prechar, estructura, catalogo, lineamientos, complete, version")
+            print("Available commands: prechar, estructura, catalogo, lineamientos, mermaid, complete, version")
     else:
         print(f"BMC Integrated Workflow v{__version__}")
-        print("Usage: python mcp-workflow.py [prechar|estructura|catalogo|lineamientos|complete|version]")
+        print("Usage: python mcp-workflow.py [prechar|estructura|catalogo|lineamientos|mermaid|complete|version]")
 
 if __name__ == "__main__":
     main()

@@ -4,93 +4,339 @@
 
 ### Nivel 1: Context Diagram
 
+```mermaid
+graph TB
+    Users[👥 Usuarios BMC<br/>Operadores]
+    External[🏢 Sistemas Externos<br/>SFTP Integration]
+    Operators[👨‍💼 Operadores<br/>Bolsa Comisionista]
+    
+    BMC[🏛️ Sistema BMC<br/>Regulatory Platform]
+    
+    DIAN[🏛️ DIAN<br/>Tax Authority]
+    Regulatory[📋 Entidades Regulatorias<br/>Financial Oversight]
+    Reports[📊 Reportes Regulatorios<br/>Compliance Reports]
+    
+    Users --> BMC
+    External --> BMC
+    Operators --> BMC
+    
+    BMC --> DIAN
+    BMC --> Regulatory
+    BMC --> Reports
+    
+    style BMC fill:#e1f5fe
+    style DIAN fill:#fff3e0
+    style Regulatory fill:#f3e5f5
 ```
-[Usuarios BMC] --> [Sistema BMC] --> [DIAN]
-[Sistemas Externos] --> [Sistema BMC] --> [Entidades Regulatorias]
-[Operadores] --> [Sistema BMC] --> [Reportes Regulatorios]
-```
-
-**Actores Principales:**
-- **Usuarios BMC:** Operadores de la bolsa comisionista
-- **Sistemas Externos:** Integración SFTP con entidades regulatorias
-- **DIAN:** Validación de clasificaciones y cumplimiento
-- **Entidades Regulatorias:** Intercambio de información financiera
 
 ### Nivel 2: Container Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Sistema BMC AWS                          │
-├─────────────────────────────────────────────────────────────┤
-│  [Web Frontend]     [Mobile App]     [Admin Portal]        │
-│       │                  │                 │               │
-│       └──────────────────┼─────────────────┘               │
-│                          │                                 │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │              API Gateway                             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                          │                                 │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │                Microservices                         │  │
-│  │  [Invoice Service] [Product Service] [OCR Service]   │  │
-│  │  [Commission Service] [Certificate Service]          │  │
-│  │  [Validation Service] [Notification Service]         │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                          │                                 │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │              Data Layer                              │  │
-│  │  [RDS PostgreSQL] [Redshift] [ElastiCache] [S3]     │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                          │                                 │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │            External Integrations                     │  │
-│  │  [SFTP Gateway] [Email Service] [DIAN API]          │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph "👥 Users"
+        WebUser[Web Users]
+        MobileUser[Mobile Users]
+        AdminUser[Admin Users]
+    end
+    
+    subgraph "🌐 Frontend Layer"
+        WebApp[📱 Web Frontend<br/>React SPA]
+        MobileApp[📱 Mobile App<br/>React Native]
+        AdminPortal[🔧 Admin Portal<br/>Management UI]
+    end
+    
+    subgraph "🚪 API Layer"
+        APIGateway[🚪 API Gateway<br/>Central Routing]
+        Auth[🔐 Authentication<br/>Cognito]
+    end
+    
+    subgraph "⚙️ Microservices Layer"
+        InvoiceService[📄 Invoice Service<br/>Processing & OCR]
+        ProductService[🏷️ Product Service<br/>60M Records]
+        OCRService[👁️ OCR Service<br/>Textract Integration]
+        CommissionService[💰 Commission Service<br/>Business Rules]
+        CertificateService[📜 Certificate Service<br/>PDF Generation]
+        ValidationService[✅ Validation Service<br/>Two-Layer Validation]
+        NotificationService[📧 Notification Service<br/>Email & Alerts]
+    end
+    
+    subgraph "💾 Data Layer"
+        RDS[(🗄️ RDS PostgreSQL<br/>Transactional Data)]
+        Redshift[(📊 Redshift<br/>Analytics)]
+        Redis[(⚡ ElastiCache Redis<br/>Caching)]
+        S3[(📦 S3<br/>Document Storage)]
+    end
+    
+    subgraph "🔗 External Integrations"
+        SFTP[📁 SFTP Gateway<br/>Transfer Family]
+        Email[📧 Email Service<br/>SES]
+        DIANApi[🏛️ DIAN API<br/>Classification]
+    end
+    
+    WebUser --> WebApp
+    MobileUser --> MobileApp
+    AdminUser --> AdminPortal
+    
+    WebApp --> APIGateway
+    MobileApp --> APIGateway
+    AdminPortal --> APIGateway
+    
+    APIGateway --> Auth
+    APIGateway --> InvoiceService
+    APIGateway --> ProductService
+    APIGateway --> CommissionService
+    
+    InvoiceService --> OCRService
+    InvoiceService --> ValidationService
+    ProductService --> Redis
+    CommissionService --> CertificateService
+    CertificateService --> NotificationService
+    
+    InvoiceService --> RDS
+    ProductService --> RDS
+    CommissionService --> RDS
+    OCRService --> S3
+    
+    ProductService --> Redshift
+    CommissionService --> Redshift
+    
+    NotificationService --> Email
+    InvoiceService --> SFTP
+    ProductService --> DIANApi
+    
+    style APIGateway fill:#e8f5e8
+    style InvoiceService fill:#fff3e0
+    style ProductService fill:#e3f2fd
+    style OCRService fill:#fce4ec
 ```
 
 ### Nivel 3: Component Diagram - Microservices Detail
 
 #### Invoice Service Components
-```
-┌─────────────────────────────────────────┐
-│           Invoice Service               │
-├─────────────────────────────────────────┤
-│ • File Upload Handler                   │
-│ • OCR Document Processor                │
-│ • Batch Processing Engine               │
-│ • Invoice Validator                     │
-│ • Business Rules Engine                 │
-│ • Status Tracker                       │
-└─────────────────────────────────────────┘
+
+```mermaid
+graph TB
+    subgraph "📄 Invoice Service"
+        FileHandler[📁 File Upload Handler<br/>Multi-format Support]
+        OCRProcessor[👁️ OCR Document Processor<br/>Image & PDF Processing]
+        BatchEngine[⚙️ Batch Processing Engine<br/>Queue Management]
+        Validator[✅ Invoice Validator<br/>Data Validation]
+        RulesEngine[🧠 Business Rules Engine<br/>Commission Logic]
+        StatusTracker[📊 Status Tracker<br/>Processing Status]
+        
+        FileHandler --> OCRProcessor
+        OCRProcessor --> Validator
+        Validator --> RulesEngine
+        RulesEngine --> StatusTracker
+        BatchEngine --> FileHandler
+    end
+    
+    subgraph "External Dependencies"
+        S3Storage[(📦 S3 Storage)]
+        SQSQueue[📬 SQS Queue]
+        EventBridge[⚡ EventBridge]
+    end
+    
+    FileHandler --> S3Storage
+    BatchEngine --> SQSQueue
+    StatusTracker --> EventBridge
+    
+    style FileHandler fill:#e8f5e8
+    style OCRProcessor fill:#fce4ec
+    style RulesEngine fill:#fff3e0
 ```
 
 #### Product Service Components
-```
-┌─────────────────────────────────────────┐
-│           Product Service               │
-├─────────────────────────────────────────┤
-│ • Product Lookup Engine (60M records)  │
-│ • DIAN Classification Matcher           │
-│ • Cache Manager                         │
-│ • Product List API                      │
-│ • Search & Filter Engine                │
-│ • Data Synchronizer                     │
-└─────────────────────────────────────────┘
+
+```mermaid
+graph TB
+    subgraph "🏷️ Product Service (60M Records)"
+        LookupEngine[🔍 Product Lookup Engine<br/>High-Performance Search]
+        DIANMatcher[🏛️ DIAN Classification Matcher<br/>Regulatory Compliance]
+        CacheManager[⚡ Cache Manager<br/>Redis Integration]
+        ProductAPI[🔌 Product List API<br/>Frontend Integration]
+        SearchEngine[🔎 Search & Filter Engine<br/>Advanced Queries]
+        DataSync[🔄 Data Synchronizer<br/>Real-time Updates]
+        
+        ProductAPI --> LookupEngine
+        LookupEngine --> CacheManager
+        LookupEngine --> SearchEngine
+        SearchEngine --> DIANMatcher
+        DIANMatcher --> DataSync
+    end
+    
+    subgraph "Data Sources"
+        PostgreSQL[(🗄️ PostgreSQL<br/>60M Products)]
+        RedisCache[(⚡ Redis Cache<br/>24h TTL)]
+        DIANService[🏛️ DIAN Service<br/>External API]
+    end
+    
+    LookupEngine --> PostgreSQL
+    CacheManager --> RedisCache
+    DIANMatcher --> DIANService
+    
+    style LookupEngine fill:#e3f2fd
+    style CacheManager fill:#f1f8e9
+    style DIANMatcher fill:#fff3e0
 ```
 
 #### OCR Processing Service Components
+
+```mermaid
+graph TB
+    subgraph "👁️ OCR Processing Service"
+        ImagePreprocessor[🖼️ Image Preprocessor<br/>Quality Enhancement]
+        PDFExtractor[📄 PDF Text Extractor<br/>Text Extraction]
+        TextractIntegration[🤖 Textract Integration<br/>AWS AI Service]
+        AccuracyValidator[✅ Accuracy Validator<br/>>95% Confidence]
+        FormatConverter[🔄 Format Converter<br/>Standardization]
+        QualityAssurance[🎯 Quality Assurance Engine<br/>Manual Review Queue]
+        
+        ImagePreprocessor --> TextractIntegration
+        PDFExtractor --> TextractIntegration
+        TextractIntegration --> AccuracyValidator
+        AccuracyValidator --> FormatConverter
+        AccuracyValidator --> QualityAssurance
+    end
+    
+    subgraph "AWS Services"
+        Textract[🤖 Amazon Textract<br/>OCR Service]
+        S3Documents[(📦 S3 Documents<br/>Storage)]
+        CloudWatch[📊 CloudWatch<br/>Monitoring]
+    end
+    
+    TextractIntegration --> Textract
+    ImagePreprocessor --> S3Documents
+    AccuracyValidator --> CloudWatch
+    
+    style TextractIntegration fill:#fce4ec
+    style AccuracyValidator fill:#e8f5e8
+    style QualityAssurance fill:#fff3e0
 ```
-┌─────────────────────────────────────────┐
-│        OCR Processing Service           │
-├─────────────────────────────────────────┤
-│ • Image Preprocessor                    │
-│ • PDF Text Extractor                   │
-│ • Textract Integration                  │
-│ • Accuracy Validator (>95%)            │
-│ • Format Converter                      │
-│ • Quality Assurance Engine             │
-└─────────────────────────────────────────┘
+
+### Nivel 4: Sequence Diagrams - Process Flows
+
+#### Invoice Processing Flow
+
+```mermaid
+sequenceDiagram
+    participant User as 👤 User
+    participant Frontend as 📱 Frontend
+    participant API as 🚪 API Gateway
+    participant Invoice as 📄 Invoice Service
+    participant OCR as 👁️ OCR Service
+    participant Product as 🏷️ Product Service
+    participant Commission as 💰 Commission Service
+    participant Certificate as 📜 Certificate Service
+    
+    User->>Frontend: Upload Invoice (Image/PDF)
+    Frontend->>API: POST /invoices/upload
+    API->>Invoice: Process Upload
+    Invoice->>OCR: Extract Text/Data
+    OCR-->>Invoice: Structured Data (>95% confidence)
+    Invoice->>Product: Match Products (60M lookup)
+    Product-->>Invoice: Matched Products + DIAN Classification
+    Invoice->>Commission: Calculate Commission
+    Commission-->>Invoice: Commission Details
+    Invoice->>Certificate: Generate Certificate
+    Certificate-->>Invoice: PDF Certificate
+    Invoice-->>API: Processing Complete
+    API-->>Frontend: Success Response
+    Frontend-->>User: Certificate Ready
+```
+
+#### Product Lookup Flow (60M Records)
+
+```mermaid
+sequenceDiagram
+    participant API as 🚪 API Gateway
+    participant Product as 🏷️ Product Service
+    participant Cache as ⚡ Redis Cache
+    participant DB as 🗄️ PostgreSQL (60M)
+    participant DIAN as 🏛️ DIAN API
+    
+    API->>Product: Search Products
+    Product->>Cache: Check Cache
+    alt Cache Hit
+        Cache-->>Product: Cached Results
+    else Cache Miss
+        Product->>DB: Query 60M Records
+        DB-->>Product: Search Results
+        Product->>Cache: Store Results (24h TTL)
+    end
+    Product->>DIAN: Validate Classification
+    DIAN-->>Product: Classification Confirmed
+    Product-->>API: Product List + Classification
+```
+
+### Architecture Decision Records (ADR)
+
+#### ADR-001: Event-Driven Architecture
+
+```mermaid
+graph LR
+    subgraph "Event Sources"
+        Upload[📁 File Upload]
+        OCRComplete[👁️ OCR Complete]
+        ValidationDone[✅ Validation Done]
+    end
+    
+    subgraph "Event Bus"
+        EventBridge[⚡ Amazon EventBridge]
+    end
+    
+    subgraph "Event Consumers"
+        ProcessInvoice[📄 Process Invoice]
+        CalculateCommission[💰 Calculate Commission]
+        GenerateCertificate[📜 Generate Certificate]
+        SendNotification[📧 Send Notification]
+    end
+    
+    Upload --> EventBridge
+    OCRComplete --> EventBridge
+    ValidationDone --> EventBridge
+    
+    EventBridge --> ProcessInvoice
+    EventBridge --> CalculateCommission
+    EventBridge --> GenerateCertificate
+    EventBridge --> SendNotification
+    
+    style EventBridge fill:#e1f5fe
+```
+
+#### ADR-002: Data Architecture Strategy
+
+```mermaid
+graph TB
+    subgraph "Transactional Layer"
+        RDS[(🗄️ RDS PostgreSQL<br/>OLTP - 60M Products)]
+    end
+    
+    subgraph "Caching Layer"
+        Redis[(⚡ ElastiCache Redis<br/>Product Lookups)]
+    end
+    
+    subgraph "Analytics Layer"
+        Redshift[(📊 Redshift<br/>OLAP - Reporting)]
+    end
+    
+    subgraph "Document Storage"
+        S3[(📦 S3<br/>Images, PDFs, Certificates)]
+    end
+    
+    subgraph "ETL Pipeline"
+        Glue[🔄 AWS Glue<br/>Data Pipeline]
+    end
+    
+    RDS --> Redis
+    RDS --> Glue
+    Glue --> Redshift
+    S3 --> Glue
+    
+    style RDS fill:#e3f2fd
+    style Redis fill:#f1f8e9
+    style Redshift fill:#fff3e0
+    style S3 fill:#fce4ec
 ```
 
 ## Definiciones de Desarrollo
