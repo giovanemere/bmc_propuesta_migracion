@@ -1,0 +1,24 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Generic_AWS - AWS Architecture" id="diagram1">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Generated from MCP Config -->
+        <mxCell id="title" value="Generic_AWS - AWS Architecture" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontSize=16;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- AWS Cloud -->
+        <mxCell id="aws" value="AWS Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;strokeWidth=2;fontSize=12;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="700" height="500" as="geometry"/>
+        </mxCell>
+        
+        <!-- Services from MCP Config -->
+        <!-- This would be dynamically generated based on config -->
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
