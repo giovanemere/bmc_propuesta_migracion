@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" modified="2025-09-19T18:45:00.000Z" agent="5.0" etag="drawio" version="22.0.0" type="device">
+<mxfile host="app.diagrams.net" modified="2025-09-19T18:50:00.000Z" agent="5.0" etag="drawio" version="22.0.0" type="device">
   <diagram name="BMC Container Diagram" id="container">
     <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
       <root>
@@ -7,150 +7,108 @@
         <mxCell id="1" parent="0" />
         
         <!-- Frontend Layer -->
-        <mxCell id="frontend-layer" value="🌐 Capa Frontend" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="frontend-layer" value="Capa Frontend" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="50" y="100" width="1300" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="web-app" value="📱 Web Application&#xa;React SPA&#xa;&#xa;• Formularios Carga&#xa;• Export PDF/Excel&#xa;• Dashboard Usuario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="frontend-layer">
+        <mxCell id="web-app" value="Web Application&#10;React SPA&#10;&#10;• Formularios Carga&#10;• Export PDF/Excel&#10;• Dashboard Usuario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="frontend-layer">
           <mxGeometry x="50" y="30" width="150" height="80" as="geometry" />
         </mxCell>
         
-        <mxCell id="mobile-app" value="📱 Mobile App&#xa;React Native&#xa;&#xa;• Consultas Rápidas&#xa;• Notificaciones&#xa;• Estado Procesos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="frontend-layer">
+        <mxCell id="mobile-app" value="Mobile App&#10;React Native&#10;&#10;• Consultas Rápidas&#10;• Notificaciones&#10;• Estado Procesos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="frontend-layer">
           <mxGeometry x="250" y="30" width="150" height="80" as="geometry" />
         </mxCell>
         
-        <mxCell id="admin-portal" value="🔧 Admin Portal&#xa;Management UI&#xa;&#xa;• Configuración Sistema&#xa;• Monitoreo&#xa;• Gestión Usuarios" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="frontend-layer">
+        <mxCell id="admin-portal" value="Admin Portal&#10;Management UI&#10;&#10;• Configuración Sistema&#10;• Monitoreo&#10;• Gestión Usuarios" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="frontend-layer">
           <mxGeometry x="450" y="30" width="150" height="80" as="geometry" />
         </mxCell>
         
-        <mxCell id="cloudfront" value="🌐 CloudFront CDN&#xa;&#xa;• Distribución Global&#xa;• Cache Estático&#xa;• SSL/TLS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="frontend-layer">
+        <mxCell id="cloudfront" value="CloudFront CDN&#10;&#10;• Distribución Global&#10;• Cache Estático&#10;• SSL/TLS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="frontend-layer">
           <mxGeometry x="650" y="30" width="150" height="80" as="geometry" />
         </mxCell>
         
         <!-- API Layer -->
-        <mxCell id="api-layer" value="🚪 Capa API" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="api-layer" value="Capa API" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="50" y="250" width="1300" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="load-balancer" value="⚖️ Application Load Balancer&#xa;&#xa;• Distribución Carga&#xa;• Health Checks&#xa;• SSL Termination" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="api-layer">
+        <mxCell id="load-balancer" value="Application Load Balancer&#10;&#10;• Distribución Carga&#10;• Health Checks&#10;• SSL Termination" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="api-layer">
           <mxGeometry x="50" y="30" width="180" height="80" as="geometry" />
         </mxCell>
         
-        <mxCell id="api-gateway" value="🚪 API Gateway&#xa;&#xa;• Enrutamiento Central&#xa;• Rate Limiting&#xa;• API Versioning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="api-layer">
+        <mxCell id="api-gateway" value="API Gateway&#10;&#10;• Enrutamiento Central&#10;• Rate Limiting&#10;• API Versioning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="api-layer">
           <mxGeometry x="280" y="30" width="180" height="80" as="geometry" />
         </mxCell>
         
-        <mxCell id="cognito" value="🔐 Amazon Cognito&#xa;&#xa;• Autenticación&#xa;• Autorización RBAC&#xa;• MFA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="api-layer">
+        <mxCell id="cognito" value="Amazon Cognito&#10;&#10;• Autenticación&#10;• Autorización RBAC&#10;• MFA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="api-layer">
           <mxGeometry x="510" y="30" width="180" height="80" as="geometry" />
         </mxCell>
         
-        <mxCell id="waf" value="🛡️ AWS WAF&#xa;&#xa;• Web Application Firewall&#xa;• DDoS Protection&#xa;• Security Rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#d32f2f;" vertex="1" parent="api-layer">
+        <mxCell id="waf" value="AWS WAF&#10;&#10;• Web Application Firewall&#10;• DDoS Protection&#10;• Security Rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#d32f2f;" vertex="1" parent="api-layer">
           <mxGeometry x="740" y="30" width="180" height="80" as="geometry" />
         </mxCell>
         
         <!-- Microservices Layer -->
-        <mxCell id="microservices-layer" value="⚙️ Capa Microservicios" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="microservices-layer" value="Capa Microservicios" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="50" y="400" width="1300" height="200" as="geometry" />
         </mxCell>
         
-        <mxCell id="invoice-service" value="📄 Invoice Service&#xa;ECS Fargate&#xa;&#xa;• Procesamiento Facturas&#xa;• OCR Integration&#xa;• Batch Processing&#xa;• Business Rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;" vertex="1" parent="microservices-layer">
+        <mxCell id="invoice-service" value="Invoice Service&#10;ECS Fargate&#10;&#10;• Procesamiento Facturas&#10;• OCR Integration&#10;• Batch Processing&#10;• Business Rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;" vertex="1" parent="microservices-layer">
           <mxGeometry x="50" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="product-service" value="🏷️ Product Service&#xa;ECS Fargate&#xa;&#xa;• 60M Productos&#xa;• Búsqueda Rápida&#xa;• DIAN Classification&#xa;• Cache Management" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="microservices-layer">
+        <mxCell id="product-service" value="Product Service&#10;ECS Fargate&#10;&#10;• 60M Productos&#10;• Búsqueda Rápida&#10;• DIAN Classification&#10;• Cache Management" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="microservices-layer">
           <mxGeometry x="230" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="ocr-service" value="👁️ OCR Service&#xa;Lambda Functions&#xa;&#xa;• Textract Integration&#xa;• >95% Accuracy&#xa;• Image/PDF Processing&#xa;• Quality Assurance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="microservices-layer">
+        <mxCell id="ocr-service" value="OCR Service&#10;Lambda Functions&#10;&#10;• Textract Integration&#10;• Greater than 95% Accuracy&#10;• Image/PDF Processing&#10;• Quality Assurance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="microservices-layer">
           <mxGeometry x="410" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="commission-service" value="💰 Commission Service&#xa;Step Functions&#xa;&#xa;• Cálculo Comisiones&#xa;• Reglas Negocio&#xa;• Workflow Management&#xa;• Audit Trail" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="microservices-layer">
+        <mxCell id="commission-service" value="Commission Service&#10;Step Functions&#10;&#10;• Cálculo Comisiones&#10;• Reglas Negocio&#10;• Workflow Management&#10;• Audit Trail" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="microservices-layer">
           <mxGeometry x="590" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="certificate-service" value="📜 Certificate Service&#xa;Lambda Functions&#xa;&#xa;• PDF Generation&#xa;• Email Delivery&#xa;• Template Management&#xa;• Digital Signatures" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="microservices-layer">
+        <mxCell id="certificate-service" value="Certificate Service&#10;Lambda Functions&#10;&#10;• PDF Generation&#10;• Email Delivery&#10;• Template Management&#10;• Digital Signatures" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="microservices-layer">
           <mxGeometry x="770" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="validation-service" value="✅ Validation Service&#xa;Lambda Functions&#xa;&#xa;• Two-Layer Validation&#xa;• DIAN Compliance&#xa;• Data Quality&#xa;• Error Handling" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="microservices-layer">
+        <mxCell id="validation-service" value="Validation Service&#10;Lambda Functions&#10;&#10;• Two-Layer Validation&#10;• DIAN Compliance&#10;• Data Quality&#10;• Error Handling" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="microservices-layer">
           <mxGeometry x="950" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
-        <mxCell id="notification-service" value="📧 Notification Service&#xa;Lambda Functions&#xa;&#xa;• Email Alerts&#xa;• SMS Notifications&#xa;• Status Updates&#xa;• Event Publishing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="microservices-layer">
+        <mxCell id="notification-service" value="Notification Service&#10;Lambda Functions&#10;&#10;• Email Alerts&#10;• SMS Notifications&#10;• Status Updates&#10;• Event Publishing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="microservices-layer">
           <mxGeometry x="1130" y="30" width="150" height="120" as="geometry" />
         </mxCell>
         
         <!-- Data Layer -->
-        <mxCell id="data-layer" value="💾 Capa de Datos" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="data-layer" value="Capa de Datos" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="50" y="630" width="1300" height="150" as="geometry" />
         </mxCell>
         
-        <mxCell id="rds" value="🗄️ RDS PostgreSQL&#xa;Multi-AZ&#xa;&#xa;• 60M Productos&#xa;• Datos Transaccionales&#xa;• Backup Automático&#xa;• Performance Insights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3f51b5;" vertex="1" parent="data-layer">
+        <mxCell id="rds" value="RDS PostgreSQL&#10;Multi-AZ&#10;&#10;• 60M Productos&#10;• Datos Transaccionales&#10;• Backup Automático&#10;• Performance Insights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3f51b5;" vertex="1" parent="data-layer">
           <mxGeometry x="50" y="30" width="180" height="100" as="geometry" />
         </mxCell>
         
-        <mxCell id="redshift" value="📊 Amazon Redshift&#xa;Data Warehouse&#xa;&#xa;• Analytics & Reportes&#xa;• ETL con Glue&#xa;• Columnar Storage&#xa;• Business Intelligence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="data-layer">
+        <mxCell id="redshift" value="Amazon Redshift&#10;Data Warehouse&#10;&#10;• Analytics and Reportes&#10;• ETL con Glue&#10;• Columnar Storage&#10;• Business Intelligence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="data-layer">
           <mxGeometry x="280" y="30" width="180" height="100" as="geometry" />
         </mxCell>
         
-        <mxCell id="redis" value="⚡ ElastiCache Redis&#xa;Cluster Mode&#xa;&#xa;• Product Cache (24h TTL)&#xa;• Session Storage&#xa;• High Performance&#xa;• Auto Failover" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="data-layer">
+        <mxCell id="redis" value="ElastiCache Redis&#10;Cluster Mode&#10;&#10;• Product Cache (24h TTL)&#10;• Session Storage&#10;• High Performance&#10;• Auto Failover" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="data-layer">
           <mxGeometry x="510" y="30" width="180" height="100" as="geometry" />
         </mxCell>
         
-        <mxCell id="s3" value="📦 Amazon S3&#xa;Multiple Buckets&#xa;&#xa;• Document Storage&#xa;• Image/PDF Files&#xa;• Certificates&#xa;• Lifecycle Policies" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="data-layer">
+        <mxCell id="s3" value="Amazon S3&#10;Multiple Buckets&#10;&#10;• Document Storage&#10;• Image/PDF Files&#10;• Certificates&#10;• Lifecycle Policies" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="data-layer">
           <mxGeometry x="740" y="30" width="180" height="100" as="geometry" />
         </mxCell>
         
-        <mxCell id="elasticsearch" value="🔍 Amazon Elasticsearch&#xa;&#xa;• Full-Text Search&#xa;• Product Indexing&#xa;• Analytics&#xa;• Kibana Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="data-layer">
+        <mxCell id="elasticsearch" value="Amazon Elasticsearch&#10;&#10;• Full-Text Search&#10;• Product Indexing&#10;• Analytics&#10;• Kibana Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="data-layer">
           <mxGeometry x="970" y="30" width="180" height="100" as="geometry" />
         </mxCell>
         
-        <!-- External Integrations -->
-        <mxCell id="external-layer" value="🔗 Integraciones Externas" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#d32f2f;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="50" y="810" width="1300" height="120" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="sftp" value="📁 AWS Transfer Family&#xa;SFTP Gateway&#xa;&#xa;• Secure File Transfer&#xa;• External Systems&#xa;• Automated Processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;" vertex="1" parent="external-layer">
-          <mxGeometry x="50" y="30" width="180" height="80" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="ses" value="📧 Amazon SES&#xa;Email Service&#xa;&#xa;• Certificate Delivery&#xa;• Notifications&#xa;• Bounce Handling" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="external-layer">
-          <mxGeometry x="280" y="30" width="180" height="80" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="dian-api" value="🏛️ DIAN API&#xa;External Integration&#xa;&#xa;• Classification Validation&#xa;• OAuth 2.0&#xa;• Rate Limited" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="external-layer">
-          <mxGeometry x="510" y="30" width="180" height="80" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="textract" value="🤖 Amazon Textract&#xa;OCR Service&#xa;&#xa;• Document Analysis&#xa;• >95% Accuracy&#xa;• Forms & Tables" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;" vertex="1" parent="external-layer">
-          <mxGeometry x="740" y="30" width="180" height="80" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="cloudwatch" value="📊 CloudWatch&#xa;Monitoring&#xa;&#xa;• Metrics & Alarms&#xa;• Log Aggregation&#xa;• Performance Monitoring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="external-layer">
-          <mxGeometry x="970" y="30" width="180" height="80" as="geometry" />
-        </mxCell>
-        
         <!-- Title -->
-        <mxCell id="title" value="BMC - Diagrama de Contenedores (C4 Level 2)&#xa;Arquitectura AWS con Microservicios" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="title" value="BMC - Diagrama de Contenedores (C4 Level 2)&#10;Arquitectura AWS con Microservicios" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="500" y="20" width="400" height="60" as="geometry" />
-        </mxCell>
-        
-        <!-- Key Connections (simplified for clarity) -->
-        <mxCell id="conn1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#1565c0;" edge="1" parent="1" source="web-app" target="api-gateway">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="conn2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#c2185b;" edge="1" parent="1" source="api-gateway" target="invoice-service">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="conn3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#1565c0;" edge="1" parent="1" source="product-service" target="redis">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="conn4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#ef6c00;" edge="1" parent="1" source="ocr-service" target="textract">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
       </root>
