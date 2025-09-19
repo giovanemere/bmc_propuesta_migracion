@@ -1,16 +1,44 @@
-<mxfile host="app.diagrams.net" modified="2024-09-19T21:00:00.000Z" agent="MCP Diagram Generator" version="22.1.11">
-  <diagram name="Generic Aws AWS Architecture" id="unified_architecture">
+#!/usr/bin/env python3
+"""
+Unified Draw.io Generator - Generador unificado de archivos Draw.io
+Genera un solo archivo Draw.io profesional y completo
+"""
+
+import os
+from typing import Dict, Any
+
+class UnifiedDrawioGenerator:
+    """Generador unificado de archivos Draw.io"""
+    
+    def __init__(self, config: Dict[str, Any], output_dir: str = "output"):
+        self.config = config
+        self.output_dir = output_dir
+        
+    def generate_unified_drawio(self, project_name: str = "Architecture") -> str:
+        """Genera un archivo Draw.io unificado y completo"""
+        
+        # Extraer información del config
+        project_info = self.config.get("project", {})
+        microservices = self.config.get("microservices", {})
+        aws_services = self.config.get("aws_services", {})
+        
+        title = project_info.get("name", f"{project_name} AWS Architecture")
+        description = project_info.get("description", "Cloud Architecture Diagram")
+        
+        # Generar XML completo
+        xml_content = f'''<mxfile host="app.diagrams.net" modified="2024-09-19T21:00:00.000Z" agent="MCP Diagram Generator" version="22.1.11">
+  <diagram name="{title}" id="unified_architecture">
     <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
         
         <!-- Header -->
-        <mxCell id="header" value="Generic Aws AWS Architecture" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+        <mxCell id="header" value="{title}" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="50" y="20" width="1500" height="50" as="geometry"/>
         </mxCell>
         
-        <mxCell id="subtitle" value="Cloud Architecture Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
+        <mxCell id="subtitle" value="{description}" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontColor=#666666;" vertex="1" parent="1">
           <mxGeometry x="50" y="75" width="1500" height="25" as="geometry"/>
         </mxCell>
         
@@ -72,33 +100,83 @@
         <!-- ALB -->
         <mxCell id="alb" value="Application LB&#10;Multi-AZ&#10;Health Checks" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#8C4FFF;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.application_load_balancer;" vertex="1" parent="1">
           <mxGeometry x="680" y="340" width="35" height="35" as="geometry"/>
-        </mxCell>
-        <!-- Api_Service Service -->
-        <mxCell id="api_service" value="Api_Service&#10;2vCPU/4GB&#10;Scale: 2-10" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;" vertex="1" parent="1">
-          <mxGeometry x="500" y="420" width="35" height="35" as="geometry"/>
-        </mxCell>
-        <!-- Data_Service Service -->
-        <mxCell id="data_service" value="Data_Service&#10;2vCPU/4GB&#10;Scale: 2-10" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;" vertex="1" parent="1">
-          <mxGeometry x="650" y="420" width="35" height="35" as="geometry"/>
-        </mxCell>
-        <!-- Worker_Service Service -->
-        <mxCell id="worker_service" value="Worker_Service&#10;2vCPU/4GB&#10;Scale: 2-10" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;" vertex="1" parent="1">
-          <mxGeometry x="800" y="420" width="35" height="35" as="geometry"/>
-        </mxCell>
+        </mxCell>'''
+        
+        # Agregar microservicios dinámicamente
+        x_positions = [500, 650, 800, 950, 1100]
+        y_position = 420
+        
+        service_xml = ""
+        connection_xml = ""
+        
+        # Verificar que microservices sea un diccionario
+        if isinstance(microservices, dict):
+            for i, (service_name, service_config) in enumerate(microservices.items()):
+                if i >= len(x_positions):
+                    break
+                    
+                x_pos = x_positions[i]
+                
+                # Verificar que service_config sea un diccionario
+                if not isinstance(service_config, dict):
+                    service_config = {}
+                
+                # Extraer configuración con valores por defecto
+                compute = service_config.get("compute", {})
+                scaling = service_config.get("scaling", {})
+                
+                cpu = compute.get("cpu", 2048) // 1024
+                memory = compute.get("memory", 4096) // 1024
+                min_cap = scaling.get("min_capacity", 2)
+                max_cap = scaling.get("max_capacity", 10)
+                
+                service_xml += f'''
+        <!-- {service_name.title()} Service -->
+        <mxCell id="{service_name}" value="{service_name.title()}&#10;{cpu}vCPU/{memory}GB&#10;Scale: {min_cap}-{max_cap}" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;" vertex="1" parent="1">
+          <mxGeometry x="{x_pos}" y="{y_position}" width="35" height="35" as="geometry"/>
+        </mxCell>'''
+                
+                # Conexión desde ALB
+                connection_xml += f'''
+        <mxCell id="alb_to_{service_name}" style="endArrow=classic;html=1;rounded=0;strokeColor=#4CAF50;strokeWidth=2;fontSize=8;" edge="1" parent="1" source="alb" target="{service_name}"/>'''
+        
+        # Continuar con el resto del XML
+        xml_content += service_xml + '''
         
         <!-- Data Layer -->
         <mxCell id="datazone" value="Data Layer - Multi-AZ with Backup &amp; Encryption" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#E91E63;strokeWidth=2;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
           <mxGeometry x="450" y="530" width="500" height="150" as="geometry"/>
-        </mxCell>
-        <mxCell id="rds" value="RDS PostgreSQL&#10;db.r6g.2xlarge&#10;Multi-AZ&#10;35-day backup" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4AB29A;gradientDirection=north;fillColor=#116D5B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;" vertex="1" parent="1">
-          <mxGeometry x="500" y="570" width="35" height="35" as="geometry"/>
-        </mxCell>
-        <mxCell id="redis" value="ElastiCache Redis&#10;3 nodes&#10;Cluster Mode&#10;24h TTL" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4AB29A;gradientDirection=north;fillColor=#116D5B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;" vertex="1" parent="1">
-          <mxGeometry x="650" y="570" width="35" height="35" as="geometry"/>
-        </mxCell>
-        <mxCell id="s3" value="S3 Documents&#10;Intelligent_Tiering&#10;Lifecycle Rules&#10;Encryption" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4AB29A;gradientDirection=north;fillColor=#116D5B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
-          <mxGeometry x="800" y="570" width="35" height="35" as="geometry"/>
-        </mxCell>
+        </mxCell>'''
+        
+        # Agregar servicios de datos dinámicamente
+        data_services = {
+            "rds": {"name": "RDS PostgreSQL", "x": 500, "icon": "rds"},
+            "redis": {"name": "ElastiCache Redis", "x": 650, "icon": "elasticache"}, 
+            "s3": {"name": "S3 Documents", "x": 800, "icon": "s3"}
+        }
+        
+        for service_id, service_info in data_services.items():
+            service_config = aws_services.get(f"{service_id}_primary", aws_services.get(f"{service_id}_cluster", aws_services.get(f"{service_id}_documents", {})))
+            
+            # Configuración específica por servicio
+            if service_id == "rds":
+                instance_class = service_config.get("instance_class", "db.r6g.2xlarge")
+                multi_az = "Multi-AZ" if service_config.get("high_availability", {}).get("multi_az", True) else "Single-AZ"
+                label = f"{service_info['name']}&#10;{instance_class}&#10;{multi_az}&#10;35-day backup"
+            elif service_id == "redis":
+                num_nodes = service_config.get("cluster", {}).get("num_nodes", 3)
+                label = f"{service_info['name']}&#10;{num_nodes} nodes&#10;Cluster Mode&#10;24h TTL"
+            else:  # s3
+                storage_class = service_config.get("storage", {}).get("storage_class", "intelligent_tiering")
+                label = f"{service_info['name']}&#10;{storage_class.title()}&#10;Lifecycle Rules&#10;Encryption"
+            
+            xml_content += f'''
+        <mxCell id="{service_id}" value="{label}" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4AB29A;gradientDirection=north;fillColor=#116D5B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=8;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.{service_info['icon']};" vertex="1" parent="1">
+          <mxGeometry x="{service_info['x']}" y="570" width="35" height="35" as="geometry"/>
+        </mxCell>'''
+        
+        # AI/ML y otros servicios
+        xml_content += '''
         
         <!-- AI/ML Zone -->
         <mxCell id="aizone" value="AI/ML Services - OCR &amp; Classification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#9C27B0;strokeWidth=2;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
@@ -148,10 +226,10 @@
         <!-- Implementation Timeline -->
         <mxCell id="timeline" value="Implementation Phases&#10;Phase 1: Infrastructure (Weeks 1-8)&#10;Phase 2: Microservices (Weeks 9-16)&#10;Phase 3: AI/ML Integration (Weeks 17-22)&#10;Phase 4: Frontend &amp; APIs (Weeks 23-26)&#10;Phase 5: Go-Live &amp; Optimization (Weeks 27-30)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#C62828;fontSize=9;align=left;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1250" y="450" width="250" height="120" as="geometry"/>
-        </mxCell>
-        <mxCell id="alb_to_api_service" style="endArrow=classic;html=1;rounded=0;strokeColor=#4CAF50;strokeWidth=2;fontSize=8;" edge="1" parent="1" source="alb" target="api_service"/>
-        <mxCell id="alb_to_data_service" style="endArrow=classic;html=1;rounded=0;strokeColor=#4CAF50;strokeWidth=2;fontSize=8;" edge="1" parent="1" source="alb" target="data_service"/>
-        <mxCell id="alb_to_worker_service" style="endArrow=classic;html=1;rounded=0;strokeColor=#4CAF50;strokeWidth=2;fontSize=8;" edge="1" parent="1" source="alb" target="worker_service"/>
+        </mxCell>'''
+        
+        # Agregar todas las conexiones
+        xml_content += connection_xml + '''
         
         <!-- Main Flow Connections -->
         <mxCell id="c1" style="endArrow=classic;html=1;rounded=0;strokeColor=#1976D2;strokeWidth=3;fontSize=8;" edge="1" parent="1" source="users" target="cloudfront">
@@ -189,4 +267,13 @@
       </root>
     </mxGraphModel>
   </diagram>
-</mxfile>
+</mxfile>'''
+        
+        # Guardar archivo
+        output_file = f"{self.output_dir}/drawio/{project_name.lower()}_unified_architecture.drawio"
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(xml_content)
+        
+        return output_file

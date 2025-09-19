@@ -173,38 +173,13 @@ class DiagramGenerator:
         return f"{self.output_dir}/png/{filename}.png"
     
     def generate_drawio(self, title: str, filename: str) -> str:
-        """Genera archivo Draw.io"""
+        """Genera archivo Draw.io usando el generador unificado"""
         
-        drawio_template = f'''<mxfile host="app.diagrams.net">
-  <diagram name="{title}" id="diagram1">
-    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10">
-      <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
+        from .unified_drawio_generator import UnifiedDrawioGenerator
         
-        <!-- Generated from MCP Config -->
-        <mxCell id="title" value="{title}" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontSize=16;fontStyle=1;align=center;" vertex="1" parent="1">
-          <mxGeometry x="50" y="20" width="800" height="40" as="geometry"/>
-        </mxCell>
-        
-        <!-- AWS Cloud -->
-        <mxCell id="aws" value="AWS Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;strokeWidth=2;fontSize=12;fontStyle=1;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="100" y="100" width="700" height="500" as="geometry"/>
-        </mxCell>
-        
-        <!-- Services from MCP Config -->
-        <!-- This would be dynamically generated based on config -->
-        
-      </root>
-    </mxGraphModel>
-  </diagram>
-</mxfile>'''
-        
-        output_file = f"{self.output_dir}/drawio/{filename}.drawio"
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
-        
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(drawio_template)
+        # Usar el generador unificado
+        unified_generator = UnifiedDrawioGenerator(self.config, self.output_dir)
+        output_file = unified_generator.generate_unified_drawio(filename.replace("_architecture", "").replace("_", " ").title())
         
         return output_file
     
