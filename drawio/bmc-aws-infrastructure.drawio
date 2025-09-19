@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-09-19T18:45:00.000Z" agent="5.0" etag="drawio" version="22.0.0" type="device">
+  <diagram name="BMC AWS Infrastructure" id="infrastructure">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- AWS Cloud -->
+        <mxCell id="aws-cloud" value="☁️ AWS Cloud - us-east-1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="1500" height="1100" as="geometry" />
+        </mxCell>
+        
+        <!-- VPC -->
+        <mxCell id="vpc" value="🏠 VPC BMC (10.0.0.0/16)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;fontSize=14;fontStyle=1;" vertex="1" parent="aws-cloud">
+          <mxGeometry x="50" y="50" width="1400" height="1000" as="geometry" />
+        </mxCell>
+        
+        <!-- Public Subnets -->
+        <mxCell id="public-subnet-1" value="🌐 Public Subnet 1a (10.0.1.0/24)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="vpc">
+          <mxGeometry x="50" y="50" width="300" height="200" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nat-gateway-1" value="🚪 NAT Gateway 1a&#xa;&#xa;• Internet Access&#xa;• High Availability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="public-subnet-1">
+          <mxGeometry x="20" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="alb" value="⚖️ Application Load Balancer&#xa;&#xa;• SSL Termination&#xa;• Health Checks&#xa;• Multi-AZ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="public-subnet-1">
+          <mxGeometry x="160" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="public-subnet-2" value="🌐 Public Subnet 1b (10.0.2.0/24)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="vpc">
+          <mxGeometry x="400" y="50" width="300" height="200" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nat-gateway-2" value="🚪 NAT Gateway 1b&#xa;&#xa;• Internet Access&#xa;• High Availability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="public-subnet-2">
+          <mxGeometry x="20" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="cloudfront-edge" value="🌐 CloudFront Edge&#xa;&#xa;• Global CDN&#xa;• Cache Static Assets&#xa;• DDoS Protection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;" vertex="1" parent="public-subnet-2">
+          <mxGeometry x="160" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Private Subnets - Application Tier -->
+        <mxCell id="private-app-1" value="🔒 Private App Subnet 1a (10.0.10.0/24)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="vpc">
+          <mxGeometry x="50" y="300" width="650" height="250" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ecs-cluster" value="🐳 ECS Fargate Cluster&#xa;BMC-Microservices&#xa;&#xa;• Auto Scaling&#xa;• Service Discovery&#xa;• Load Balancing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="private-app-1">
+          <mxGeometry x="20" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="invoice-task" value="📄 Invoice Service&#xa;Fargate Task&#xa;&#xa;• CPU: 2 vCPU&#xa;• Memory: 4GB&#xa;• Replicas: 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;" vertex="1" parent="private-app-1">
+          <mxGeometry x="200" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="product-task" value="🏷️ Product Service&#xa;Fargate Task&#xa;&#xa;• CPU: 4 vCPU&#xa;• Memory: 8GB&#xa;• Replicas: 5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;" vertex="1" parent="private-app-1">
+          <mxGeometry x="340" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="commission-task" value="💰 Commission Service&#xa;Fargate Task&#xa;&#xa;• CPU: 2 vCPU&#xa;• Memory: 4GB&#xa;• Replicas: 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="private-app-1">
+          <mxGeometry x="480" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="lambda-functions" value="⚡ Lambda Functions&#xa;&#xa;• OCR Processing&#xa;• Certificate Generation&#xa;• Notifications&#xa;• Validation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="private-app-1">
+          <mxGeometry x="20" y="140" width="200" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="step-functions" value="🔄 Step Functions&#xa;&#xa;• Commission Workflow&#xa;• Error Handling&#xa;• State Management&#xa;• Retry Logic" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="private-app-1">
+          <mxGeometry x="240" y="140" width="180" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="api-gateway-private" value="🚪 API Gateway&#xa;Private Endpoints&#xa;&#xa;• VPC Integration&#xa;• Rate Limiting&#xa;• API Keys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="private-app-1">
+          <mxGeometry x="440" y="140" width="160" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Private Subnets - Data Tier -->
+        <mxCell id="private-data-1" value="🔒 Private Data Subnet 1a (10.0.20.0/24)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3f51b5;" vertex="1" parent="vpc">
+          <mxGeometry x="50" y="600" width="650" height="180" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rds-primary" value="🗄️ RDS PostgreSQL&#xa;Primary Instance&#xa;&#xa;• db.r5.2xlarge&#xa;• 60M Products&#xa;• Multi-AZ&#xa;• Encrypted" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3f51b5;" vertex="1" parent="private-data-1">
+          <mxGeometry x="20" y="40" width="150" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="redis-cluster" value="⚡ ElastiCache Redis&#xa;Cluster Mode&#xa;&#xa;• cache.r6g.large&#xa;• 2 Nodes&#xa;• Failover Enabled&#xa;• 24h TTL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="private-data-1">
+          <mxGeometry x="200" y="40" width="150" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="elasticsearch-cluster" value="🔍 Elasticsearch&#xa;3 Node Cluster&#xa;&#xa;• m5.large.elasticsearch&#xa;• Product Search&#xa;• Analytics&#xa;• Kibana" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="private-data-1">
+          <mxGeometry x="380" y="40" width="150" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="private-data-2" value="🔒 Private Data Subnet 1b (10.0.21.0/24)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3f51b5;" vertex="1" parent="vpc">
+          <mxGeometry x="750" y="600" width="600" height="180" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="rds-standby" value="🗄️ RDS PostgreSQL&#xa;Standby Instance&#xa;&#xa;• db.r5.2xlarge&#xa;• Automatic Failover&#xa;• Read Replica&#xa;• Backup Target" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3f51b5;" vertex="1" parent="private-data-2">
+          <mxGeometry x="20" y="40" width="150" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="redshift-cluster" value="📊 Redshift Cluster&#xa;Data Warehouse&#xa;&#xa;• dc2.large (3 nodes)&#xa;• Analytics & BI&#xa;• Columnar Storage&#xa;• Spectrum Integration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="private-data-2">
+          <mxGeometry x="200" y="40" width="180" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="glue-etl" value="🔄 AWS Glue&#xa;ETL Jobs&#xa;&#xa;• Data Pipeline&#xa;• Nightly ETL&#xa;• Data Catalog&#xa;• Schema Evolution" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="private-data-2">
+          <mxGeometry x="400" y="40" width="150" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Storage and External Services -->
+        <mxCell id="storage-services" value="📦 Storage & External Services" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="vpc">
+          <mxGeometry x="750" y="300" width="600" height="250" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="s3-documents" value="📦 S3 Bucket&#xa;bmc-documents&#xa;&#xa;• Invoice Images/PDFs&#xa;• Certificates&#xa;• Lifecycle Policies&#xa;• Versioning Enabled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="storage-services">
+          <mxGeometry x="20" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="s3-backup" value="📦 S3 Bucket&#xa;bmc-backup&#xa;&#xa;• Database Backups&#xa;• Archive Storage&#xa;• Glacier Integration&#xa;• Cross-Region Replication" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00695c;" vertex="1" parent="storage-services">
+          <mxGeometry x="200" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="transfer-family" value="📁 AWS Transfer Family&#xa;SFTP Endpoint&#xa;&#xa;• Secure File Transfer&#xa;• VPC Endpoint&#xa;• External Integration&#xa;• Automated Processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;" vertex="1" parent="storage-services">
+          <mxGeometry x="380" y="40" width="180" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="textract-service" value="🤖 Amazon Textract&#xa;OCR Service&#xa;&#xa;• Document Analysis&#xa;• >95% Accuracy&#xa;• Async Processing&#xa;• Forms & Tables" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;" vertex="1" parent="storage-services">
+          <mxGeometry x="20" y="140" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ses-service" value="📧 Amazon SES&#xa;Email Service&#xa;&#xa;• Certificate Delivery&#xa;• Notifications&#xa;• Bounce Handling&#xa;• DKIM Enabled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="storage-services">
+          <mxGeometry x="200" y="140" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="cognito-service" value="🔐 Amazon Cognito&#xa;User Pool&#xa;&#xa;• Authentication&#xa;• MFA Enabled&#xa;• RBAC&#xa;• Social Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f8e9;strokeColor=#558b2f;" vertex="1" parent="storage-services">
+          <mxGeometry x="380" y="140" width="180" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Monitoring and Security -->
+        <mxCell id="monitoring-security" value="📊 Monitoring & Security" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#d32f2f;" vertex="1" parent="vpc">
+          <mxGeometry x="50" y="820" width="1300" height="150" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="cloudwatch-service" value="📊 CloudWatch&#xa;&#xa;• Metrics & Alarms&#xa;• Log Aggregation&#xa;• Dashboards&#xa;• Auto Scaling Triggers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="20" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="xray-service" value="🔍 AWS X-Ray&#xa;&#xa;• Distributed Tracing&#xa;• Performance Analysis&#xa;• Service Map&#xa;• Error Analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ef6c00;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="200" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="cloudtrail-service" value="📋 CloudTrail&#xa;&#xa;• API Call Logging&#xa;• Compliance Audit&#xa;• Security Analysis&#xa;• Event History" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="380" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="config-service" value="⚙️ AWS Config&#xa;&#xa;• Resource Compliance&#xa;• Configuration Drift&#xa;• Security Rules&#xa;• Remediation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="560" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="guardduty-service" value="🛡️ GuardDuty&#xa;&#xa;• Threat Detection&#xa;• Anomaly Detection&#xa;• Security Monitoring&#xa;• Incident Response" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#d32f2f;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="740" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kms-service" value="🔑 AWS KMS&#xa;&#xa;• Key Management&#xa;• Encryption at Rest&#xa;• Customer Managed Keys&#xa;• Audit Trail" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="920" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="waf-service" value="🛡️ AWS WAF&#xa;&#xa;• Web Application Firewall&#xa;• DDoS Protection&#xa;• Rate Limiting&#xa;• Security Rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffebee;strokeColor=#d32f2f;" vertex="1" parent="monitoring-security">
+          <mxGeometry x="1100" y="40" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Internet Gateway -->
+        <mxCell id="igw" value="🌐 Internet Gateway&#xa;&#xa;• Public Internet Access&#xa;• Bidirectional Traffic&#xa;• High Availability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1200" width="200" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Title -->
+        <mxCell id="title" value="BMC - Infraestructura AWS Completa&#xa;Arquitectura Multi-Tier con Alta Disponibilidad" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="10" width="400" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Key Connections -->
+        <mxCell id="conn-igw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#01579b;" edge="1" parent="1" source="igw" target="alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
