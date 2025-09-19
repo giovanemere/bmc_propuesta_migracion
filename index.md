@@ -1,320 +1,170 @@
-# MCP Diagram Generator - Solución Transversal
+# BMC - Bolsa Comisionista | Sistema Regulatorio AWS
 
-## 🎯 Visión General
+## 🏛️ Contexto del Negocio
 
-Solución genérica y reutilizable para generar diagramas de arquitectura AWS desde archivos MCP (Model Context Protocol). Permite crear diagramas profesionales y exactos usando un modelo MCP como fuente de verdad única.
+**Entidad:** Bolsa Comisionista (Ente Regulador)  
+**Función Principal:** Procesamiento de facturas y cálculo de comisiones regulatorias
 
-## 🏗️ Arquitectura de la Solución
+### 📊 Características del Sistema
 
-### Módulos Transversales
+#### Volumen de Datos Masivo
+- **60M productos** migrados desde Google Cloud a AWS
+- **16,000 categorías** de productos clasificados
+- **Procesamiento dual:** Facturas individuales y por lotes
+- **Clasificación DIAN:** Alimentos (leche, carne, huevos) con cantidad/unidad
 
-```
-core/
-├── mcp_parser.py          # Parser genérico de archivos MCP
-├── diagram_generator.py   # Generador de diagramas AWS
-└── mcp_engine.py         # Motor principal de orquestación
+#### 🔄 Flujo de Negocio Regulatorio
+1. **Carga de facturas** → Tabla de facturas (PostgreSQL)
+2. **Análisis automático** → Matching con base de datos de productos
+3. **Aplicación de reglas** → Cálculo de comisiones regulatorias
+4. **Generación de certificado** → PDF descargable/envío por correo
+5. **Integración SFTP** → Transmisión con otros sistemas regulatorios
 
-cases/
-├── bmc_case.py           # Caso específico BMC
-├── generic_aws_case.py   # Caso genérico AWS
-└── custom_case.py        # Plantilla para casos personalizados
+## 🏗️ Arquitectura AWS para BMC
 
-docs/
-├── mcp-aws-model.md      # Modelo MCP para AWS
-├── mcp-diagrams-architecture.md  # MCP específico BMC
-└── templates/            # Plantillas MCP reutilizables
-```
+### Funcionalidades Backend
+- **APIs REST/GraphQL** para procesamiento de facturas
+- **Base de datos de productos** (60M registros en PostgreSQL)
+- **Desagregación automática** por producto con OCR
+- **Análisis inteligente** de facturas vs base de datos
+- **Cálculos de comisión** (lote e individual)
+- **Procesamiento en background** con colas SQS
 
-### Flujo de Procesamiento
+### Funcionalidades Frontend
+- **Formularios web** para carga de datos
+- **Servicio de carga** de facturas (imágenes/PDF)
+- **Sistema de archivos:** Individuales, ZIP, repeticiones permitidas
+- **Opciones de exportación:** PDF y Excel
+- **Dashboard regulatorio** con métricas en tiempo real
 
-```mermaid
-graph LR
-    A[Archivo MCP] --> B[MCP Parser]
-    B --> C[Configuración Extraída]
-    C --> D[Diagram Generator]
-    D --> E[PNG + Draw.io]
-    
-    F[Archivo JSON/YAML] --> C
-    G[Caso Específico] --> C
-```
+### Validaciones del Sistema Regulatorio
 
-## 🚀 Casos de Uso Implementados
+#### Primera Validación (Básica)
+- ✅ Producto existe en base de datos
+- ✅ Cantidad es válida y numérica
+- ✅ Unidad corresponde al producto
 
-### 1. BMC Case (Bolsa Mercantil de Colombia)
+#### Segunda Validación (Regulatoria)
+- ✅ Producto tiene clasificación DIAN válida
+- ✅ Clasificación corresponde a categoría regulatoria
+- ✅ Unidad cumple normativas específicas
+
+### Arquitectura de Datos
+
+#### Transaccional (Operacional)
+- **PostgreSQL Multi-AZ** - 60M productos, facturas, transacciones
+- **ElastiCache Redis** - Cache de productos frecuentes (>95% hit ratio)
+- **S3 Intelligent Tiering** - Documentos, imágenes, archivos ZIP
+
+#### Analítica (Reportería Regulatoria)
+- **Amazon Redshift** - Data warehouse para reportes DIAN
+- **Amazon Textract** - OCR para procesamiento de facturas (>95% precisión)
+- **Amazon Comprehend** - Clasificación automática de productos
+
+#### Procesamiento Inteligente
+- **Text processing** para clasificación automática
+- **Búsqueda semántica** y matching de productos
+- **Machine Learning** para mejorar precisión de matching
+- **Campos vacíos** cuando no hay coincidencia (requiere revisión manual)
+
+## 🔗 Integraciones Externas
+
+### SFTP Integration Regulatoria
+- **Transmisión automática** de archivos con otros sistemas regulatorios
+- **Intercambio de datos** con DIAN y entidades supervisoras
+- **Sincronización** de clasificaciones y normativas actualizadas
+- **Backup y auditoría** de todas las transmisiones
+
+### APIs Externas
+- **DIAN API** - Validación de clasificaciones y normativas
+- **Bancos Centrales** - Tipos de cambio y regulaciones financieras
+- **Sistemas ERP** - Integración con sistemas contables existentes
+
+## 🎯 Arquitectura AWS Implementada
+
+### Microservicios en ECS Fargate
+- **Invoice Service** (2vCPU/4GB) - Procesamiento de facturas, escala 2-10 instancias
+- **Product Service** (4vCPU/8GB) - Gestión de 60M productos, escala 3-15 instancias  
+- **OCR Service** (2vCPU/4GB) - Textract integration, >95% precisión
+- **Commission Service** (1vCPU/2GB) - Cálculos regulatorios en tiempo real
+- **Certificate Service** (1vCPU/2GB) - Generación de PDFs certificados DIAN
+
+### Servicios de Datos
+- **RDS PostgreSQL Multi-AZ** - 60M productos, transacciones, auditoría
+- **ElastiCache Redis Cluster** - Cache de productos y sesiones
+- **S3 + Lifecycle** - Documentos con retención regulatoria (7 años)
+- **Redshift** - Analytics y reportería para entes reguladores
+
+### Seguridad y Compliance
+- **Cognito + MFA** - Autenticación de usuarios regulatorios
+- **WAF + DDoS Protection** - Protección de APIs críticas
+- **KMS Encryption** - Cifrado de datos sensibles regulatorios
+- **CloudTrail** - Auditoría completa para compliance
+
+### Monitoreo Regulatorio
+- **CloudWatch Custom Metrics** - KPIs específicos de regulación
+- **Alarms** - Alertas por incumplimiento de SLAs regulatorios
+- **Dashboards** - Métricas en tiempo real para supervisores
+
+## 📊 Métricas de Rendimiento Regulatorio
+
+### Performance Targets
+- **Procesamiento:** 10,000 facturas/hora sostenido
+- **Respuesta API:** <500ms (p95) para consultas de productos
+- **OCR Accuracy:** >95% en facturas estándar
+- **Disponibilidad:** >99.9% (SLA regulatorio)
+- **Matching Products:** <300ms con cache, <2s sin cache
+
+### Business Metrics
+- **Costo por factura:** $0.0009 USD
+- **Precisión regulatoria:** >99.8% en clasificaciones DIAN
+- **Tiempo de certificación:** <3 segundos por documento
+- **Capacidad pico:** 30,000 facturas/hora (3x normal)
+
+## 🚀 Generación de Diagramas MCP
+
+### Comandos Disponibles
 ```bash
-python3 cases/bmc_case.py
+# Arquitectura BMC completa
+./run.sh --case bmc
+
+# Diagramas profesionales refinados  
+./run.sh --case refined
+
+# Patrones AWS genéricos
+./run.sh --case generic
+
+# Desde archivo MCP personalizado
+./run.sh --file docs/mcp-diagrams-architecture.md --name BMC
 ```
 
-**Características:**
-- 60M productos en PostgreSQL
-- 5 microservicios ECS Fargate
-- OCR >95% con Textract
-- 10K facturas/hora
-- Auto-scaling 2-15 instancias
+### Diagramas Generados
+- **Arquitectura Principal** - Vista completa del sistema regulatorio
+- **Microservicios Detallados** - ECS Fargate con auto-scaling
+- **Arquitectura de Red** - VPC Multi-AZ con subnets privadas
+- **Seguridad y Compliance** - Capas de protección regulatoria
+- **Flujo de Datos** - Pipeline completo de procesamiento
 
-### 2. Generic AWS Case
-```bash
-python3 cases/generic_aws_case.py
-```
+### Formatos de Salida
+- **PNG** - Para presentaciones a entes reguladores
+- **Draw.io** - Para colaboración técnica (editable en app.diagrams.net)
+- **Documentación** - MCP como fuente de verdad técnica
 
-**Características:**
-- Arquitectura AWS estándar
-- 3 microservicios genéricos
-- RDS + ElastiCache + S3
-- Configuración reutilizable
+## 🎯 Evolución del Sistema
 
-### 3. Custom Case (Plantilla)
-```bash
-python3 cases/custom_case.py
-```
+### Implementado (v2.0.0)
+- ✅ Migración completa de 60M productos a AWS
+- ✅ OCR con >95% precisión usando Textract
+- ✅ Procesamiento de 10K facturas/hora
+- ✅ Integración SFTP con sistemas regulatorios
+- ✅ Generación automática de certificados DIAN
 
-**Características:**
-- Plantilla personalizable
-- Configuración por JSON/YAML
-- Servicios AWS modulares
-
-## 📋 Modelo MCP para AWS
-
-### Estructura del MCP
-
-```yaml
-# Configuración de Microservicios
-microservices:
-  service_name:
-    cpu: 2048
-    memory: 4096
-    port: 8000
-    min_capacity: 2
-    max_capacity: 10
-    health_check: "/health"
-
-# Servicios AWS
-services:
-  database:
-    type: "rds"
-    engine: "postgresql"
-    instance_class: "db.r6g.large"
-    multi_az: true
-  
-  cache:
-    type: "elasticache"
-    engine: "redis"
-    node_type: "cache.r6g.large"
-  
-  storage:
-    type: "s3"
-    storage_class: "intelligent_tiering"
-
-# Métricas y KPIs
-metrics:
-  response_time: 
-    value: "500"
-    unit: "ms"
-  throughput:
-    value: "1000" 
-    unit: "req/s"
-  availability:
-    value: "99.9"
-    unit: "%"
-```
-
-### Servicios AWS Soportados
-
-**Compute:**
-- ECS Fargate
-- Lambda Functions
-- Step Functions (futuro)
-
-**Storage:**
-- RDS (PostgreSQL, MySQL)
-- ElastiCache (Redis)
-- S3 (Standard, IA, Glacier)
-- Redshift (futuro)
-
-**Network:**
-- API Gateway
-- CloudFront CDN
-- Application Load Balancer
-- VPC (futuro)
-
-**Security:**
-- Cognito Authentication
-- WAF Web Firewall
-- KMS Key Management
-- Secrets Manager (futuro)
-
-**AI/ML:**
-- Textract OCR
-- Comprehend NLP (futuro)
-- Rekognition (futuro)
-
-**Integration:**
-- EventBridge
-- SQS Queues
-- SNS Notifications
-- Transfer Family (futuro)
-
-**Monitoring:**
-- CloudWatch
-- X-Ray Tracing (futuro)
-- CloudTrail (futuro)
-
-## 🔧 Uso de la Solución
-
-### Generación Básica
-```bash
-# Desde archivo MCP
-python3 -m core.mcp_engine docs/mcp-diagrams-architecture.md
-
-# Desde configuración JSON
-python3 -m core.mcp_engine config/architecture.json
-
-# Caso específico
-python3 cases/bmc_case.py
-```
-
-### API Programática
-```python
-from core.mcp_engine import MCPEngine
-
-# Crear engine
-engine = MCPEngine(output_dir="output")
-
-# Cargar y procesar
-engine.run("docs/mcp-diagrams-architecture.md", "MyProject")
-
-# Validar configuración
-engine.validate_config()
-
-# Obtener resumen
-summary = engine.get_config_summary()
-```
-
-### Personalización
-```python
-from core.diagram_generator import DiagramGenerator
-
-# Configuración personalizada
-config = {
-    "microservices": {...},
-    "services": {...}
-}
-
-# Generar diagramas
-generator = DiagramGenerator(config)
-results = generator.generate_all("CustomProject")
-```
-
-## 📊 Formatos de Salida
-
-### PNG (Presentaciones)
-- **Arquitectura Principal**: Vista completa del sistema
-- **Microservicios Detallados**: Pods, tasks, auto-scaling
-- **Flujo de Datos**: Procesamiento y almacenamiento
-- **Seguridad**: Capas de seguridad y compliance
-
-### Draw.io (Edición Colaborativa)
-- **XML Válido**: Compatible con https://app.diagrams.net
-- **Iconos Oficiales AWS**: Vectoriales y escalables
-- **Grupos Organizados**: Por función y responsabilidad
-- **Conexiones Etiquetadas**: Con métricas y capacidades
-
-### SVG (Futuro)
-- **Vectorial**: Escalable sin pérdida de calidad
-- **Web-friendly**: Integración en documentación web
-- **Interactivo**: Tooltips y enlaces (futuro)
-
-## 🎯 Evolución de la Aplicación
-
-### Roadmap v2.1
-- [ ] Parser Terraform (main.tf → MCP)
-- [ ] Generación desde CloudFormation
-- [ ] Soporte para Kubernetes
-- [ ] Diagramas interactivos (SVG + JS)
-
-### Roadmap v2.2
-- [ ] Validación de arquitectura vs implementación
-- [ ] Estimación de costos automática
-- [ ] Recomendaciones de optimización
-- [ ] Integración con AWS CLI
-
-### Roadmap v3.0
-- [ ] IA para optimización de arquitectura
-- [ ] Generación automática de IaC
-- [ ] Monitoreo en tiempo real
-- [ ] Dashboard web interactivo
-
-## 🔄 Contribución y Extensión
-
-### Agregar Nuevo Servicio AWS
-```python
-# En diagram_generator.py
-def _init_aws_services(self):
-    return {
-        # Servicios existentes...
-        "new_service": NewAWSService,
-    }
-```
-
-### Crear Nuevo Caso de Uso
-```python
-# cases/new_case.py
-from core.mcp_engine import MCPEngine
-
-def run_new_case():
-    engine = MCPEngine()
-    return engine.run("config/new_config.json", "NewProject")
-```
-
-### Personalizar Generador
-```python
-# Heredar de DiagramGenerator
-class CustomGenerator(DiagramGenerator):
-    def generate_custom_diagram(self):
-        # Lógica personalizada
-        pass
-```
-
-## 📈 Métricas de la Solución
-
-### Performance
-- **Tiempo de generación**: <30 segundos
-- **Archivos soportados**: MCP, JSON, YAML
-- **Servicios AWS**: 16+ implementados
-- **Formatos salida**: PNG, Draw.io, SVG (futuro)
-
-### Escalabilidad
-- **Casos de uso**: Ilimitados
-- **Configuraciones**: Dinámicas
-- **Servicios**: Modulares y extensibles
-- **Plantillas**: Reutilizables
-
-### Mantenibilidad
-- **Arquitectura modular**: Core + Cases
-- **Separación de responsabilidades**: Parser + Generator + Engine
-- **Configuración externa**: MCP como fuente de verdad
-- **Testing**: Casos de prueba automatizados (futuro)
-
-## 🎉 Beneficios
-
-### Para Arquitectos
-- **Diagramas profesionales** desde documentación
-- **Consistencia** entre documentación e implementación
-- **Reutilización** de patrones y configuraciones
-- **Evolución controlada** de la arquitectura
-
-### Para Desarrolladores
-- **Automatización** de diagramas técnicos
-- **Integración** con pipelines CI/CD
-- **Validación** de arquitectura vs código
-- **Documentación** siempre actualizada
-
-### Para Organizaciones
-- **Estandarización** de arquitecturas
-- **Gobierno** de soluciones cloud
-- **Reducción de costos** por optimización
-- **Aceleración** de proyectos nuevos
+### Roadmap Regulatorio
+- 🔄 **v2.1** - Integración con blockchain para trazabilidad
+- 🔄 **v2.2** - ML avanzado para detección de anomalías
+- 🔄 **v2.3** - API real-time para consultas regulatorias
+- 🔄 **v3.0** - Expansión a otros países latinoamericanos
 
 ---
 
-**🚀 MCP Diagram Generator - Transformando arquitecturas en diagramas profesionales**
+**BMC - Transformando la regulación financiera con AWS Cloud** 🏛️☁️
