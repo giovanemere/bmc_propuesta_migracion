@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-09-20T00:43:43.920788" version="22.1.11">
+  <diagram name="Microservices Architecture" id="simple_diagram">
+    <mxGraphModel dx="2500" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/><mxCell id="title_2029" value="BMC Microservices - Detailed Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="600" height="30" as="geometry"/>
+        </mxCell><mxCell id="api_gateway_2030" value="API Gateway\nThrottling: 10K req/s" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="150" y="120" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="cognito_2031" value="Cognito User Pool\nJWT + MFA" style="shape=mxgraph.aws4.cognito;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="400" y="120" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="alb_2032" value="Application LB\nHealth checks" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="650" y="120" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="invoice_task_2033" value="Invoice Task\n2vCPU/4GB\nPort: 8000" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="120" y="350" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="product_task_2034" value="Product Task\n4vCPU/8GB\n&lt;500ms lookup" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="370" y="350" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="ocr_task_2035" value="OCR Task\n4vCPU/8GB\nTextract" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="620" y="350" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="rds_2036" value="RDS PostgreSQL\ndb.r6g.2xlarge\nMulti-AZ" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="150" y="580" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="redis_2037" value="ElastiCache Redis\n6 nodes\nCluster mode" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="400" y="580" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="s3_2038" value="S3 Documents\nVersioning enabled" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="650" y="580" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="textract_2039" value="Amazon Textract\n&gt;95% accuracy" style="shape=mxgraph.aws4.textract;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="900" y="580" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="conn_2040" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="api_gateway_*" target="cognito_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2041" value="Auth" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2040">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2042" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="cognito_*" target="alb_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2043" value="Authorized" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2042">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2044" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="alb_*" target="invoice_task_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2045" value="Route" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2044">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2046" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="alb_*" target="product_task_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2047" value="Route" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2046">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2048" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="alb_*" target="ocr_task_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2049" value="Route" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2048">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2050" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="invoice_task_*" target="rds_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2051" value="Write" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2050">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2052" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="product_task_*" target="redis_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2053" value="Cache" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2052">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2054" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="product_task_*" target="rds_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2055" value="60M lookup" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2054">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2056" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="ocr_task_*" target="textract_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2057" value="OCR &gt;95%" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2056">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2058" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="ocr_task_*" target="s3_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2059" value="Documents" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2058">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

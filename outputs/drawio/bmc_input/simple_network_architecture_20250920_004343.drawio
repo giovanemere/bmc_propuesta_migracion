@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-09-20T00:43:43.920427" version="22.1.11">
+  <diagram name="Network Architecture" id="simple_diagram">
+    <mxGraphModel dx="2500" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/><mxCell id="title_2001" value="BMC Network Architecture - AWS Senior Level" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="600" height="30" as="geometry"/>
+        </mxCell><mxCell id="cloudfront_2002" value="CloudFront CDN\n200+ edge locations\nSSL/TLS 1.3" style="shape=mxgraph.aws4.cloudfront;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="150" y="150" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="waf_2003" value="AWS WAF\nDDoS protection\nRate limiting: 2K/s" style="shape=mxgraph.aws4.waf;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="350" y="150" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="api_gateway_2004" value="API Gateway\n10K req/s throttle\nCaching: 300s TTL" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="550" y="150" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="invoice_2005" value="Invoice Service\n2vCPU/4GB\nBlue/Green deploy" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="200" y="400" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="product_2006" value="Product Service\n4vCPU/8GB\n60M products" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="400" y="400" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="ocr_2007" value="OCR Service\n4vCPU/8GB\nTextract integration" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="600" y="400" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="rds_2008" value="RDS Primary\nPostgreSQL 14\ndb.r6g.2xlarge" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="300" y="600" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="redis_2009" value="ElastiCache Redis\n6 nodes\nMulti-AZ" style="shape=mxgraph.aws4.generic;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="500" y="600" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="s3_2010" value="S3 Documents\nIntelligent Tiering" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="750" y="150" width="78" height="78" as="geometry"/>
+        </mxCell><mxCell id="conn_2011" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="cloudfront_*" target="waf_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2012" value="HTTPS Traffic" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2011">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2013" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="waf_*" target="api_gateway_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2014" value="Filtered Requests" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2013">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2015" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="api_gateway_*" target="invoice_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2016" value="Route /invoices" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2015">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2017" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="api_gateway_*" target="product_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2018" value="Route /products" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2017">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2019" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="api_gateway_*" target="ocr_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2020" value="Route /ocr" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2019">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2021" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="invoice_*" target="rds_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2022" value="Write Operations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2021">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2023" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="product_*" target="rds_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2024" value="Write Operations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2023">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2025" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="product_*" target="redis_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2026" value="Cache Lookup" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2025">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell><mxCell id="conn_2027" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="ocr_*" target="s3_*">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_2028" value="Store Documents" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;" vertex="1" connectable="0" parent="conn_2027">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
