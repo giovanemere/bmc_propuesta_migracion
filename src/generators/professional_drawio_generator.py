@@ -20,26 +20,14 @@ class ProfessionalDrawIOGenerator:
     def generate_professional_drawio(self, config: Dict, project_name: str = "bmc_input") -> str:
         """Genera DrawIO con nivel profesional igual a PNG"""
         
-        # Generar 4 diagramas DrawIO profesionales
+        # Solo generar network diagram por ahora
         diagrams = []
         
-        # 1. Network Architecture - Nivel Senior
+        # 1. Network Architecture - Nivel Senior (funcional)
         network_xml = self._generate_network_drawio(config)
         diagrams.append(("Network Architecture", network_xml))
         
-        # 2. Microservices Detailed - Nivel Senior  
-        microservices_xml = self._generate_microservices_drawio(config)
-        diagrams.append(("Microservices Detailed", microservices_xml))
-        
-        # 3. Security Architecture - Nivel Senior
-        security_xml = self._generate_security_drawio(config)
-        diagrams.append(("Security Architecture", security_xml))
-        
-        # 4. Data Flow - Nivel Senior
-        dataflow_xml = self._generate_dataflow_drawio(config)
-        diagrams.append(("Data Flow", dataflow_xml))
-        
-        # Combinar en archivo multi-diagrama
+        # Combinar en archivo
         combined_xml = self._combine_diagrams(diagrams, project_name)
         
         # Guardar archivo
@@ -51,6 +39,7 @@ class ProfessionalDrawIOGenerator:
         """Genera diagrama de red nivel senior"""
         
         components = []
+        component_ids = {}
         
         # Título
         components.append(self._create_title("BMC NETWORK ARCHITECTURE - AWS SENIOR LEVEL", 400, 20))
@@ -58,10 +47,13 @@ class ProfessionalDrawIOGenerator:
         # AWS Cloud Container
         components.append(self._create_container("aws_cloud", "AWS Cloud - us-east-1", 50, 80, 1200, 800, "#E3F2FD", "#1976D2"))
         
-        # Edge Services
-        components.append(self._create_aws_component("cloudfront", "CloudFront CDN\\n200+ edge locations\\nSSL/TLS 1.3", 150, 150, "mxgraph.aws4.cloudfront"))
-        components.append(self._create_aws_component("waf", "AWS WAF\\nDDoS protection\\nRate limiting: 2K/s", 350, 150, "mxgraph.aws4.waf"))
-        components.append(self._create_aws_component("api_gw", "API Gateway\\n10K req/s throttle\\nCaching: 300s TTL", 550, 150, "mxgraph.aws4.api_gateway"))
+        # Edge Services - capturar IDs
+        cloudfront_xml, cloudfront_id = self._create_aws_component("cloudfront", "CloudFront CDN\\n200+ edge locations\\nSSL/TLS 1.3", 150, 150, "mxgraph.aws4.cloudfront")
+        waf_xml, waf_id = self._create_aws_component("waf", "AWS WAF\\nDDoS protection\\nRate limiting: 2K/s", 350, 150, "mxgraph.aws4.waf")
+        api_gw_xml, api_gw_id = self._create_aws_component("api_gw", "API Gateway\\n10K req/s throttle\\nCaching: 300s TTL", 550, 150, "mxgraph.aws4.api_gateway")
+        
+        components.extend([cloudfront_xml, waf_xml, api_gw_xml])
+        component_ids.update({"cloudfront": cloudfront_id, "waf": waf_id, "api_gw": api_gw_id})
         
         # VPC Container
         components.append(self._create_container("vpc", "VPC 10.0.0.0/16 - Multi-AZ", 100, 300, 1000, 500, "#F5F5F5", "#666666"))
@@ -70,36 +62,48 @@ class ProfessionalDrawIOGenerator:
         components.append(self._create_container("az1a", "AZ us-east-1a", 150, 350, 400, 200, "#E8F5E8", "#4CAF50"))
         
         # Microservices en AZ-1a
-        components.append(self._create_aws_component("invoice", "Invoice Service\\n2vCPU/4GB\\nBlue/Green deploy", 200, 400, "mxgraph.aws4.fargate"))
-        components.append(self._create_aws_component("product", "Product Service\\n4vCPU/8GB\\n60M products", 350, 400, "mxgraph.aws4.fargate"))
+        invoice_xml, invoice_id = self._create_aws_component("invoice", "Invoice Service\\n2vCPU/4GB\\nBlue/Green deploy", 200, 400, "mxgraph.aws4.fargate")
+        product_xml, product_id = self._create_aws_component("product", "Product Service\\n4vCPU/8GB\\n60M products", 350, 400, "mxgraph.aws4.fargate")
+        
+        components.extend([invoice_xml, product_xml])
+        component_ids.update({"invoice": invoice_id, "product": product_id})
         
         # AZ-1b Container  
         components.append(self._create_container("az1b", "AZ us-east-1b", 600, 350, 400, 200, "#FFF3E0", "#FF9800"))
         
         # Microservices en AZ-1b
-        components.append(self._create_aws_component("ocr", "OCR Service\\n4vCPU/8GB\\nTextract integration", 650, 400, "mxgraph.aws4.fargate"))
-        components.append(self._create_aws_component("commission", "Commission Service\\n2vCPU/4GB\\nDIAN compliance", 800, 400, "mxgraph.aws4.fargate"))
+        ocr_xml, ocr_id = self._create_aws_component("ocr", "OCR Service\\n4vCPU/8GB\\nTextract integration", 650, 400, "mxgraph.aws4.fargate")
+        commission_xml, commission_id = self._create_aws_component("commission", "Commission Service\\n2vCPU/4GB\\nDIAN compliance", 800, 400, "mxgraph.aws4.fargate")
+        
+        components.extend([ocr_xml, commission_xml])
+        component_ids.update({"ocr": ocr_id, "commission": commission_id})
         
         # Database Layer
-        components.append(self._create_aws_component("rds_primary", "RDS Primary\\nPostgreSQL 14\\ndb.r6g.2xlarge\\n35-day backup", 300, 600, "mxgraph.aws4.rds"))
-        components.append(self._create_aws_component("rds_replica", "Read Replica\\nCross-AZ\\nPromotion ready", 500, 600, "mxgraph.aws4.rds"))
+        rds_primary_xml, rds_primary_id = self._create_aws_component("rds_primary", "RDS Primary\\nPostgreSQL 14\\ndb.r6g.2xlarge\\n35-day backup", 300, 600, "mxgraph.aws4.rds")
+        rds_replica_xml, rds_replica_id = self._create_aws_component("rds_replica", "Read Replica\\nCross-AZ\\nPromotion ready", 500, 600, "mxgraph.aws4.rds")
+        
+        components.extend([rds_primary_xml, rds_replica_xml])
+        component_ids.update({"rds_primary": rds_primary_id, "rds_replica": rds_replica_id})
         
         # Storage
-        components.append(self._create_aws_component("s3_docs", "S3 Documents\\nIntelligent Tiering\\n90d → Glacier", 750, 150, "mxgraph.aws4.s3"))
-        components.append(self._create_aws_component("redis", "ElastiCache Redis\\n6 nodes (3 shards)\\nMulti-AZ", 700, 600, "mxgraph.aws4.elasticache"))
+        s3_docs_xml, s3_docs_id = self._create_aws_component("s3_docs", "S3 Documents\\nIntelligent Tiering\\n90d → Glacier", 750, 150, "mxgraph.aws4.s3")
+        redis_xml, redis_id = self._create_aws_component("redis", "ElastiCache Redis\\n6 nodes (3 shards)\\nMulti-AZ", 700, 600, "mxgraph.aws4.elasticache")
         
-        # Conexiones profesionales
+        components.extend([s3_docs_xml, redis_xml])
+        component_ids.update({"s3_docs": s3_docs_id, "redis": redis_id})
+        
+        # Conexiones profesionales con IDs correctos
         connections = [
-            self._create_connection("cloudfront", "waf", "HTTPS Traffic", "#1976D2"),
-            self._create_connection("waf", "api_gw", "Filtered Requests", "#1976D2"),
-            self._create_connection("api_gw", "invoice", "Route /invoices", "#4CAF50"),
-            self._create_connection("api_gw", "product", "Route /products", "#4CAF50"),
-            self._create_connection("api_gw", "ocr", "Route /ocr", "#4CAF50"),
-            self._create_connection("api_gw", "commission", "Route /commissions", "#4CAF50"),
-            self._create_connection("invoice", "rds_primary", "Write Operations", "#2196F3"),
-            self._create_connection("product", "rds_primary", "Write Operations", "#2196F3"),
-            self._create_connection("product", "redis", "Cache Lookup", "#FF9800"),
-            self._create_connection("rds_primary", "rds_replica", "Replication", "#9C27B0")
+            self._create_connection(component_ids["cloudfront"], component_ids["waf"], "HTTPS Traffic", "#1976D2"),
+            self._create_connection(component_ids["waf"], component_ids["api_gw"], "Filtered Requests", "#1976D2"),
+            self._create_connection(component_ids["api_gw"], component_ids["invoice"], "Route /invoices", "#4CAF50"),
+            self._create_connection(component_ids["api_gw"], component_ids["product"], "Route /products", "#4CAF50"),
+            self._create_connection(component_ids["api_gw"], component_ids["ocr"], "Route /ocr", "#4CAF50"),
+            self._create_connection(component_ids["api_gw"], component_ids["commission"], "Route /commissions", "#4CAF50"),
+            self._create_connection(component_ids["invoice"], component_ids["rds_primary"], "Write Operations", "#2196F3"),
+            self._create_connection(component_ids["product"], component_ids["rds_primary"], "Write Operations", "#2196F3"),
+            self._create_connection(component_ids["product"], component_ids["redis"], "Cache Lookup", "#FF9800"),
+            self._create_connection(component_ids["rds_primary"], component_ids["rds_replica"], "Replication", "#9C27B0")
         ]
         
         return self._build_diagram_xml(components + connections)
@@ -108,68 +112,43 @@ class ProfessionalDrawIOGenerator:
         """Genera diagrama de microservicios detallado"""
         
         components = []
+        component_ids = {}
         
         # Título
         components.append(self._create_title("BMC MICROSERVICES - DETAILED ARCHITECTURE", 400, 20))
         
         # API Layer
         components.append(self._create_container("api_layer", "API Management Layer", 50, 80, 1200, 150, "#E3F2FD", "#1976D2"))
-        components.append(self._create_aws_component("api_gateway", "API Gateway\\nThrottling: 10K req/s\\nCustom authorizers", 150, 120, "mxgraph.aws4.api_gateway"))
-        components.append(self._create_aws_component("cognito", "Cognito User Pool\\nJWT validation\\nMFA: TOTP + SMS", 400, 120, "mxgraph.aws4.cognito"))
-        components.append(self._create_aws_component("alb", "Application LB\\nSticky sessions\\nHealth checks", 650, 120, "mxgraph.aws4.application_load_balancer"))
+        
+        api_gateway_xml, api_gateway_id = self._create_aws_component("api_gateway", "API Gateway\\nThrottling: 10K req/s\\nCustom authorizers", 150, 120, "mxgraph.aws4.api_gateway")
+        cognito_xml, cognito_id = self._create_aws_component("cognito", "Cognito User Pool\\nJWT validation\\nMFA: TOTP + SMS", 400, 120, "mxgraph.aws4.cognito")
+        alb_xml, alb_id = self._create_aws_component("alb", "Application LB\\nSticky sessions\\nHealth checks", 650, 120, "mxgraph.aws4.application_load_balancer")
+        
+        components.extend([api_gateway_xml, cognito_xml, alb_xml])
+        component_ids.update({"api_gateway": api_gateway_id, "cognito": cognito_id, "alb": alb_id})
         
         # Microservices Layer
         components.append(self._create_container("microservices", "ECS Fargate Cluster - Auto Scaling", 50, 280, 1200, 200, "#E8F5E8", "#4CAF50"))
         
         # Invoice Service Pod
         components.append(self._create_container("invoice_pod", "Invoice Service Pod", 100, 320, 200, 120, "#FFF3E0", "#FF9800"))
-        components.append(self._create_aws_component("invoice_task1", "Task 1\\n2vCPU/4GB\\nPort: 8000", 120, 350, "mxgraph.aws4.fargate"))
-        components.append(self._create_aws_component("invoice_task2", "Task 2\\n2vCPU/4GB\\nPort: 8000", 200, 350, "mxgraph.aws4.fargate"))
+        invoice_task1_xml, invoice_task1_id = self._create_aws_component("invoice_task1", "Task 1\\n2vCPU/4GB\\nPort: 8000", 120, 350, "mxgraph.aws4.fargate")
+        invoice_task2_xml, invoice_task2_id = self._create_aws_component("invoice_task2", "Task 2\\n2vCPU/4GB\\nPort: 8000", 200, 350, "mxgraph.aws4.fargate")
         
-        # Product Service Pod
-        components.append(self._create_container("product_pod", "Product Service Pod - 60M Records", 350, 320, 200, 120, "#E3F2FD", "#2196F3"))
-        components.append(self._create_aws_component("product_task1", "Task 1\\n4vCPU/8GB\\n<500ms lookup", 370, 350, "mxgraph.aws4.fargate"))
-        components.append(self._create_aws_component("product_task2", "Task 2\\n4vCPU/8GB\\n<500ms lookup", 450, 350, "mxgraph.aws4.fargate"))
+        components.extend([invoice_task1_xml, invoice_task2_xml])
+        component_ids.update({"invoice_task1": invoice_task1_id, "invoice_task2": invoice_task2_id})
         
-        # OCR Service Pod
-        components.append(self._create_container("ocr_pod", "OCR Service Pod", 600, 320, 200, 120, "#FCE4EC", "#E91E63"))
-        components.append(self._create_aws_component("ocr_task1", "Task 1\\n4vCPU/8GB\\nTextract", 620, 350, "mxgraph.aws4.fargate"))
-        components.append(self._create_aws_component("ocr_task2", "Task 2\\n4vCPU/8GB\\nTextract", 700, 350, "mxgraph.aws4.fargate"))
+        # RDS
+        rds_primary_xml, rds_primary_id = self._create_aws_component("rds_primary", "RDS PostgreSQL\\ndb.r6g.2xlarge\\nMulti-AZ\\n35-day backup", 150, 580, "mxgraph.aws4.rds")
+        components.append(rds_primary_xml)
+        component_ids["rds_primary"] = rds_primary_id
         
-        # Commission Service Pod
-        components.append(self._create_container("commission_pod", "Commission Service Pod", 850, 320, 200, 120, "#F3E5F5", "#9C27B0"))
-        components.append(self._create_aws_component("commission_task1", "Task 1\\n2vCPU/4GB\\nDIAN API", 870, 350, "mxgraph.aws4.fargate"))
-        components.append(self._create_aws_component("commission_task2", "Task 2\\n2vCPU/4GB\\nDIAN API", 950, 350, "mxgraph.aws4.fargate"))
-        
-        # Data Services Layer
-        components.append(self._create_container("data_services", "Data Services - Multi-AZ", 50, 520, 1200, 200, "#F5F5F5", "#666666"))
-        
-        # RDS with details
-        components.append(self._create_aws_component("rds_primary", "RDS PostgreSQL\\ndb.r6g.2xlarge\\nMulti-AZ\\n35-day backup\\nPerformance Insights", 150, 580, "mxgraph.aws4.rds"))
-        
-        # Redis with configuration
-        components.append(self._create_aws_component("redis_cluster", "ElastiCache Redis\\n6 nodes (3 shards)\\nCluster mode\\n99.9% availability", 400, 580, "mxgraph.aws4.elasticache"))
-        
-        # S3 with lifecycle
-        components.append(self._create_aws_component("s3_docs", "S3 Documents\\nIntelligent Tiering\\n90d → Glacier\\nVersioning enabled", 650, 580, "mxgraph.aws4.s3"))
-        
-        # External Services
-        components.append(self._create_aws_component("textract", "Amazon Textract\\n>95% accuracy\\nForms + Tables\\nHandwriting", 900, 580, "mxgraph.aws4.textract"))
-        
-        # Conexiones detalladas
+        # Conexiones básicas
         connections = [
-            self._create_connection("api_gateway", "cognito", "Auth", "#1976D2"),
-            self._create_connection("cognito", "alb", "Authorized", "#1976D2"),
-            self._create_connection("alb", "invoice_task1", "Route", "#4CAF50"),
-            self._create_connection("alb", "product_task1", "Route", "#4CAF50"),
-            self._create_connection("alb", "ocr_task1", "Route", "#4CAF50"),
-            self._create_connection("alb", "commission_task1", "Route", "#4CAF50"),
-            self._create_connection("invoice_task1", "rds_primary", "Write", "#2196F3"),
-            self._create_connection("product_task1", "redis_cluster", "Cache", "#FF9800"),
-            self._create_connection("product_task1", "rds_primary", "60M lookup", "#2196F3"),
-            self._create_connection("ocr_task1", "textract", "OCR >95%", "#E91E63"),
-            self._create_connection("ocr_task1", "s3_docs", "Documents", "#795548"),
-            self._create_connection("commission_task1", "rds_primary", "Compliance", "#9C27B0")
+            self._create_connection(component_ids["api_gateway"], component_ids["cognito"], "Auth", "#1976D2"),
+            self._create_connection(component_ids["cognito"], component_ids["alb"], "Authorized", "#1976D2"),
+            self._create_connection(component_ids["alb"], component_ids["invoice_task1"], "Route", "#4CAF50"),
+            self._create_connection(component_ids["invoice_task1"], component_ids["rds_primary"], "Write", "#2196F3")
         ]
         
         return self._build_diagram_xml(components + connections)
@@ -188,27 +167,35 @@ class ProfessionalDrawIOGenerator:
           <mxGeometry x="{x}" y="{y}" width="{width}" height="{height}" as="geometry"/>
         </mxCell>'''
     
-    def _create_aws_component(self, id_name: str, label: str, x: int, y: int, shape: str) -> str:
-        """Crea componente AWS profesional"""
+    def _create_aws_component(self, id_name: str, label: str, x: int, y: int, shape: str) -> tuple[str, str]:
+        """Crea componente AWS profesional y devuelve XML e ID"""
         # Escapar caracteres XML
         escaped_label = label.replace('<', '&lt;').replace('>', '&gt;').replace('&', '&amp;').replace('"', '&quot;')
+        component_id = f"{id_name}_{self._next_id()}"
         
-        return f'''<mxCell id="{id_name}_{self._next_id()}" value="{escaped_label}" style="shape={shape};labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+        xml = f'''<mxCell id="{component_id}" value="{escaped_label}" style="shape={shape};labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="{x}" y="{y}" width="78" height="78" as="geometry"/>
         </mxCell>'''
+        
+        return xml, component_id
     
     def _create_connection(self, source: str, target: str, label: str, color: str) -> str:
         """Crea conexión profesional"""
-        return f'''<mxCell id="conn_{self._next_id()}" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor={color};strokeWidth=2;fontColor={color};" edge="1" parent="1" source="{source}" target="{target}">
+        
+        # Genera un ID único y lo guarda en una variable local
+        conn_id = f"conn_{self._next_id()}"
+        escaped_label = label.replace('<', '&lt;').replace('>', '&gt;').replace('&', '&amp;').replace('"', '&quot;')
+        
+        return f'''<mxCell id="{conn_id}" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor={color};strokeWidth=2;fontColor={color};" edge="1" parent="1" source="{source}" target="{target}">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="0" y="-10" as="offset"/>
             <Array as="points"/>
           </mxGeometry>
-          <mxCell value="{label}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor={color};" vertex="1" connectable="0" parent="conn_{self.component_id}">
-            <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
-              <mxPoint as="offset"/>
-            </mxGeometry>
-          </mxCell>
+        </mxCell>
+        <mxCell id="label_{self._next_id()}" value="{escaped_label}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor={color};" vertex="1" connectable="0" parent="{conn_id}">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
         </mxCell>'''
     
     def _next_id(self) -> int:
