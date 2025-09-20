@@ -85,31 +85,31 @@ class AdvancedDrawIOGenerator:
         
         # Internet (como en PNG)
         components.append(f'''
-        <mxCell id="internet_{self._next_id()}" value="Internet\\nGlobal Access" style="shape=mxgraph.aws4.internet;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#1976D2;fontColor=#1976D2;" vertex="1" parent="1">
+        <mxCell id="internet_{self._next_id()}" value="Internet&#10;Global Access" style="shape=mxgraph.aws4.internet;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#1976D2;fontColor=#1976D2;" vertex="1" parent="1">
           <mxGeometry x="100" y="120" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # Users (como en PNG)
         components.append(f'''
-        <mxCell id="users_{self._next_id()}" value="BMC Users\\n10K Concurrent\\nMulti-device" style="shape=mxgraph.aws4.users;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_{self.component_id-1}">
+        <mxCell id="users_{self._next_id()}" value="BMC Users&#10;10K Concurrent&#10;Multi-device" style="shape=mxgraph.aws4.users;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_{self.component_id-1}">
           <mxGeometry x="50" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # CloudFront (posición exacta PNG)
         components.append(f'''
-        <mxCell id="cloudfront_{self._next_id()}" value="CloudFront CDN\\n200+ edge locations\\nSSL/TLS 1.3\\nGzip compression" style="shape=mxgraph.aws4.cloudfront;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_{self.component_id-2}">
+        <mxCell id="cloudfront_{self._next_id()}" value="CloudFront CDN&#10;200+ edge locations&#10;SSL/TLS 1.3&#10;Gzip compression" style="shape=mxgraph.aws4.cloudfront;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_{self.component_id-2}">
           <mxGeometry x="250" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # WAF (después de CloudFront como PNG)
         components.append(f'''
-        <mxCell id="waf_{self._next_id()}" value="AWS WAF\\nDDoS protection\\nGeo blocking\\nRate limiting: 2K/s" style="shape=mxgraph.aws4.waf;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFEBEE;strokeColor=#D32F2F;fontColor=#B71C1C;" vertex="1" parent="aws_cloud_{self.component_id-3}">
+        <mxCell id="waf_{self._next_id()}" value="AWS WAF&#10;DDoS protection&#10;Geo blocking&#10;Rate limiting: 2K/s" style="shape=mxgraph.aws4.waf;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFEBEE;strokeColor=#D32F2F;fontColor=#B71C1C;" vertex="1" parent="aws_cloud_{self.component_id-3}">
           <mxGeometry x="450" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # API Gateway (después de WAF como PNG)
         components.append(f'''
-        <mxCell id="api_gateway_{self._next_id()}" value="API Gateway\\n10K req/s throttle\\nCaching: 300s TTL\\nCustom authorizers" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_{self.component_id-4}">
+        <mxCell id="api_gateway_{self._next_id()}" value="API Gateway&#10;10K req/s throttle&#10;Caching: 300s TTL&#10;Custom authorizers" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_{self.component_id-4}">
           <mxGeometry x="650" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
@@ -136,13 +136,13 @@ class AdvancedDrawIOGenerator:
         
         # Public Subnet en AZ-1a
         containers.append(f'''
-        <mxCell id="public_1a_{self._next_id()}" value="Public Subnet\\n10.0.1.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=2;verticalAlign=top;fontSize=10;fontColor=#2E7D32;" vertex="1" parent="az_1a_{self.component_id-1}">
+        <mxCell id="public_1a_{self._next_id()}" value="Public Subnet&#10;10.0.1.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=2;verticalAlign=top;fontSize=10;fontColor=#2E7D32;" vertex="1" parent="az_1a_{self.component_id-1}">
           <mxGeometry x="20" y="30" width="200" height="80" as="geometry"/>
         </mxCell>''')
         
         # Private Subnet en AZ-1a
         containers.append(f'''
-        <mxCell id="private_1a_{self._next_id()}" value="Private Subnet\\n10.0.10.0/24" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=2;verticalAlign=top;fontSize=10;fontColor=#E65100;" vertex="1" parent="az_1a_{self.component_id-2}">
+        <mxCell id="private_1a_{self._next_id()}" value="Private Subnet&#10;10.0.10.0/24" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=2;verticalAlign=top;fontSize=10;fontColor=#E65100;" vertex="1" parent="az_1a_{self.component_id-2}">
           <mxGeometry x="20" y="130" width="200" height="80" as="geometry"/>
         </mxCell>''')
         
@@ -155,13 +155,13 @@ class AdvancedDrawIOGenerator:
         
         # Public Subnet en AZ-1b
         containers.append(f'''
-        <mxCell id="public_1b_{self._next_id()}" value="Public Subnet\\n10.0.2.0/24" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=2;verticalAlign=top;fontSize=10;fontColor=#E65100;" vertex="1" parent="az_1b_{self.component_id-1}">
+        <mxCell id="public_1b_{self._next_id()}" value="Public Subnet&#10;10.0.2.0/24" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=2;verticalAlign=top;fontSize=10;fontColor=#E65100;" vertex="1" parent="az_1b_{self.component_id-1}">
           <mxGeometry x="20" y="30" width="200" height="80" as="geometry"/>
         </mxCell>''')
         
         # Private Subnet en AZ-1b
         containers.append(f'''
-        <mxCell id="private_1b_{self._next_id()}" value="Private Subnet\\n10.0.11.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=2;verticalAlign=top;fontSize=10;fontColor=#2E7D32;" vertex="1" parent="az_1b_{self.component_id-2}">
+        <mxCell id="private_1b_{self._next_id()}" value="Private Subnet&#10;10.0.11.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=2;verticalAlign=top;fontSize=10;fontColor=#2E7D32;" vertex="1" parent="az_1b_{self.component_id-2}">
           <mxGeometry x="20" y="130" width="200" height="80" as="geometry"/>
         </mxCell>''')
         
@@ -173,25 +173,25 @@ class AdvancedDrawIOGenerator:
         
         # Invoice Service en AZ-1a Private Subnet
         services.append(f'''
-        <mxCell id="invoice_service_{self._next_id()}" value="Invoice Service\\n2vCPU/4GB\\nBlue/Green deploy\\nHealth checks" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1a_{self.component_id-4}">
+        <mxCell id="invoice_service_{self._next_id()}" value="Invoice Service&#10;2vCPU/4GB&#10;Blue/Green deploy&#10;Health checks" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1a_{self.component_id-4}">
           <mxGeometry x="50" y="20" width="60" height="60" as="geometry"/>
         </mxCell>''')
         
         # Product Service en AZ-1a Private Subnet
         services.append(f'''
-        <mxCell id="product_service_{self._next_id()}" value="Product Service\\n4vCPU/8GB\\n60M products\\nElasticsearch" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1a_{self.component_id-5}">
+        <mxCell id="product_service_{self._next_id()}" value="Product Service&#10;4vCPU/8GB&#10;60M products&#10;Elasticsearch" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1a_{self.component_id-5}">
           <mxGeometry x="130" y="20" width="60" height="60" as="geometry"/>
         </mxCell>''')
         
         # OCR Service en AZ-1b Private Subnet
         services.append(f'''
-        <mxCell id="ocr_service_{self._next_id()}" value="OCR Service\\n4vCPU/8GB\\nTextract integration\\n>95% accuracy" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1b_{self.component_id-1}">
+        <mxCell id="ocr_service_{self._next_id()}" value="OCR Service&#10;4vCPU/8GB&#10;Textract integration&#10;95% accuracy" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1b_{self.component_id-1}">
           <mxGeometry x="50" y="20" width="60" height="60" as="geometry"/>
         </mxCell>''')
         
         # Commission Service en AZ-1b Private Subnet
         services.append(f'''
-        <mxCell id="commission_service_{self._next_id()}" value="Commission Service\\n2vCPU/4GB\\nDIAN compliance\\nAudit trail" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1b_{self.component_id-2}">
+        <mxCell id="commission_service_{self._next_id()}" value="Commission Service&#10;2vCPU/4GB&#10;DIAN compliance&#10;Audit trail" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1b_{self.component_id-2}">
           <mxGeometry x="130" y="20" width="60" height="60" as="geometry"/>
         </mxCell>''')
         
@@ -204,31 +204,31 @@ class AdvancedDrawIOGenerator:
         # Isolated Subnets para datos
         data_components.append(f'''
         <!-- Isolated Subnet para datos -->
-        <mxCell id="isolated_subnet_{self._next_id()}" value="Isolated Subnet - Database Tier\\n10.0.20.0/24 & 10.0.21.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=1;verticalAlign=top;fontSize=12;fontColor=#2E7D32;" vertex="1" parent="vpc_{self.component_id-10}">
+        <mxCell id="isolated_subnet_{self._next_id()}" value="Isolated Subnet - Database Tier&#10;10.0.20.0/24 and 10.0.21.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=1;verticalAlign=top;fontSize=12;fontColor=#2E7D32;" vertex="1" parent="vpc_{self.component_id-10}">
           <mxGeometry x="200" y="400" width="800" height="200" as="geometry"/>
         </mxCell>''')
         
         # RDS Primary (como en PNG)
         data_components.append(f'''
-        <mxCell id="rds_primary_{self._next_id()}" value="RDS Primary\\nPostgreSQL 14\\ndb.r6g.2xlarge\\n35-day backup\\nPerformance Insights" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_{self.component_id-1}">
+        <mxCell id="rds_primary_{self._next_id()}" value="RDS Primary&#10;PostgreSQL 14&#10;db.r6g.2xlarge&#10;35-day backup&#10;Performance Insights" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_{self.component_id-1}">
           <mxGeometry x="100" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # RDS Replica (Multi-AZ como PNG)
         data_components.append(f'''
-        <mxCell id="rds_replica_{self._next_id()}" value="RDS Standby\\nus-east-1b\\nCross-AZ replication\\nPromotion ready" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_{self.component_id-2}">
+        <mxCell id="rds_replica_{self._next_id()}" value="RDS Standby&#10;us-east-1b&#10;Cross-AZ replication&#10;Promotion ready" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_{self.component_id-2}">
           <mxGeometry x="300" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # ElastiCache Redis (como PNG)
         data_components.append(f'''
-        <mxCell id="redis_cache_{self._next_id()}" value="ElastiCache Redis\\n6 nodes (3 shards)\\nMulti-AZ\\n99.9% availability" style="shape=mxgraph.aws4.elasticache;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_{self.component_id-3}">
+        <mxCell id="redis_cache_{self._next_id()}" value="ElastiCache Redis&#10;6 nodes (3 shards)&#10;Multi-AZ&#10;99.9% availability" style="shape=mxgraph.aws4.elasticache;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_{self.component_id-3}">
           <mxGeometry x="500" y="80" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
         # S3 Storage (fuera de VPC como PNG)
         data_components.append(f'''
-        <mxCell id="s3_storage_{self._next_id()}" value="S3 Documents\\nIntelligent Tiering\\n90d → Glacier\\nVersioning enabled" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="aws_cloud_{self.component_id-14}">
+        <mxCell id="s3_storage_{self._next_id()}" value="S3 Documents&#10;Intelligent Tiering&#10;90d to Glacier&#10;Versioning enabled" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="aws_cloud_{self.component_id-14}">
           <mxGeometry x="1350" y="200" width="78" height="78" as="geometry"/>
         </mxCell>''')
         
@@ -243,7 +243,7 @@ class AdvancedDrawIOGenerator:
         <mxCell id="conn_internet_users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="internet_{self.component_id-15}" target="users_{self.component_id-14}">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="label_internet_users" value="HTTPS\\nGlobal Access" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_internet_users">
+        <mxCell id="label_internet_users" value="HTTPS&#10;Global Access" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_internet_users">
           <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
         </mxCell>''')
         
@@ -252,7 +252,7 @@ class AdvancedDrawIOGenerator:
         <mxCell id="conn_users_cf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="users_{self.component_id-14}" target="cloudfront_{self.component_id-13}">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="label_users_cf" value="Web Traffic\\n200+ Locations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_users_cf">
+        <mxCell id="label_users_cf" value="Web Traffic&#10;200+ Locations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_users_cf">
           <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
         </mxCell>''')
         
@@ -261,7 +261,7 @@ class AdvancedDrawIOGenerator:
         <mxCell id="conn_cf_waf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D32F2F;strokeWidth=3;" edge="1" parent="1" source="cloudfront_{self.component_id-13}" target="waf_{self.component_id-12}">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="label_cf_waf" value="Security Filter\\nDDoS Protection" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#D32F2F;fontStyle=1;" vertex="1" connectable="0" parent="conn_cf_waf">
+        <mxCell id="label_cf_waf" value="Security Filter&#10;DDoS Protection" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#D32F2F;fontStyle=1;" vertex="1" connectable="0" parent="conn_cf_waf">
           <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
         </mxCell>''')
         
@@ -270,7 +270,7 @@ class AdvancedDrawIOGenerator:
         <mxCell id="conn_waf_api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="waf_{self.component_id-12}" target="api_gateway_{self.component_id-11}">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="label_waf_api" value="Clean Traffic\\n10K req/s" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_waf_api">
+        <mxCell id="label_waf_api" value="Clean Traffic&#10;10K req/s" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_waf_api">
           <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
         </mxCell>''')
         
@@ -279,7 +279,7 @@ class AdvancedDrawIOGenerator:
         <mxCell id="conn_api_invoice" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF9800;strokeWidth=2;" edge="1" parent="1" source="api_gateway_{self.component_id-11}" target="invoice_service_{self.component_id-7}">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="label_api_invoice" value="Route\\n/invoices" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FF9800;fontStyle=1;" vertex="1" connectable="0" parent="conn_api_invoice">
+        <mxCell id="label_api_invoice" value="Route&#10;/invoices" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FF9800;fontStyle=1;" vertex="1" connectable="0" parent="conn_api_invoice">
           <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
         </mxCell>''')
         
@@ -288,7 +288,7 @@ class AdvancedDrawIOGenerator:
         <mxCell id="conn_invoice_rds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4CAF50;strokeWidth=2;" edge="1" parent="1" source="invoice_service_{self.component_id-7}" target="rds_primary_{self.component_id-4}">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="label_invoice_rds" value="Database\\nWrite Ops" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#4CAF50;fontStyle=1;" vertex="1" connectable="0" parent="conn_invoice_rds">
+        <mxCell id="label_invoice_rds" value="Database&#10;Write Ops" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#4CAF50;fontStyle=1;" vertex="1" connectable="0" parent="conn_invoice_rds">
           <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
         </mxCell>''')
         
