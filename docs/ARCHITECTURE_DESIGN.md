@@ -9,31 +9,31 @@ Sistema MCP Diagram Generator v4.1.0 - Plataforma profesional para generación a
 ```mermaid
 graph TB
     subgraph "MCP DIAGRAM GENERATOR"
-        subgraph "🎮 ORCHESTRATION LAYER"
+        subgraph "ORCHESTRATION LAYER"
             WO[WorkflowOrchestrator]
             AC[AppConfig]
         end
         
-        subgraph "🔧 GENERATION LAYER"
+        subgraph "GENERATION LAYER"
             UG[UniversalGenerator]
             DG[DiagramGenerator]
             PG[PromptGenerator]
             DOC[DocGenerator]
         end
         
-        subgraph "✅ VALIDATION LAYER"
+        subgraph "VALIDATION LAYER"
             XV[XMLValidator]
             MI[MCPIntegrator]
             AT[AutomatedTests]
         end
         
-        subgraph "📐 TEMPLATE LAYER"
+        subgraph "TEMPLATE LAYER"
             DT[DrawIOTemplates]
             AWS[AWSComponents]
             SIM[StandardInputModel]
         end
         
-        subgraph "🌐 API LAYER"
+        subgraph "API LAYER"
             API[DiagramAPI]
         end
     end
