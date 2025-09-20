@@ -1,69 +1,92 @@
-# MCP Diagram Generator v3.1.0
+# MCP Diagram Generator v4.0.0 - Major Restructure
 
-## 🎉 Nueva Característica Principal
+## 🎉 Reestructuración Completa del Proyecto
 
-### 📝 Generador de Prompts MCP
-- **3 tipos de prompts especializados**: Arquitectura, Migración, Implementación
-- **Especificaciones técnicas detalladas** extraídas de configuración BMC
-- **Prompts contextualizados** para arquitectos, desarrolladores y especialistas
-- **Métricas de rendimiento** incluidas (60M productos, 10K facturas/hora)
-- **Compliance regulatorio** DIAN integrado
+### 🏗️ Nueva Arquitectura Modular
+- **`src/`** - Código fuente organizado por responsabilidades
+- **`src/generators/`** - Generadores especializados (diagramas, prompts, docs)
+- **`src/parsers/`** - Parsers de especificaciones
+- **`src/cases/`** - Casos de uso específicos
+- **`config/`** - Configuración única consolidada
 
-## 🔧 Mejoras Técnicas
+### 🧹 Limpieza Masiva de Código
+- **21 archivos obsoletos eliminados**
+- **11 generadores DrawIO duplicados** removidos
+- **10 scripts de utilidad obsoletos** eliminados
+- **Carpetas duplicadas** corregidas
+- **83 archivos modificados** en total
 
-### Prompts Generados
-- **`architecture_prompt.md`** - Contexto del sistema y diseño AWS
-- **`implementation_prompt.md`** - Especificaciones técnicas y código
-- **`migration_prompt.md`** - Estrategia Strangler Fig y plan detallado
+### ✅ Corrección de Duplicación
+- **Problema:** `outputs/mcp/diagrams/bmc_input/diagrams/` (carpetas duplicadas)
+- **Solución:** Estructura unificada sin duplicación
+- **Resultado:** 16 archivos únicos vs 25+ duplicados anteriormente
 
-### Integración Automática
-- Generación automática con `python3 main.py --case bmc-input`
-- Ubicación organizada en `outputs/mcp/prompts/`
-- Script `show_mcp_prompts.py` para visualización
+## 🎯 Beneficios de v4.0.0
 
-## 📊 Contenido de Prompts
+### Código Limpio
+- Solo módulos activos necesarios
+- Imports corregidos sin dependencias rotas
+- Separación clara de responsabilidades
 
-### Arquitectura
-- 5 microservicios mapeados con recursos AWS
-- Consideraciones de escalamiento y alta disponibilidad
-- Patrones de diseño para compliance regulatorio
+### Generación Optimizada
+- **4 diagramas PNG** únicos
+- **3 diagramas Mermaid** automáticos  
+- **2 archivos DrawIO** (1 unificado + 1 minimal)
+- **3 prompts MCP** especializados
+- **4 documentos** de implementación
 
-### Implementación  
-- Performance KPIs específicos (< 300ms lookup, > 95% OCR)
-- Configuración de infraestructura AWS detallada
-- Especificaciones de seguridad y monitoreo
+### Estructura Final
+```
+src/
+├── generators/    # 4 generadores especializados
+├── parsers/       # 1 parser BMC
+├── cases/         # 1 caso de uso
+├── core/          # 1 config manager
+└── main.py        # Punto de entrada único
 
-### Migración
-- Patrón Strangler Fig con 4 fases definidas
-- Análisis de riesgos y mitigaciones
-- Plan de rollback y validación
+config/            # Configuración consolidada
+tools/             # Scripts de release
+outputs/mcp/       # Salidas organizadas (16 archivos únicos)
+```
 
-## 🛠️ Herramientas Actualizadas
+## 🔧 Uso Simplificado
 
 ```bash
-# Generar todos los artefactos MCP (diagramas + prompts)
-python3 main.py --case bmc-input
+# Generar todos los artefactos MCP
+python src/main.py --case bmc-input
 
-# Visualizar prompts generados
-python3 show_mcp_prompts.py
-
-# Validar estructura completa
-python3 validate_single_config.py
+# Estructura generada (sin duplicados)
+outputs/mcp/diagrams/bmc_input/
+├── mermaid/       # 3 diagramas Mermaid
+├── drawio/        # 2 archivos DrawIO
+├── png/           # 4 diagramas PNG  
+├── prompts/       # 3 prompts especializados
+└── documentation/ # 4 docs de implementación
 ```
+
+## 📊 Métricas de Limpieza
+
+- **Archivos eliminados:** 21 obsoletos
+- **Duplicados removidos:** 9 archivos
+- **Carpetas duplicadas:** 0 (corregidas)
+- **Estructura final:** 16 archivos únicos
+- **Reducción de código:** ~4,300 líneas eliminadas
+
+## 🔄 Migración desde v3.x
+
+Los usuarios de versiones anteriores deben:
+1. Usar nueva estructura: `python src/main.py --case bmc-input`
+2. Configuración en: `config/bmc-config.json`
+3. Salidas en: `outputs/mcp/` (estructura limpia)
 
 ## 📁 Archivos del Release
 
-- `bmc_mcp_diagrams_v3.1.0.zip` - Diagramas, prompts y configuración MCP
-- `mcp_generator_source_v3.1.0.zip` - Código fuente con generador de prompts
+- `bmc_mcp_clean_v4.0.0.zip` - Diagramas y configuración limpia
+- `mcp_generator_restructured_v4.0.0.zip` - Código fuente reestructurado
 
-## 🔄 Actualización desde v3.0.0
+## 🎉 Resultado Final
 
-Los usuarios de v3.0.0 pueden actualizar ejecutando:
-```bash
-git pull origin main
-python3 main.py --case bmc-input
-```
+Proyecto completamente reestructurado, optimizado y sin duplicación. 
+Código limpio, modular y mantenible para desarrollo futuro.
 
-Los prompts se generarán automáticamente en la estructura MCP existente.
-
-Generado: 2025-09-19 20:44:41
+Generado: 2025-09-19 21:03:48
