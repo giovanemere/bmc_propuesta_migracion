@@ -417,9 +417,14 @@ class RefinedDiagramGenerator:
     def generate_all_refined(self, project_name: str = "BMC") -> Dict[str, str]:
         """Genera todos los diagramas refinados PNG y Draw.io"""
         
-        # Crear directorios
-        os.makedirs(f"{self.output_dir}/png", exist_ok=True)
-        os.makedirs(f"{self.output_dir}/drawio", exist_ok=True)
+        # Crear directorios temporales
+        temp_output_dir = "temp_output"
+        os.makedirs(f"{temp_output_dir}/png", exist_ok=True)
+        os.makedirs(f"{temp_output_dir}/drawio", exist_ok=True)
+        
+        # Usar directorio temporal para generación
+        original_output_dir = self.output_dir
+        self.output_dir = temp_output_dir
         
         results = {}
         
@@ -452,7 +457,7 @@ class RefinedDiagramGenerator:
         
         # Generar archivos Draw.io profesionales
         from .professional_drawio_generator import ProfessionalDrawioGenerator
-        drawio_generator = ProfessionalDrawioGenerator(self.config, self.output_dir)
+        drawio_generator = ProfessionalDrawioGenerator(self.config, temp_output_dir)
         
         # Generar Draw.io profesional completo
         professional_drawio = drawio_generator.generate_professional_architecture(project_name)
@@ -460,4 +465,19 @@ class RefinedDiagramGenerator:
         
         print("✓ Professional Draw.io generated")
         
-        return results
+        # Organizar outputs con OutputManager
+        from .output_manager import OutputManager
+        output_manager = OutputManager("outputs")
+        organized_files = output_manager.organize_outputs(project_name, results)
+        
+        # Limpiar archivos temporales
+        import shutil
+        if os.path.exists(temp_output_dir):
+            shutil.rmtree(temp_output_dir)
+        
+        # Restaurar directorio original
+        self.output_dir = original_output_dir
+        
+        print("✓ Files organized in outputs/ structure")
+        
+        return organized_files

@@ -186,9 +186,14 @@ class DiagramGenerator:
     def generate_all(self, project_name: str = "Architecture") -> Dict[str, str]:
         """Genera todos los diagramas PNG y Draw.io"""
         
-        # Crear directorios de salida
-        os.makedirs(f"{self.output_dir}/png", exist_ok=True)
-        os.makedirs(f"{self.output_dir}/drawio", exist_ok=True)
+        # Crear directorios temporales
+        temp_output_dir = "temp_output"
+        os.makedirs(f"{temp_output_dir}/png", exist_ok=True)
+        os.makedirs(f"{temp_output_dir}/drawio", exist_ok=True)
+        
+        # Usar directorio temporal
+        original_output_dir = self.output_dir
+        self.output_dir = temp_output_dir
         
         results = {}
         
@@ -206,11 +211,24 @@ class DiagramGenerator:
         
         # Generar archivos Draw.io equivalentes
         from .complete_drawio_generator import CompleteDrawioGenerator
-        drawio_generator = CompleteDrawioGenerator(self.config, self.output_dir)
+        drawio_generator = CompleteDrawioGenerator(self.config, temp_output_dir)
         drawio_results = drawio_generator.generate_all_drawio_files(project_name)
         
         # Combinar resultados
         for key, value in drawio_results.items():
             results[f"drawio_{key}"] = value
         
-        return results
+        # Organizar outputs
+        from .output_manager import OutputManager
+        output_manager = OutputManager("outputs")
+        organized_files = output_manager.organize_outputs(project_name, results)
+        
+        # Limpiar temporales
+        import shutil
+        if os.path.exists(temp_output_dir):
+            shutil.rmtree(temp_output_dir)
+        
+        # Restaurar directorio
+        self.output_dir = original_output_dir
+        
+        return organized_files
