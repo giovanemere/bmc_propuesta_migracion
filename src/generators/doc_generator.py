@@ -17,7 +17,7 @@ class ImplementationDocGenerator:
     def generate_implementation_docs(self, project_name: str = "bmc_input") -> Dict[str, str]:
         """Genera documentación completa de implementación"""
         
-        docs_dir = self.output_dir / "documentation" / project_name
+        docs_dir = self.output_dir / project_name
         docs_dir.mkdir(parents=True, exist_ok=True)
         
         results = {}

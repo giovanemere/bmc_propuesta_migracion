@@ -142,6 +142,8 @@ class WorkflowOrchestrator:
         
         from generators.universal_generator import UniversalGenerator
         from validators.xml_validator import MCPIntegrator
+        import sys
+        sys.path.append('/home/giovanemere/Migracion')
         from templates.drawio_templates import DrawIOTemplates
         
         diagrams = {}

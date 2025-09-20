@@ -17,7 +17,7 @@ class MCPPromptGenerator:
     def generate_prompts(self, project_name: str = "bmc_input") -> Dict[str, str]:
         """Genera todos los prompts MCP"""
         
-        prompts_dir = self.output_dir / "prompts" / project_name
+        prompts_dir = self.output_dir / project_name
         prompts_dir.mkdir(parents=True, exist_ok=True)
         
         results = {}
