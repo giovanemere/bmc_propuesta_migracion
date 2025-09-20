@@ -121,6 +121,7 @@ class DynamicConfigGenerator:
             spec_file = self.paths.config_dir / "bmc-input-specification.md"
         
         spec_path = Path(spec_file)
+        # Configuración siempre en outputs/generated
         config_path = self.paths.outputs_generated_dir / "bmc.json"
         
         if not spec_path.exists():

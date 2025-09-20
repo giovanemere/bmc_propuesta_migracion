@@ -117,13 +117,18 @@ class AppConfig:
                 # Fallback a configuración por defecto
                 pass
         
-        # Buscar archivo de configuración
-        config_paths = [
-            self.paths.config_dir / f"{config_name}.json",
-            self.paths.config_dir / f"{config_name}-config.json",
-            self.paths.schemas_dir / f"{config_name}.json",
-            self.paths.outputs_generated_dir / f"{config_name}.json"
-        ]
+        # Buscar archivo de configuración (solo en outputs para configs generadas)
+        if config_name == "bmc":
+            config_paths = [
+                self.paths.outputs_generated_dir / f"{config_name}.json"
+            ]
+        else:
+            config_paths = [
+                self.paths.config_dir / f"{config_name}.json",
+                self.paths.config_dir / f"{config_name}-config.json",
+                self.paths.schemas_dir / f"{config_name}.json",
+                self.paths.outputs_generated_dir / f"{config_name}.json"
+            ]
         
         for config_path in config_paths:
             if config_path.exists():
