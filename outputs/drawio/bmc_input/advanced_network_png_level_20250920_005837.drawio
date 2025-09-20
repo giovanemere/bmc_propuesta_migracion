@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-09-20T00:58:37.186074" version="22.1.11">
+  <diagram name="BMC Network Architecture - PNG Level" id="advanced_network">
+    <mxGraphModel dx="2500" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Título Principal -->
+        <mxCell id="main_title" value="BMC Network Architecture - PNG Level" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="500" y="10" width="600" height="40" as="geometry"/>
+        </mxCell>
+        <!-- AWS Cloud Container (como Cluster en PNG) -->
+        <mxCell id="aws_cloud_3001" value="AWS Cloud - us-east-1" style="fillColor=#E3F2FD;strokeColor=#1976D2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=16;fontColor=#1976D2;labelPosition=center;verticalLabelPosition=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="50" y="70" width="1500" height="1000" as="geometry"/>
+        </mxCell>
+        <mxCell id="internet_3002" value="Internet\nGlobal Access" style="shape=mxgraph.aws4.internet;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#1976D2;fontColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="100" y="120" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_3003" value="BMC Users\n10K Concurrent\nMulti-device" style="shape=mxgraph.aws4.users;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_3002">
+          <mxGeometry x="50" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloudfront_3004" value="CloudFront CDN\n200+ edge locations\nSSL/TLS 1.3\nGzip compression" style="shape=mxgraph.aws4.cloudfront;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_3002">
+          <mxGeometry x="250" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="waf_3005" value="AWS WAF\nDDoS protection\nGeo blocking\nRate limiting: 2K/s" style="shape=mxgraph.aws4.waf;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFEBEE;strokeColor=#D32F2F;fontColor=#B71C1C;" vertex="1" parent="aws_cloud_3002">
+          <mxGeometry x="450" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="api_gateway_3006" value="API Gateway\n10K req/s throttle\nCaching: 300s TTL\nCustom authorizers" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="aws_cloud_3002">
+          <mxGeometry x="650" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <!-- VPC Container (como Cluster VPC en PNG) -->
+        <mxCell id="vpc_3007" value="VPC 10.0.0.0/16 - Multi-AZ" style="fillColor=#F5F5F5;strokeColor=#666666;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#666666;" vertex="1" parent="aws_cloud_3001">
+          <mxGeometry x="100" y="250" width="1200" height="650" as="geometry"/>
+        </mxCell>
+        <!-- AZ us-east-1a Container -->
+        <mxCell id="az_1a_3008" value="Availability Zone us-east-1a" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#2E7D32;" vertex="1" parent="vpc_3007">
+          <mxGeometry x="50" y="50" width="500" height="250" as="geometry"/>
+        </mxCell>
+        <mxCell id="public_1a_3009" value="Public Subnet\n10.0.1.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=2;verticalAlign=top;fontSize=10;fontColor=#2E7D32;" vertex="1" parent="az_1a_3008">
+          <mxGeometry x="20" y="30" width="200" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="private_1a_3010" value="Private Subnet\n10.0.10.0/24" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=2;verticalAlign=top;fontSize=10;fontColor=#E65100;" vertex="1" parent="az_1a_3008">
+          <mxGeometry x="20" y="130" width="200" height="80" as="geometry"/>
+        </mxCell>
+        <!-- AZ us-east-1b Container -->
+        <mxCell id="az_1b_3011" value="Availability Zone us-east-1b" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#E65100;" vertex="1" parent="vpc_3007">
+          <mxGeometry x="600" y="50" width="500" height="250" as="geometry"/>
+        </mxCell>
+        <mxCell id="public_1b_3012" value="Public Subnet\n10.0.2.0/24" style="fillColor=#FFF3E0;strokeColor=#FF9800;dashed=2;verticalAlign=top;fontSize=10;fontColor=#E65100;" vertex="1" parent="az_1b_3011">
+          <mxGeometry x="20" y="30" width="200" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="private_1b_3013" value="Private Subnet\n10.0.11.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=2;verticalAlign=top;fontSize=10;fontColor=#2E7D32;" vertex="1" parent="az_1b_3011">
+          <mxGeometry x="20" y="130" width="200" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="invoice_service_3014" value="Invoice Service\n2vCPU/4GB\nBlue/Green deploy\nHealth checks" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1a_3010">
+          <mxGeometry x="50" y="20" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="product_service_3015" value="Product Service\n4vCPU/8GB\n60M products\nElasticsearch" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1a_3010">
+          <mxGeometry x="130" y="20" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="ocr_service_3016" value="OCR Service\n4vCPU/8GB\nTextract integration\n>95% accuracy" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1b_3015">
+          <mxGeometry x="50" y="20" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="commission_service_3017" value="Commission Service\n2vCPU/4GB\nDIAN compliance\nAudit trail" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#FFF3E0;strokeColor=#FF9800;fontColor=#E65100;" vertex="1" parent="private_1b_3015">
+          <mxGeometry x="130" y="20" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <!-- Isolated Subnet para datos -->
+        <mxCell id="isolated_subnet_3018" value="Isolated Subnet - Database Tier\n10.0.20.0/24 & 10.0.21.0/24" style="fillColor=#E8F5E8;strokeColor=#4CAF50;dashed=1;verticalAlign=top;fontSize=12;fontColor=#2E7D32;" vertex="1" parent="vpc_3008">
+          <mxGeometry x="200" y="400" width="800" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="rds_primary_3019" value="RDS Primary\nPostgreSQL 14\ndb.r6g.2xlarge\n35-day backup\nPerformance Insights" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_3018">
+          <mxGeometry x="100" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="rds_replica_3020" value="RDS Standby\nus-east-1b\nCross-AZ replication\nPromotion ready" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_3018">
+          <mxGeometry x="300" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="redis_cache_3021" value="ElastiCache Redis\n6 nodes (3 shards)\nMulti-AZ\n99.9% availability" style="shape=mxgraph.aws4.elasticache;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="isolated_subnet_3018">
+          <mxGeometry x="500" y="80" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="s3_storage_3022" value="S3 Documents\nIntelligent Tiering\n90d → Glacier\nVersioning enabled" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="aws_cloud_3008">
+          <mxGeometry x="1350" y="200" width="78" height="78" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_internet_users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="internet_3007" target="users_3008">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_internet_users" value="HTTPS\nGlobal Access" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_internet_users">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="conn_users_cf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="users_3008" target="cloudfront_3009">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_users_cf" value="Web Traffic\n200+ Locations" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_users_cf">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="conn_cf_waf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D32F2F;strokeWidth=3;" edge="1" parent="1" source="cloudfront_3009" target="waf_3010">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_cf_waf" value="Security Filter\nDDoS Protection" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#D32F2F;fontStyle=1;" vertex="1" connectable="0" parent="conn_cf_waf">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="conn_waf_api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="waf_3010" target="api_gateway_3011">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_waf_api" value="Clean Traffic\n10K req/s" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#1976D2;fontStyle=1;" vertex="1" connectable="0" parent="conn_waf_api">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="conn_api_invoice" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF9800;strokeWidth=2;" edge="1" parent="1" source="api_gateway_3011" target="invoice_service_3015">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_api_invoice" value="Route\n/invoices" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#FF9800;fontStyle=1;" vertex="1" connectable="0" parent="conn_api_invoice">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="conn_invoice_rds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4CAF50;strokeWidth=2;" edge="1" parent="1" source="invoice_service_3015" target="rds_primary_3018">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label_invoice_rds" value="Database\nWrite Ops" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#4CAF50;fontStyle=1;" vertex="1" connectable="0" parent="conn_invoice_rds">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
