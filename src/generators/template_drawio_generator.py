@@ -297,7 +297,16 @@ class TemplateDrawIOGenerator:
             "{{INVOICE_TASK_LABEL}}": "Invoice Task\\n2vCPU/4GB\\nPort: 8000",
             "{{PRODUCT_TASK_LABEL}}": "Product Task\\n4vCPU/8GB\\n<500ms lookup",
             "{{OCR_TASK_LABEL}}": "OCR Task\\n4vCPU/8GB\\nTextract",
-            "{{TEXTRACT_LABEL}}": "Amazon Textract\\n>95% accuracy\\nForms + Tables"
+            "{{TEXTRACT_LABEL}}": "Amazon Textract\\n>95% accuracy\\nForms + Tables",
+            # Security labels
+            "{{USERS_LABEL}}": "BMC Users\\n10K concurrent\\nMulti-device",
+            "{{SHIELD_LABEL}}": "AWS Shield\\nAdvanced DDoS\\n24/7 DRT support",
+            "{{IAM_LABEL}}": "IAM Roles\\nLeast privilege\\nAssumeRole",
+            "{{FARGATE_LABEL}}": "ECS Fargate\\nTask Role IAM\\nPrivate subnets",
+            "{{SECRETS_LABEL}}": "Secrets Manager\\nDB credentials\\nAuto rotation",
+            "{{KMS_LABEL}}": "KMS Encryption\\nCustomer managed keys\\nAuto rotation",
+            "{{CLOUDWATCH_LABEL}}": "CloudWatch\\nSecurity logs\\nAnomaly detection",
+            "{{CLOUDTRAIL_LABEL}}": "CloudTrail\\nAPI audit logs\\nCompliance reports"
         }
         
         # Aplicar reemplazos en todo el XML
@@ -338,8 +347,8 @@ class TemplateDrawIOGenerator:
         
         print("🎨 Generando DrawIO desde plantillas...")
         
-        # Generar diagramas principales
-        templates = ["aws_network", "aws_microservices"]
+        # Generar todos los diagramas
+        templates = ["aws_network", "aws_microservices", "aws_security"]
         
         for template_name in templates:
             try:
