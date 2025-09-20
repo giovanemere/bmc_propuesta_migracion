@@ -69,4 +69,4 @@ certificate_service:
 - RBAC con MFA
 - Audit trail completo
 
-Generado: 2025-09-19 20:43:13
+Generado: 2025-09-19 21:00:14

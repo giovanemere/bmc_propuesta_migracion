@@ -1,0 +1,1 @@
+"""MCP Diagram Generator Module"""

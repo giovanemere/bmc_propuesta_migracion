@@ -7,30 +7,6 @@
 
 ## Microservicios Identificados
 
-### Invoice Service
-- **Función de negocio:** Procesamiento de facturas individuales y por lotes
-- **CPU:** 2048 
-- **Memoria:** 4096MB
-- **Escalamiento:** 2-10 instancias
-
-### Product Service
-- **Función de negocio:** Gestión de 60M productos migrados desde Google Cloud
-- **CPU:** 4096 
-- **Memoria:** 8192MB
-- **Escalamiento:** 3-15 instancias
-
-### Ocr Service
-- **Función de negocio:** Análisis de facturas y matching con base de datos
-- **CPU:** 2048 
-- **Memoria:** 4096MB
-- **Escalamiento:** 1-5 instancias
-
-### Commission Service
-- **Función de negocio:** Cálculos de comisión regulatoria (lote e individual)
-- **CPU:** 1024 
-- **Memoria:** 2048MB
-- **Escalamiento:** 1-5 instancias
-
 ### Certificate Service
 - **Función de negocio:** Generación de certificados PDF DIAN compliance
 - **CPU:** 1024 
@@ -38,14 +14,6 @@
 - **Escalamiento:** 1-5 instancias
 
 ## Servicios AWS Requeridos
-
-### Rds Primary
-- **Tipo:** rds
-- **Propósito:** Base de datos transaccional - 60M productos
-
-### Redshift Analytics
-- **Tipo:** redshift
-- **Propósito:** Data warehouse para reportería regulatoria
 
 ### Redis Cache
 - **Tipo:** elasticache
@@ -72,4 +40,44 @@ Basado en esta información, diseña una arquitectura AWS que:
 - Diseñar para multi-AZ
 - Incluir backup y disaster recovery
 
-Generado: 2025-09-19 20:43:13
+### Diagramas Requeridos
+Genera los siguientes diagramas en **Mermaid**:
+
+1. **Diagrama de Arquitectura**
+```mermaid
+graph TB
+    subgraph "AWS Cloud"
+        subgraph "Application Layer"
+            MS1[Invoice Service]
+            MS2[Product Service]
+            MS3[OCR Service]
+        end
+        subgraph "Data Layer"
+            RDS[PostgreSQL]
+            S3[S3 Storage]
+        end
+    end
+```
+
+2. **Diagrama de Flujo de Datos**
+```mermaid
+sequenceDiagram
+    Usuario->>API: Upload Invoice
+    API->>OCR: Process Document
+    OCR->>Products: Match Items
+    Products->>Commission: Calculate
+```
+
+3. **Diagrama de Migración**
+```mermaid
+gantt
+    title Migration Plan
+    section Phase 1
+    Infrastructure Setup: 2w
+    section Phase 2
+    Data Migration: 3w
+```
+
+Los diagramas Mermaid están disponibles en: `outputs/mcp/diagrams/bmc_input/mermaid/`
+
+Generado: 2025-09-19 21:00:14
