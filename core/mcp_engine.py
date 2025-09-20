@@ -13,7 +13,7 @@ from typing import Dict, Any, List
 class MCPEngine:
     """Motor principal para generar diagramas desde archivos MCP"""
     
-    def __init__(self, output_dir: str = "output"):
+    def __init__(self, output_dir: str = "outputs"):
         self.output_dir = output_dir
         self.parser = None
         self.generator = None
@@ -144,8 +144,21 @@ class MCPEngine:
         for key, value in summary.items():
             print(f"  - {key}: {value}")
         
-        # Generar diagramas
-        results = self.generate_diagrams(project_name)
+        # Generar diagramas con OutputManager
+        from .output_manager import OutputManager
+        output_manager = OutputManager(self.output_dir)
+        
+        # Crear generador temporal
+        temp_generator = DiagramGenerator(self.config, "temp_output")
+        temp_results = temp_generator.generate_all(project_name)
+        
+        # Organizar outputs
+        results = output_manager.organize_outputs(project_name, temp_results)
+        
+        # Limpiar temporales
+        import shutil
+        if Path("temp_output").exists():
+            shutil.rmtree("temp_output")
         
         if results:
             print(f"\n🎉 {project_name} diagrams generated successfully!")

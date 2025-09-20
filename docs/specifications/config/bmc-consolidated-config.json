@@ -1,0 +1,293 @@
+{
+  "metadata": {
+    "version": "2.0.0",
+    "consolidated_date": "2025-09-19T20:21:54.043412",
+    "source_files": [
+      "bmc-analysis-updated.json",
+      "bmc-analysis-complete.json",
+      "mcp-config.json"
+    ],
+    "description": "Configuración consolidada BMC - Archivo único"
+  },
+  "project": {
+    "name": "BMC Bolsa Comisionista",
+    "type": "Sistema Regulatorio",
+    "entity": "Ente Regulador",
+    "main_function": "Procesamiento de facturas y cálculo de comisiones"
+  },
+  "workflow": {
+    "workflow_version": "1.0.0",
+    "source": "index.md integrated analysis - UPDATED",
+    "timestamp": "2025-09-19T17:59:27Z",
+    "new_requirements_detected": {
+      "invoice_processing": {
+        "image_pdf_upload": "Servicio de carga de facturas en imagen o PDF",
+        "product_analysis": "Análisis de factura con base de datos de productos",
+        "frontend_delivery": "Entrega de listado de productos al frontend"
+      },
+      "enhanced_backend": {
+        "product_matching": "Análisis y matching de facturas con 60M productos",
+        "frontend_integration": "API para entregar listados al frontend"
+      }
+    },
+    "phases": {
+      "precharacterization": {
+        "phase": "Precaracterización",
+        "source_data": "index.md",
+        "system_analysis": {
+          "current_system": {
+            "name": "BMC - Bolsa Comisionista",
+            "type": "Sistema Regulatorio",
+            "entity": "Ente Regulador",
+            "main_function": "Procesamiento de facturas y cálculo de comisiones"
+          },
+          "data_complexity": {
+            "products": "60M registros",
+            "product_types": "16,000 categorías",
+            "processing_mode": "Facturas individuales y por lotes",
+            "source": "Migración desde Google Cloud"
+          },
+          "functional_scope": {
+            "backend": [
+              "APIs para procesamiento de facturas",
+              "Base de datos de productos",
+              "Desagregación por producto",
+              "Cálculos de comisión (lote y individual)",
+              "NUEVO: Análisis de facturas con BD productos",
+              "NUEVO: Entrega de listados al frontend"
+            ],
+            "frontend": {
+              "forms": "Formularios web para carga de datos",
+              "image_pdf_service": "NUEVO: Servicio de carga de facturas en imagen o PDF",
+              "exports": [
+                "PDF",
+                "Excel"
+              ],
+              "file_upload": {
+                "types": [
+                  "Archivos individuales",
+                  "Archivos ZIP",
+                  "NUEVO: Imágenes",
+                  "NUEVO: PDFs"
+                ],
+                "features": [
+                  "Facturas pueden repetirse",
+                  "Procesamiento en background"
+                ]
+              }
+            },
+            "integrations": {
+              "sftp": "Transmisión de archivos con otros sistemas",
+              "purpose": "Intercambio de datos regulatorios"
+            }
+          }
+        },
+        "migration_assessment": {
+          "complexity": "High - Regulatory system with 60M records + OCR processing",
+          "key_challenges": [
+            "DIAN classification compliance",
+            "Large dataset migration (60M products)",
+            "Business rules preservation",
+            "SFTP integration continuity",
+            "NUEVO: OCR/Image processing for invoices",
+            "NUEVO: Real-time product matching"
+          ],
+          "recommended_approach": "Strangler Fig Pattern with phased migration + OCR services"
+        }
+      },
+      "estructuracion": {
+        "phase": "Estructuración",
+        "architecture_design": {
+          "microservices": {
+            "invoice_service": {
+              "source_requirements": [
+                "Carga de facturas → Tabla de facturas",
+                "Botón calcular → Aplicación de reglas de negocio",
+                "Generación de certificado → PDF descargable o envío por correo",
+                "NUEVO: Procesamiento de imágenes/PDFs"
+              ],
+              "aws_implementation": [
+                "Lambda",
+                "SQS",
+                "S3",
+                "NUEVO: Textract para OCR",
+                "NUEVO: Rekognition para imágenes"
+              ],
+              "handles": "File upload, OCR processing and batch processing"
+            },
+            "product_service": {
+              "source_requirements": [
+                "Alimentos (leche, carne, huevos)",
+                "Cantidad",
+                "Unidad",
+                "NUEVO: Análisis y matching con facturas",
+                "NUEVO: API para frontend"
+              ],
+              "aws_implementation": [
+                "Lambda",
+                "RDS",
+                "ElastiCache",
+                "NUEVO: API Gateway para frontend"
+              ],
+              "handles": "60M product lookup, DIAN classification and frontend delivery"
+            },
+            "validation_service": {
+              "source_requirements": {
+                "first_validation": [
+                  "Producto",
+                  "Cantidad",
+                  "Unidad"
+                ],
+                "second_validation": [
+                  "Producto",
+                  "Clasificación de producto",
+                  "Unidad"
+                ]
+              },
+              "aws_implementation": [
+                "Lambda",
+                "Step Functions"
+              ],
+              "handles": "Two-layer validation system"
+            }
+          },
+          "data_architecture": {
+            "transactional": {
+              "current": "PostgreSQL principal",
+              "target": "RDS PostgreSQL Multi-AZ"
+            },
+            "analytical": {
+              "current": "Redshift para reportería",
+              "target": "Redshift cluster with Glue ETL"
+            },
+            "NUEVO_document_processing": {
+              "images": "S3 + Textract for OCR",
+              "pdfs": "S3 + Textract for text extraction"
+            }
+          }
+        }
+      },
+      "catalogo": {
+        "phase": "Catálogo",
+        "application_mapping": {
+          "from_index_analysis": {
+            "backend_apis": {
+              "current_features": [
+                "APIs para procesamiento de facturas",
+                "Base de datos de productos",
+                "Desagregación por producto",
+                "Cálculos de comisión (lote y individual)",
+                "NUEVO: Análisis de facturas con BD",
+                "NUEVO: Entrega de listados al frontend"
+              ],
+              "target_services": [
+                "Invoice API",
+                "Product API",
+                "Commission API",
+                "NUEVO: OCR Processing API",
+                "NUEVO: Product Matching API"
+              ]
+            },
+            "frontend_components": {
+              "current_features": {
+                "forms": "Formularios web para carga de datos",
+                "image_pdf_service": "NUEVO: Servicio de carga de facturas en imagen o PDF",
+                "exports": [
+                  "PDF",
+                  "Excel"
+                ],
+                "file_upload": {
+                  "types": [
+                    "Archivos individuales",
+                    "Archivos ZIP",
+                    "NUEVO: Imágenes",
+                    "NUEVO: PDFs"
+                  ],
+                  "features": [
+                    "Facturas pueden repetirse",
+                    "Procesamiento en background"
+                  ]
+                }
+              },
+              "target_components": [
+                "Upload Forms",
+                "Export Tools",
+                "Status Dashboard",
+                "NUEVO: Image/PDF Upload Component",
+                "NUEVO: Product List Display"
+              ]
+            },
+            "integration_points": {
+              "current": {
+                "sftp": "Transmisión de archivos con otros sistemas",
+                "purpose": "Intercambio de datos regulatorios"
+              },
+              "target": [
+                "Transfer Family SFTP",
+                "SES Email",
+                "EventBridge",
+                "NUEVO: Textract OCR",
+                "NUEVO: API Gateway"
+              ]
+            }
+          },
+          "migration_priorities": [
+            "1. Product Service (60M records foundation)",
+            "2. OCR Processing Service (image/PDF handling)",
+            "3. Invoice Processing (core business logic)",
+            "4. Commission Calculation (regulatory compliance)",
+            "5. Certificate Generation (PDF/Email)",
+            "6. Frontend Migration (user interface)"
+          ]
+        }
+      },
+      "lineamientos": {
+        "phase": "Lineamientos",
+        "implementation_standards": {
+          "regulatory_compliance": {
+            "dian_requirements": [
+              "Alimentos (leche, carne, huevos)",
+              "Cantidad",
+              "Unidad"
+            ],
+            "data_retention": "7 years minimum",
+            "audit_trail": "All transactions logged",
+            "NUEVO_document_compliance": "OCR accuracy >95% for regulatory documents"
+          },
+          "performance_requirements": {
+            "data_volume": {
+              "products": "60M registros",
+              "product_types": "16,000 categorías",
+              "processing_mode": "Facturas individuales y por lotes",
+              "source": "Migración desde Google Cloud"
+            },
+            "processing_modes": "Individual and batch processing + OCR processing",
+            "response_time": "< 3 seconds for individual, < 30 minutes for batch, < 10 seconds for OCR",
+            "NUEVO_ocr_requirements": "Image processing < 5 seconds, PDF text extraction < 3 seconds"
+          },
+          "security_standards": {
+            "data_classification": "Sensitive financial data + document images",
+            "encryption": "AES-256 at rest, TLS 1.3 in transit",
+            "access_control": "RBAC with MFA for admin operations",
+            "NUEVO_document_security": "Secure document storage with access logging"
+          }
+        }
+      }
+    },
+    "enhanced_next_steps": [
+      "Review updated specifications with OCR requirements",
+      "Validate image/PDF processing workflows",
+      "Plan OCR service integration",
+      "Set up Textract and document processing pipeline",
+      "Begin implementation planning",
+      "Set up AWS environment"
+    ]
+  },
+  "mcp_server": {
+    "command": "python3",
+    "args": [
+      "/home/giovanemere/Migracion/mcp-server.py"
+    ],
+    "description": "BMC System Context Provider"
+  }
+}

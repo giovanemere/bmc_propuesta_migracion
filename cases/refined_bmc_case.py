@@ -17,7 +17,7 @@ def run_refined_bmc_case():
     print("=" * 55)
     
     # Cargar MCP refinado
-    mcp_file = "docs/mcp-refined-architecture.md"
+    mcp_file = "docs/specifications/mcp-refined-architecture.md"
     
     if not os.path.exists(mcp_file):
         print(f"❌ MCP file not found: {mcp_file}")

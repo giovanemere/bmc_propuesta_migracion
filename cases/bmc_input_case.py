@@ -17,7 +17,7 @@ def run_bmc_input_case():
     print("=" * 55)
     
     # Archivo de especificación BMC
-    bmc_input_file = "docs/bmc-input-specification.md"
+    bmc_input_file = "docs/specifications/bmc-input-specification.md"
     
     if not os.path.exists(bmc_input_file):
         print(f"❌ BMC input file not found: {bmc_input_file}")
@@ -40,8 +40,8 @@ def run_bmc_input_case():
     print(f"  - AWS Services: {len(config.get('aws_services', {}))}")
     print(f"  - Integrations: {len(config.get('integrations', {}))}")
     
-    # Generar diagramas
-    generator = RefinedDiagramGenerator(config, output_dir="output")
+    # Generar diagramas - Solo en estructura MCP
+    generator = RefinedDiagramGenerator(config, output_dir="outputs/mcp")
     results = generator.generate_all_refined("BMC_Input")
     
     if results:

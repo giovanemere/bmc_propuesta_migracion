@@ -417,8 +417,8 @@ class RefinedDiagramGenerator:
     def generate_all_refined(self, project_name: str = "BMC") -> Dict[str, str]:
         """Genera todos los diagramas refinados PNG y Draw.io"""
         
-        # Crear directorios temporales
-        temp_output_dir = "temp_output"
+        # Usar directorio MCP directamente
+        temp_output_dir = f"outputs/mcp/diagrams/{project_name.lower()}"
         os.makedirs(f"{temp_output_dir}/png", exist_ok=True)
         os.makedirs(f"{temp_output_dir}/drawio", exist_ok=True)
         
@@ -470,10 +470,8 @@ class RefinedDiagramGenerator:
         output_manager = OutputManager("outputs")
         organized_files = output_manager.organize_outputs(project_name, results)
         
-        # Limpiar archivos temporales
-        import shutil
-        if os.path.exists(temp_output_dir):
-            shutil.rmtree(temp_output_dir)
+        # Archivos ya están en estructura MCP final
+        print("✓ Files organized in outputs/mcp structure")
         
         # Restaurar directorio original
         self.output_dir = original_output_dir

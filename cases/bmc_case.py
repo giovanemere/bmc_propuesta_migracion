@@ -20,7 +20,7 @@ def run_bmc_case():
     engine = MCPEngine(output_dir="output")
     
     # Archivo MCP específico de BMC
-    mcp_file = "docs/mcp-diagrams-architecture.md"
+    mcp_file = "docs/specifications/mcp-diagrams-architecture.md"
     
     # Ejecutar generación
     success = engine.run(mcp_file, "BMC")
