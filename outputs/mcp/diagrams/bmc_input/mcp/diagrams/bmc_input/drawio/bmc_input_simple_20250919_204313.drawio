@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="BMC_Input Architecture" id="1">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="BMC_Input AWS Architecture" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#232F3E;fontColor=#FFFFFF;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="aws" value="AWS Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="700" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc0" value="Invoice Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D05C17;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="200" y="200" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc1" value="Product Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D05C17;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="200" y="280" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc2" value="Ocr Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D05C17;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="200" y="360" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc3" value="Commission Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D05C17;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="200" y="440" width="120" height="60" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

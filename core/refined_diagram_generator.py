@@ -470,7 +470,17 @@ class RefinedDiagramGenerator:
         output_manager = OutputManager("outputs")
         organized_files = output_manager.organize_outputs(project_name, results)
         
+        # Generar prompts MCP
+        from .mcp_prompt_generator import MCPPromptGenerator
+        prompt_generator = MCPPromptGenerator(self.config, temp_output_dir)
+        prompt_results = prompt_generator.generate_prompts(project_name)
+        
+        # Agregar prompts a resultados
+        for prompt_type, prompt_path in prompt_results.items():
+            results[f"prompts_{prompt_type}"] = prompt_path
+        
         # Archivos ya están en estructura MCP final
+        print("✓ MCP prompts generated")
         print("✓ Files organized in outputs/mcp structure")
         
         # Restaurar directorio original

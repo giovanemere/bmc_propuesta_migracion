@@ -1,151 +1,164 @@
 #!/usr/bin/env python3
 """
-GitHub Release Creator - Crea release en GitHub con archivos adjuntos
+GitHub Release Creator - Crea release v3.0.0 con estructura MCP
 """
 
 import os
 import subprocess
 import zipfile
 from pathlib import Path
+from datetime import datetime
 
 def create_release_assets():
-    """Crea archivos para adjuntar al release"""
+    """Crea archivos para release v3.0.0"""
     
-    print("📦 Creating release assets...")
+    print("📦 Creando assets para release v3.0.0...")
     
     # Crear directorio de release
     release_dir = Path("release_assets")
     release_dir.mkdir(exist_ok=True)
     
-    # Crear ZIP con diagramas de ejemplo
-    diagrams_zip = release_dir / "bmc_diagrams_examples_v2.0.0.zip"
+    # Crear ZIP con diagramas MCP
+    diagrams_zip = release_dir / "bmc_mcp_diagrams_v3.0.0.zip"
     
     with zipfile.ZipFile(diagrams_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
-        # Agregar PNG files
-        png_dir = Path("output/png")
-        if png_dir.exists():
-            for png_file in png_dir.glob("*.png"):
-                zf.write(png_file, f"png/{png_file.name}")
+        # Agregar archivos MCP
+        mcp_dir = Path("outputs/mcp")
+        if mcp_dir.exists():
+            for file_path in mcp_dir.rglob("*"):
+                if file_path.is_file():
+                    rel_path = file_path.relative_to(mcp_dir)
+                    zf.write(file_path, f"mcp/{rel_path}")
         
-        # Agregar Draw.io files
-        drawio_dir = Path("output/drawio")
-        if drawio_dir.exists():
-            for drawio_file in drawio_dir.glob("*.drawio"):
-                zf.write(drawio_file, f"drawio/{drawio_file.name}")
-        
-        # Agregar documentación
-        docs_files = [
-            "README.md",
-            "CHANGELOG.md", 
-            "RELEASE_NOTES.md",
-            "docs/mcp-diagrams-architecture.md",
-            "docs/mcp-aws-model.md"
-        ]
-        
-        for doc_file in docs_files:
-            if Path(doc_file).exists():
-                zf.write(doc_file, f"docs/{Path(doc_file).name}")
-    
-    print(f"✓ Created: {diagrams_zip} ({diagrams_zip.stat().st_size:,} bytes)")
+        # Agregar configuración consolidada
+        config_file = Path("docs/specifications/config/bmc-consolidated-config.json")
+        if config_file.exists():
+            zf.write(config_file, "config/bmc-consolidated-config.json")
     
     # Crear ZIP con código fuente
-    source_zip = release_dir / "mcp_diagram_generator_v2.0.0.zip"
+    source_zip = release_dir / "mcp_generator_source_v3.0.0.zip"
     
     with zipfile.ZipFile(source_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
-        # Core modules
-        core_dir = Path("core")
-        if core_dir.exists():
-            for py_file in core_dir.glob("*.py"):
-                zf.write(py_file, f"core/{py_file.name}")
+        # Core files
+        for py_file in Path("core").glob("*.py"):
+            zf.write(py_file, f"core/{py_file.name}")
         
         # Cases
-        cases_dir = Path("cases")
-        if cases_dir.exists():
-            for py_file in cases_dir.glob("*.py"):
-                zf.write(py_file, f"cases/{py_file.name}")
+        for py_file in Path("cases").glob("*.py"):
+            zf.write(py_file, f"cases/{py_file.name}")
         
-        # Scripts
-        scripts_dir = Path("scripts")
-        if scripts_dir.exists():
-            for py_file in scripts_dir.glob("*.py"):
-                zf.write(py_file, f"scripts/{py_file.name}")
+        # Scripts principales
+        main_files = ["main.py", "requirements.txt", "README.md"]
+        for file_name in main_files:
+            if Path(file_name).exists():
+                zf.write(file_name, file_name)
         
-        # Main files
-        main_files = [
-            "main.py",
-            "run.sh",
-            "requirements.txt"
+        # Scripts de utilidad
+        util_scripts = [
+            "consolidate_config.py",
+            "validate_single_config.py", 
+            "fix_drawio_files.py",
+            "organize_cp_outputs.py"
         ]
-        
-        for main_file in main_files:
-            if Path(main_file).exists():
-                zf.write(main_file, main_file)
+        for script in util_scripts:
+            if Path(script).exists():
+                zf.write(script, f"scripts/{script}")
     
-    print(f"✓ Created: {source_zip} ({source_zip.stat().st_size:,} bytes)")
+    print(f"✅ Assets creados:")
+    print(f"  - {diagrams_zip}")
+    print(f"  - {source_zip}")
     
-    return [diagrams_zip, source_zip]
+    return [str(diagrams_zip), str(source_zip)]
 
-def get_release_info():
-    """Obtiene información del release"""
+def create_github_release():
+    """Crea release en GitHub"""
     
-    # Obtener último commit
-    result = subprocess.run(
-        ["git", "log", "-1", "--pretty=format:%H %s"],
-        capture_output=True, text=True
-    )
-    
-    if result.returncode == 0:
-        commit_hash, commit_msg = result.stdout.split(" ", 1)
-        short_hash = commit_hash[:7]
-    else:
-        short_hash = "unknown"
-        commit_msg = "Latest commit"
-    
-    # Contar archivos generados
-    png_count = len(list(Path("output/png").glob("*.png"))) if Path("output/png").exists() else 0
-    drawio_count = len(list(Path("output/drawio").glob("*.drawio"))) if Path("output/drawio").exists() else 0
-    
-    return {
-        "commit_hash": short_hash,
-        "commit_msg": commit_msg,
-        "png_count": png_count,
-        "drawio_count": drawio_count
-    }
-
-def main():
-    """Función principal"""
-    
-    print("🚀 GitHub Release Creator v2.0.0")
-    print("=" * 40)
+    version = "v3.0.0"
     
     # Crear assets
     assets = create_release_assets()
     
-    # Obtener información
-    info = get_release_info()
+    # Crear tag
+    print(f"🏷️ Creando tag {version}...")
+    subprocess.run(["git", "tag", "-a", version, "-m", f"Release {version}"], check=True)
+    subprocess.run(["git", "push", "origin", version], check=True)
     
-    print(f"\n📊 Release Summary:")
-    print(f"  - Version: v2.0.0")
-    print(f"  - Commit: {info['commit_hash']}")
-    print(f"  - PNG Diagrams: {info['png_count']}")
-    print(f"  - Draw.io Files: {info['drawio_count']}")
-    print(f"  - Assets Created: {len(assets)}")
+    # Release notes
+    release_notes = f"""# MCP Diagram Generator v3.0.0
+
+## 🎉 Nuevas Características
+
+### ✅ Configuración Consolidada
+- **Archivo único**: `bmc-consolidated-config.json`
+- **Backup automático** de configuraciones anteriores
+- **Validación** de configuración única
+
+### 🔧 Corrección DrawIO
+- **Errores mxCell solucionados**
+- **XML válido** compatible con draw.io
+- **Validador automático** de archivos DrawIO
+
+### 📁 Estructura MCP Unificada
+- **Solo `outputs/mcp/`** - Sin duplicados
+- **Organización CP** separada de otras salidas
+- **Scripts de limpieza** automática
+
+## 🛠️ Herramientas Incluidas
+
+### Scripts de Validación
+```bash
+python3 validate_single_config.py  # Validar configuración única
+python3 validate_drawio.py         # Validar archivos DrawIO
+```
+
+### Scripts de Organización
+```bash
+python3 organize_cp_outputs.py     # Organizar archivos CP
+python3 fix_duplicate_outputs.py   # Eliminar duplicados
+```
+
+## 📊 Métricas del Proyecto BMC
+
+- **Microservicios**: 5 servicios mapeados
+- **AWS Services**: 4 servicios configurados  
+- **Throughput**: 10,000 facturas/hora
+- **Base de datos**: 60M productos
+
+## 🔄 Migración desde v2.x
+
+1. Ejecutar `python3 consolidate_config.py`
+2. Ejecutar `python3 use_only_mcp.py`
+3. Validar con `python3 validate_single_config.py`
+
+## 📁 Archivos Incluidos
+
+- `bmc_mcp_diagrams_v3.0.0.zip` - Diagramas y configuración MCP
+- `mcp_generator_source_v3.0.0.zip` - Código fuente completo
+
+Generado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+"""
     
-    print(f"\n📦 Release Assets:")
-    for asset in assets:
-        size = asset.stat().st_size
-        print(f"  - {asset.name} ({size:,} bytes)")
-    
-    print(f"\n🎯 Next Steps:")
-    print(f"1. Go to: https://github.com/giovanemere/bmc_propuesta_migracion/releases")
-    print(f"2. Click 'Create a new release'")
-    print(f"3. Select tag: v2.0.0")
-    print(f"4. Title: 'v2.0.0 - MCP Diagram Generator'")
-    print(f"5. Copy description from RELEASE_NOTES.md")
-    print(f"6. Attach files from release_assets/")
-    print(f"7. Publish release")
-    
-    print(f"\n✅ Release preparation completed!")
+    # Crear release usando GitHub CLI si está disponible
+    try:
+        cmd = [
+            "gh", "release", "create", version,
+            "--title", f"MCP Diagram Generator {version}",
+            "--notes", release_notes
+        ]
+        
+        # Agregar assets
+        for asset in assets:
+            cmd.append(asset)
+        
+        subprocess.run(cmd, check=True)
+        print(f"🎉 Release {version} creado exitosamente!")
+        
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print(f"⚠️ GitHub CLI no disponible. Release manual requerido.")
+        print(f"📝 Release notes guardadas en release_notes.md")
+        
+        with open("release_notes.md", "w") as f:
+            f.write(release_notes)
 
 if __name__ == "__main__":
-    main()
+    create_github_release()
