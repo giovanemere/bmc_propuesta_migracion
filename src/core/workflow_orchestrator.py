@@ -98,7 +98,7 @@ class WorkflowOrchestrator:
         
         print("\n2️⃣ GENERANDO PROMPTS MCP")
         
-        from ..generators.prompt_generator import MCPPromptGenerator
+        from generators.prompt_generator import MCPPromptGenerator
         
         prompt_generator = MCPPromptGenerator(config["mcp"], str(self.paths.outputs_prompts_dir))
         
@@ -119,7 +119,7 @@ class WorkflowOrchestrator:
         
         print("\n3️⃣ GENERANDO DOCUMENTACIÓN")
         
-        from ..generators.doc_generator import ImplementationDocGenerator
+        from generators.doc_generator import ImplementationDocGenerator
         
         doc_generator = ImplementationDocGenerator(config["mcp"], str(self.paths.outputs_docs_dir))
         
@@ -140,15 +140,15 @@ class WorkflowOrchestrator:
         
         print("\n4️⃣ GENERANDO DIAGRAMAS")
         
-        from ..generators.universal_generator import UniversalGenerator
-        from ..validators.xml_validator import MCPIntegrator
+        from generators.universal_generator import UniversalGenerator
+        from validators.xml_validator import MCPIntegrator
         from templates.drawio_templates import DrawIOTemplates
         
         diagrams = {}
         
         try:
             # Generar PNG usando diagram_generator
-            from ..generators.diagram_generator import DiagramGenerator
+            from generators.diagram_generator import DiagramGenerator
             
             diagram_generator = DiagramGenerator(config["mcp"])
             

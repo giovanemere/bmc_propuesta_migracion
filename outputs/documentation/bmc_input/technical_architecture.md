@@ -34,4 +34,4 @@ Sistema regulatorio para procesamiento de facturas y cálculo de comisiones DIAN
 - **Encryption at rest** AES-256
 - **TLS 1.3** para datos en tránsito
 
-Generado: 2025-09-19 23:16:52
+Generado: 2025-09-19 23:10:58
