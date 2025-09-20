@@ -6,398 +6,584 @@ Sistema MCP Diagram Generator v4.1.0 - Plataforma profesional para generación a
 
 ## 🎯 Arquitectura General
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    MCP DIAGRAM GENERATOR                    │
-├─────────────────────────────────────────────────────────────┤
-│  🎮 ORCHESTRATION LAYER                                    │
-│  ├── WorkflowOrchestrator (Flujo completo)                 │
-│  └── AppConfig (Configuración transversal)                 │
-├─────────────────────────────────────────────────────────────┤
-│  🔧 GENERATION LAYER                                       │
-│  ├── UniversalGenerator (PNG + DrawIO)                     │
-│  ├── DiagramGenerator (PNG especializado)                  │
-│  ├── PromptGenerator (Prompts MCP)                         │
-│  └── DocGenerator (Documentación)                          │
-├─────────────────────────────────────────────────────────────┤
-│  ✅ VALIDATION LAYER                                       │
-│  ├── XMLValidator (Calidad DrawIO)                         │
-│  ├── MCPIntegrator (Coherencia MCP)                        │
-│  └── AutomatedTests (Tests calidad)                        │
-├─────────────────────────────────────────────────────────────┤
-│  📐 TEMPLATE LAYER                                         │
-│  ├── DrawIOTemplates (XML profesional)                     │
-│  ├── AWSComponents (Clases especializadas)                 │
-│  └── StandardInputModel (Esquema JSON)                     │
-├─────────────────────────────────────────────────────────────┤
-│  🌐 API LAYER                                              │
-│  └── DiagramAPI (REST endpoints)                           │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph "MCP DIAGRAM GENERATOR"
+        subgraph "🎮 ORCHESTRATION LAYER"
+            WO[WorkflowOrchestrator]
+            AC[AppConfig]
+        end
+        
+        subgraph "🔧 GENERATION LAYER"
+            UG[UniversalGenerator]
+            DG[DiagramGenerator]
+            PG[PromptGenerator]
+            DOC[DocGenerator]
+        end
+        
+        subgraph "✅ VALIDATION LAYER"
+            XV[XMLValidator]
+            MI[MCPIntegrator]
+            AT[AutomatedTests]
+        end
+        
+        subgraph "📐 TEMPLATE LAYER"
+            DT[DrawIOTemplates]
+            AWS[AWSComponents]
+            SIM[StandardInputModel]
+        end
+        
+        subgraph "🌐 API LAYER"
+            API[DiagramAPI]
+        end
+    end
+    
+    WO --> UG
+    WO --> DG
+    WO --> PG
+    WO --> DOC
+    
+    UG --> XV
+    UG --> DT
+    
+    DG --> AWS
+    
+    AC --> WO
+    
+    XV --> MI
+    
+    API --> WO
 ```
 
 ## 🏛️ Principios de Diseño
 
 ### 1. Separación de Responsabilidades
-- **Orquestación:** WorkflowOrchestrator coordina flujo completo
-- **Generación:** Generadores especializados por formato
-- **Validación:** Validadores independientes de calidad
-- **Configuración:** AppConfig centraliza toda configuración
+```plantuml
+@startuml
+package "Orchestration" {
+  [WorkflowOrchestrator] --> [AppConfig]
+}
 
-### 2. Inversión de Dependencias
-- Componentes dependen de abstracciones, no implementaciones
-- Configuración inyectada desde AppConfig
-- Paths dinámicos sin rutas hardcoded
+package "Generation" {
+  [UniversalGenerator]
+  [DiagramGenerator]
+  [PromptGenerator]
+  [DocGenerator]
+}
 
-### 3. Principio Abierto/Cerrado
-- Extensible para nuevos formatos (Azure, GCP)
-- Cerrado para modificación de core
-- Factory pattern para componentes AWS
+package "Validation" {
+  [XMLValidator]
+  [MCPIntegrator]
+}
 
-### 4. Responsabilidad Única
-- Cada clase tiene una responsabilidad específica
-- Generadores especializados por tipo
-- Validadores enfocados en calidad
+[WorkflowOrchestrator] --> [UniversalGenerator]
+[WorkflowOrchestrator] --> [DiagramGenerator]
+[WorkflowOrchestrator] --> [PromptGenerator]
+[WorkflowOrchestrator] --> [DocGenerator]
+
+[UniversalGenerator] --> [XMLValidator]
+[XMLValidator] --> [MCPIntegrator]
+@enduml
+```
 
 ## 📦 Componentes Detallados
 
 ### Core Components
 
-#### AppConfig (`src/core/app_config.py`)
-```python
-Responsabilidades:
-├── Gestión centralizada de configuraciones
-├── Auto-detección de paths del proyecto
-├── Cache inteligente de configuraciones
-├── Variables de entorno integradas
-└── Estructura de outputs organizada
-
-APIs Principales:
-├── get_config(name) → Dict[str, Any]
-├── save_config(name, data) → str
-├── get_output_path(type, filename) → Path
-└── get_paths() → AppPaths
-
-Patrones Aplicados:
-├── Singleton (instancia global)
-├── Factory (creación de paths)
-└── Cache (configuraciones)
+#### AppConfig - Configuración Transversal
+```mermaid
+classDiagram
+    class AppConfig {
+        +AppPaths paths
+        +Dict config_cache
+        +Dict env
+        +load_config(name) Dict
+        +save_config(name, data) str
+        +get_output_path(type, filename) Path
+        +get_paths() AppPaths
+    }
+    
+    class AppPaths {
+        +Path root_dir
+        +Path src_dir
+        +Path config_dir
+        +Path outputs_dir
+        +Path outputs_png_dir
+        +Path outputs_drawio_dir
+        +from_root(path) AppPaths
+    }
+    
+    AppConfig --> AppPaths
+    AppConfig --> DynamicConfigGenerator
+    
+    class DynamicConfigGenerator {
+        +generate_config_from_specification() Dict
+        +is_specification_newer() bool
+        +parse_specification(content) Dict
+    }
 ```
 
-#### WorkflowOrchestrator (`src/core/workflow_orchestrator.py`)
-```python
-Responsabilidades:
-├── Coordinación del flujo completo (6 fases)
-├── Manejo robusto de errores
-├── Consolidación de resultados
-├── Generación de reportes ejecutivos
-└── Validación de coherencia
+#### WorkflowOrchestrator - Flujo End-to-End
+```plantuml
+@startuml
+participant User
+participant WorkflowOrchestrator
+participant AppConfig
+participant PromptGenerator
+participant DocGenerator
+participant UniversalGenerator
+participant Validator
 
-Flujo de Ejecución:
-1️⃣ Config → Carga y valida configuración
-2️⃣ Prompts → Genera prompts MCP especializados
-3️⃣ Docs → Crea documentación técnica
-4️⃣ Diagramas → PNG + DrawIO profesionales
-5️⃣ Consolidación → Resultados en JSON
-6️⃣ Reporte → Métricas y resumen ejecutivo
+User -> WorkflowOrchestrator: execute_complete_workflow()
 
-Patrones Aplicados:
-├── Command (fases del flujo)
-├── Template Method (estructura fija)
-└── Observer (reporte de progreso)
+WorkflowOrchestrator -> AppConfig: load_config("bmc")
+AppConfig -> WorkflowOrchestrator: config_data
+
+WorkflowOrchestrator -> PromptGenerator: generate_prompts()
+PromptGenerator -> WorkflowOrchestrator: 3 prompt files
+
+WorkflowOrchestrator -> DocGenerator: generate_docs()
+DocGenerator -> WorkflowOrchestrator: 4 doc files
+
+WorkflowOrchestrator -> UniversalGenerator: generate_diagrams()
+UniversalGenerator -> WorkflowOrchestrator: PNG + DrawIO files
+
+WorkflowOrchestrator -> Validator: validate_results()
+Validator -> WorkflowOrchestrator: quality_metrics
+
+WorkflowOrchestrator -> User: consolidated_results
+@enduml
 ```
 
 ### Generation Components
 
-#### UniversalGenerator (`src/generators/universal_generator.py`)
-```python
-Responsabilidades:
-├── Generación unificada PNG + DrawIO
-├── Mapeo automático componentes
-├── Layout inteligente
-├── Estilos AWS oficiales
-└── Validación de salida
-
-Mapeo de Componentes:
-PNG (diagrams) ←→ DrawIO (mxgraph.aws4)
-├── Fargate ←→ mxgraph.aws4.fargate
-├── RDS ←→ mxgraph.aws4.rds
-├── S3 ←→ mxgraph.aws4.s3
-└── APIGateway ←→ mxgraph.aws4.api_gateway
-
-Patrones Aplicados:
-├── Bridge (PNG ↔ DrawIO)
-├── Strategy (diferentes layouts)
-└── Factory (creación componentes)
+#### UniversalGenerator - PNG + DrawIO Unificado
+```mermaid
+graph LR
+    subgraph "UniversalGenerator"
+        A[MCP Config] --> B[StandardSchema Converter]
+        B --> C[PNG Generator]
+        B --> D[DrawIO Generator]
+        
+        C --> E[diagrams library]
+        D --> F[mxgraph.aws4 shapes]
+        
+        E --> G[network.png]
+        E --> H[microservices.png]
+        E --> I[security.png]
+        E --> J[data_flow.png]
+        
+        F --> K[complete_architecture.drawio]
+    end
+    
+    subgraph "Validation"
+        G --> L[File Validator]
+        H --> L
+        I --> L
+        J --> L
+        K --> M[XML Validator]
+    end
 ```
 
-#### DiagramGenerator (`src/generators/diagram_generator.py`)
-```python
-Responsabilidades:
-├── Generación PNG especializada (4 tipos)
-├── Clusters automáticos jerárquicos
-├── Iconos AWS reales de diagrams library
-├── Optimización visual profesional
-└── Exportación en alta calidad
+#### DiagramGenerator - PNG Especializado
+```plantuml
+@startuml
+class DiagramGenerator {
+    +Dict config
+    +generate_diagram(type, output_path) str
+    -_generate_network_png() str
+    -_generate_microservices_png() str
+    -_generate_security_png() str
+    -_generate_data_flow_png() str
+}
 
-Tipos de Diagramas:
-├── Network: VPC, subnets, AZ, conectividad
-├── Microservices: Servicios, APIs, comunicación
-├── Security: WAF, Cognito, KMS, políticas
-└── DataFlow: Flujos de datos, procesamiento
+class NetworkDiagram {
+    +create_vpc_cluster()
+    +add_microservices()
+    +add_databases()
+    +add_connections()
+}
 
-Patrones Aplicados:
-├── Factory Method (tipos de diagramas)
-├── Builder (construcción compleja)
-└── Template Method (estructura común)
+class MicroservicesDiagram {
+    +create_service_cluster()
+    +add_fargate_services()
+    +add_api_connections()
+}
+
+DiagramGenerator --> NetworkDiagram
+DiagramGenerator --> MicroservicesDiagram
+@enduml
 ```
 
 ### Validation Components
 
-#### XMLValidator (`src/validators/xml_validator.py`)
-```python
-Responsabilidades:
-├── Validación estructura XML DrawIO
-├── Verificación componentes AWS oficiales
-├── Métricas de completitud automáticas
-├── Integración con modelo MCP
-└── Reportes de calidad detallados
-
-Validaciones Realizadas:
-├── Estructura: mxfile, diagram, mxGraphModel
-├── Componentes: mxgraph.aws4.* válidos
-├── Conexiones: referencias correctas
-├── Completitud: vs especificación original
-└── MCP: coherencia con configuración
-
-Patrones Aplicados:
-├── Chain of Responsibility (validaciones)
-├── Visitor (análisis XML)
-└── Strategy (tipos de validación)
+#### XMLValidator - Calidad DrawIO
+```mermaid
+flowchart TD
+    A[DrawIO XML] --> B{Estructura Válida?}
+    B -->|Sí| C[Validar Componentes AWS]
+    B -->|No| D[Error: XML Malformado]
+    
+    C --> E{Componentes mxgraph.aws4?}
+    E -->|Sí| F[Validar Conexiones]
+    E -->|No| G[Error: Iconos No Oficiales]
+    
+    F --> H{Referencias Correctas?}
+    H -->|Sí| I[Validar Completitud]
+    H -->|No| J[Error: Referencias Rotas]
+    
+    I --> K{Todos los Microservicios?}
+    K -->|Sí| L[✅ Validación Exitosa]
+    K -->|No| M[⚠️ Advertencia: Incompleto]
 ```
 
-#### MCPIntegrator (dentro de XMLValidator)
-```python
-Responsabilidades:
-├── Conversión MCP → Modelo estándar
-├── Preservación de configuración original
-├── Mapeo automático de microservicios
-├── Validación de coherencia bidireccional
-└── Compatibilidad con versiones MCP
+#### MCPIntegrator - Coherencia MCP
+```plantuml
+@startuml
+class MCPIntegrator {
+    +convert_mcp_to_standard_model(mcp_config) StandardSchema
+    +validate_mcp_generated_xml(xml, mcp_config) ValidationResult
+    +load_mcp_config() Dict
+}
 
-Proceso de Integración:
-1. Carga configuración MCP existente
-2. Extrae microservicios y servicios AWS
-3. Convierte a modelo estándar unificado
-4. Valida coherencia post-generación
-5. Reporta discrepancias automáticamente
+class StandardSchema {
+    +metadata: Metadata
+    +architecture: Architecture
+    +validate() bool
+}
 
-Patrones Aplicados:
-├── Adapter (MCP → Estándar)
-├── Facade (simplifica integración)
-└── Memento (preserva estado original)
+class Architecture {
+    +components: List[Component]
+    +containers: List[Container]
+    +connections: List[Connection]
+}
+
+MCPIntegrator --> StandardSchema
+StandardSchema --> Architecture
+@enduml
 ```
 
 ### Template Components
 
-#### DrawIOTemplates (`templates/drawio_templates.py`)
-```python
-Responsabilidades:
-├── Plantillas XML base profesionales
-├── Estilos AWS oficiales por componente
-├── Generación XML válido y bien formado
-├── Personalización visual avanzada
-└── Optimización para Draw.io
-
-Estructura de Templates:
-├── BASE_TEMPLATE: Estructura mxfile completa
-├── COMPONENT_TEMPLATE: Componentes AWS
-├── CONTAINER_TEMPLATE: Contenedores (VPC, AZ)
-├── CONNECTION_TEMPLATE: Conexiones con estilos
-└── TITLE_TEMPLATE: Títulos profesionales
-
-Estilos por Categoría:
-├── Compute: Fargate, Lambda, EC2 (naranja)
-├── Database: RDS, DynamoDB (verde)
-├── Storage: S3, EFS (verde claro)
-├── Network: API Gateway, CloudFront (morado)
-└── Security: WAF, Cognito (rojo)
-
-Patrones Aplicados:
-├── Template Method (estructura XML)
-├── Factory (estilos por tipo)
-└── Builder (construcción XML compleja)
+#### DrawIOTemplates - XML Profesional
+```mermaid
+graph TD
+    subgraph "DrawIO Templates"
+        A[BASE_TEMPLATE] --> B[mxfile structure]
+        C[COMPONENT_TEMPLATE] --> D[AWS Components]
+        E[CONTAINER_TEMPLATE] --> F[VPC/AZ Containers]
+        G[CONNECTION_TEMPLATE] --> H[Styled Connections]
+    end
+    
+    subgraph "AWS Styles"
+        D --> I[Compute: Fargate, Lambda]
+        D --> J[Database: RDS, DynamoDB]
+        D --> K[Storage: S3, EFS]
+        D --> L[Network: API Gateway, CloudFront]
+        D --> M[Security: WAF, Cognito]
+    end
+    
+    subgraph "Output"
+        B --> N[Valid XML]
+        I --> N
+        J --> N
+        K --> N
+        L --> N
+        M --> N
+        F --> N
+        H --> N
+    end
 ```
 
-#### AWSComponents (`src/components/aws_components.py`)
-```python
-Responsabilidades:
-├── Clases especializadas por servicio AWS
-├── Factory pattern para creación
-├── Validación automática de propiedades
-├── Mapeo directo PNG ↔ DrawIO
-└── Metadata técnica integrada
+#### AWSComponents - Clases Especializadas
+```plantuml
+@startuml
+abstract class AWSComponent {
+    +String id
+    +String label
+    +Dict properties
+    +validate() bool
+    +to_png_component() DiagramComponent
+    +to_drawio_xml() String
+}
 
-Jerarquía de Clases:
-AWSComponent (abstracta)
-├── Compute: Fargate, Lambda, EC2
-├── Database: RDS, DynamoDB, ElastiCache
-├── Storage: S3, EFS, EBS
-├── Network: APIGateway, ELB, CloudFront
-├── Security: WAF, Cognito, KMS
-└── Integration: SQS, SNS
+class Fargate extends AWSComponent {
+    +String cpu
+    +String memory
+    +int replicas
+}
 
-Propiedades por Componente:
-├── Fargate: cpu, memory, replicas
-├── RDS: engine, instance_class, multi_az
-├── S3: storage_class, versioning, encryption
-└── APIGateway: throttle_rate, burst_limit
+class RDS extends AWSComponent {
+    +String engine
+    +String instance_class
+    +boolean multi_az
+}
 
-Patrones Aplicados:
-├── Abstract Factory (componentes AWS)
-├── Factory Method (creación específica)
-└── Strategy (validación por tipo)
+class S3 extends AWSComponent {
+    +String storage_class
+    +boolean versioning
+    +String encryption
+}
+
+class APIGateway extends AWSComponent {
+    +String throttle_rate
+    +String burst_limit
+}
+
+class ComponentFactory {
+    +create_component(type, config) AWSComponent
+}
+
+ComponentFactory --> AWSComponent
+@enduml
 ```
 
 ## 🔄 Flujos de Datos
 
 ### Flujo Principal de Generación
-```
-📋 Especificación → 🔧 AppConfig → 🎮 WorkflowOrchestrator
-                                        ↓
-🎯 Prompts ← 📚 Docs ← 📐 Diagramas ← ⚙️ Config Consolidada
-    ↓           ↓         ↓
-📄 3 archivos  📄 4 archivos  📄 PNG + DrawIO
-    ↓           ↓         ↓
-📊 Consolidación de Resultados
-    ↓
-📋 Reporte Ejecutivo Final
+```mermaid
+sequenceDiagram
+    participant S as 📋 Specification
+    participant AC as 🔧 AppConfig
+    participant WO as 🎮 Orchestrator
+    participant G as 🔧 Generators
+    participant V as ✅ Validators
+    participant FS as 💾 FileSystem
+
+    S->>AC: 1. bmc-input-specification.md
+    AC->>AC: 2. Dynamic config generation
+    AC->>WO: 3. Consolidated config
+    
+    WO->>G: 4. Generate prompts (3 files)
+    G->>FS: 5. Save prompts/bmc_input/
+    
+    WO->>G: 6. Generate docs (4 files)
+    G->>FS: 7. Save documentation/bmc_input/
+    
+    WO->>G: 8. Generate diagrams (5 files)
+    G->>FS: 9. Save png/ + drawio/
+    
+    WO->>V: 10. Validate all outputs
+    V->>WO: 11. Quality metrics
+    
+    WO->>FS: 12. Consolidated results
 ```
 
 ### Flujo de Validación
-```
-📐 DrawIO XML → ✅ XMLValidator → 📊 Métricas
-                      ↓
-🔍 Estructura → 🎨 Componentes → 🔗 Conexiones
-                      ↓
-📋 MCP Config → 🔄 MCPIntegrator → ✅ Coherencia
-                      ↓
-📊 Reporte de Calidad Final
+```mermaid
+graph TD
+    A[📐 DrawIO XML] --> B[🔍 Structure Validator]
+    B --> C{Valid XML?}
+    C -->|Yes| D[🎨 Component Validator]
+    C -->|No| E[❌ Structure Error]
+    
+    D --> F{AWS Components?}
+    F -->|Yes| G[🔗 Connection Validator]
+    F -->|No| H[❌ Component Error]
+    
+    G --> I{Valid References?}
+    I -->|Yes| J[📋 Completeness Validator]
+    I -->|No| K[❌ Reference Error]
+    
+    J --> L[🔄 MCP Integrator]
+    L --> M{Coherent with MCP?}
+    M -->|Yes| N[✅ Validation Success]
+    M -->|No| O[⚠️ Coherence Warning]
 ```
 
 ## 📁 Estructura de Outputs
 
-```
-outputs/
-├── png/                    # Diagramas PNG por proyecto
-│   └── {project}/
-│       ├── network_architecture.png
-│       ├── microservices_detailed.png
-│       ├── security_architecture.png
-│       └── data_flow.png
-├── drawio/                 # Diagramas DrawIO editables
-│   └── {project}/
-│       └── complete_architecture.drawio
-├── mermaid/               # Diagramas Mermaid (futuro)
-│   └── {project}/
-├── prompts/               # Prompts MCP especializados
-│   └── {project}/
-│       ├── architecture_prompt.md
-│       ├── implementation_prompt.md
-│       └── migration_prompt.md
-├── documentation/         # Documentación técnica
-│   └── {project}/
-│       ├── technical_architecture.md
-│       ├── implementation_guide.md
-│       ├── migration_plan.md
-│       ├── infrastructure_config.md
-│       └── {project}_report.md
-└── generated/            # Configuraciones consolidadas
-    ├── {project}_consolidated.json
-    ├── {project}_results.json
-    └── bmc.json
+```mermaid
+graph TD
+    subgraph "outputs/"
+        subgraph "png/"
+            A[network_architecture.png]
+            B[microservices_detailed.png]
+            C[security_architecture.png]
+            D[data_flow.png]
+        end
+        
+        subgraph "drawio/"
+            E[complete_architecture.drawio]
+        end
+        
+        subgraph "prompts/"
+            F[architecture_prompt.md]
+            G[implementation_prompt.md]
+            H[migration_prompt.md]
+        end
+        
+        subgraph "documentation/"
+            I[technical_architecture.md]
+            J[implementation_guide.md]
+            K[migration_plan.md]
+            L[infrastructure_config.md]
+        end
+        
+        subgraph "generated/"
+            M[bmc.json]
+            N[consolidated.json]
+            O[results.json]
+        end
+    end
 ```
 
 ## 🧪 Testing y Calidad
 
-### Tests Automatizados (`tests/automated_quality_tests.py`)
-```python
-Cobertura de Tests:
-├── StandardModelTests (3 tests)
-│   ├── Validación modelo JSON
-│   ├── Factory de componentes
-│   └── Validación componentes
-├── XMLValidationTests (3 tests)
-│   ├── Estructura XML DrawIO
-│   ├── Componentes AWS válidos
-│   └── Completitud vs especificación
-├── TemplateGenerationTests (3 tests)
-│   ├── Generación templates
-│   ├── XML desde templates
-│   └── Mapeo de estilos
-├── MCPIntegrationTests (2 tests)
-│   ├── Conversión MCP → Estándar
-│   └── Validación XML desde MCP
-└── EndToEndTests (2 tests)
-    ├── Flujo completo
-    └── Operaciones con archivos
+### Tests Automatizados
+```plantuml
+@startuml
+package "Test Suite" {
+  class StandardModelTests {
+    +test_model_validation()
+    +test_component_factory()
+    +test_component_validation()
+  }
+  
+  class XMLValidationTests {
+    +test_xml_structure_validation()
+    +test_aws_components_validation()
+    +test_diagram_completeness()
+  }
+  
+  class TemplateGenerationTests {
+    +test_network_template_generation()
+    +test_xml_generation_from_template()
+    +test_component_style_mapping()
+  }
+  
+  class MCPIntegrationTests {
+    +test_mcp_to_standard_conversion()
+    +test_mcp_xml_validation()
+  }
+  
+  class EndToEndTests {
+    +test_complete_workflow()
+    +test_file_operations()
+  }
+}
+@enduml
+```
 
-Métricas de Calidad:
-├── 13/13 tests passing (100%)
-├── Cobertura end-to-end completa
-├── Validación automática de XML
-└── Integración MCP verificada
+### Métricas de Calidad
+```mermaid
+pie title Cobertura de Tests
+    "StandardModel" : 23
+    "XMLValidation" : 23
+    "TemplateGeneration" : 23
+    "MCPIntegration" : 15
+    "EndToEnd" : 16
 ```
 
 ## 🔧 Configuración y Extensibilidad
 
 ### Variables de Entorno
-```bash
-DEBUG=false                 # Modo debug
-LOG_LEVEL=INFO             # Nivel de logging
-OUTPUT_FORMAT=both         # png, drawio, both
-AWS_REGION=us-east-1       # Región AWS por defecto
-PROJECT_NAME=mcp_diagrams  # Nombre proyecto por defecto
+```mermaid
+graph LR
+    subgraph "Environment Variables"
+        A[DEBUG=false]
+        B[LOG_LEVEL=INFO]
+        C[OUTPUT_FORMAT=both]
+        D[AWS_REGION=us-east-1]
+        E[PROJECT_NAME=mcp_diagrams]
+    end
+    
+    subgraph "AppConfig"
+        F[Configuration Manager]
+    end
+    
+    A --> F
+    B --> F
+    C --> F
+    D --> F
+    E --> F
 ```
 
-### Extensión para Nuevos Proveedores
-```python
-# Para agregar Azure/GCP:
-1. Extender AWSComponent → CloudComponent
-2. Agregar Azure/GCP shapes en templates
-3. Implementar mapeo en UniversalGenerator
-4. Actualizar tests de validación
+### Extensión Multi-Cloud
+```plantuml
+@startuml
+abstract class CloudComponent {
+    +String provider
+    +String region
+    +validate() bool
+}
+
+class AWSComponent extends CloudComponent {
+    +String aws_service_type
+}
+
+class AzureComponent extends CloudComponent {
+    +String azure_service_type
+}
+
+class GCPComponent extends CloudComponent {
+    +String gcp_service_type
+}
+
+class MultiCloudFactory {
+    +create_component(provider, type) CloudComponent
+}
+
+MultiCloudFactory --> CloudComponent
+@enduml
 ```
 
 ## 📊 Métricas de Performance
 
-| Operación | Tiempo | Archivos | Tamaño |
-|-----------|--------|----------|--------|
-| **Flujo Completo** | < 1s | 11 archivos | ~50KB total |
-| **Generación PNG** | < 5s | 4 diagramas | ~1MB total |
-| **Generación DrawIO** | < 1s | 1 diagrama | ~30KB |
-| **Validación XML** | < 0.1s | - | - |
-| **Tests Automatizados** | < 0.01s | - | - |
+```mermaid
+gantt
+    title Tiempos de Generación
+    dateFormat X
+    axisFormat %s
+    
+    section Configuración
+    Carga Config     :0, 1s
+    
+    section Generación
+    Prompts (3)      :1s, 2s
+    Docs (4)         :2s, 4s
+    PNG (4)          :4s, 8s
+    DrawIO (1)       :8s, 9s
+    
+    section Validación
+    XML Validation   :9s, 10s
+    
+    section Total
+    Flujo Completo   :0, 10s
+```
 
 ## 🚀 Roadmap Técnico
 
-### v4.2.0 - Multi-Cloud
-- [ ] Soporte Azure (azure4 shapes)
-- [ ] Soporte GCP (gcp4 shapes)
-- [ ] Templates multi-provider
-- [ ] Validación cross-cloud
-
-### v4.3.0 - IA Integration
-- [ ] Layout automático con IA
-- [ ] Optimización visual inteligente
-- [ ] Generación desde código fuente
-- [ ] Análisis de dependencias
-
-### v5.0.0 - Platform
-- [ ] Dashboard web completo
-- [ ] Colaboración tiempo real
-- [ ] Versionado de diagramas
-- [ ] Integración CI/CD nativa
+### Evolución de Arquitectura
+```mermaid
+timeline
+    title Roadmap de Arquitectura
+    
+    section v4.1.0 (Actual)
+        : Configuración Dinámica
+        : Generadores Básicos
+        : Validación XML
+        : Tests Automatizados
+    
+    section v4.2.0 (Multi-Cloud)
+        : Soporte Azure
+        : Soporte GCP
+        : Templates Multi-Provider
+        : Validación Cross-Cloud
+    
+    section v4.3.0 (IA Integration)
+        : Layout Automático IA
+        : Optimización Visual
+        : Generación desde Código
+        : Análisis Dependencias
+    
+    section v5.0.0 (Platform)
+        : Dashboard Web
+        : Colaboración Real-Time
+        : Versionado Diagramas
+        : Integración CI/CD
+```
 
 ---
 
-**Esta arquitectura garantiza escalabilidad, mantenibilidad y extensibilidad para evolucionar hacia una plataforma enterprise completa.**
+**Esta arquitectura garantiza escalabilidad, mantenibilidad y extensibilidad para evolucionar hacia una plataforma enterprise completa con diagramas editables en código.**
