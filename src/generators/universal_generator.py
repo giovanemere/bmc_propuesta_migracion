@@ -64,6 +64,106 @@ class UniversalGenerator:
         
         return results
     
+    def generate_drawio_xml(self, config: Dict[str, Any]) -> str:
+        """Genera XML DrawIO válido desde configuración MCP"""
+        
+        output_dir = Path(self.output_dir) / "drawio" / "bmc_input"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        drawio_path = output_dir / "complete_architecture.drawio"
+        
+        # XML DrawIO básico con componentes AWS
+        xml_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="{datetime.now().isoformat()}" version="22.1.11">
+  <diagram name="BMC Complete Architecture" id="bmc-arch">
+    <mxGraphModel dx="2500" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Título -->
+        <mxCell id="title" value="BMC COMPLETE ARCHITECTURE" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="300" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- AWS Cloud Container -->
+        <mxCell id="aws_cloud" value="AWS Cloud - us-east-1" style="fillColor=#E3F2FD;strokeColor=#1976D2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="50" y="80" width="1000" height="700" as="geometry"/>
+        </mxCell>
+        
+        <!-- Edge Services -->
+        <mxCell id="cloudfront" value="CloudFront CDN" style="shape=mxgraph.aws4.cloudfront;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="aws_cloud">
+          <mxGeometry x="100" y="50" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="waf" value="AWS WAF" style="shape=mxgraph.aws4.waf;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="aws_cloud">
+          <mxGeometry x="250" y="50" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="api_gateway" value="API Gateway" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="aws_cloud">
+          <mxGeometry x="400" y="50" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <!-- VPC Container -->
+        <mxCell id="vpc" value="VPC 10.0.0.0/16" style="fillColor=#F5F5F5;strokeColor=#666666;dashed=1;verticalAlign=top;fontStyle=1;" vertex="1" parent="aws_cloud">
+          <mxGeometry x="50" y="180" width="900" height="450" as="geometry"/>
+        </mxCell>
+        
+        <!-- Microservices -->
+        <mxCell id="invoice_service" value="Invoice Service" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="vpc">
+          <mxGeometry x="100" y="100" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="product_service" value="Product Service\\n60M Products" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="vpc">
+          <mxGeometry x="250" y="100" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ocr_service" value="OCR Service\\n95% Accuracy" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="vpc">
+          <mxGeometry x="400" y="100" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="commission_service" value="Commission Service" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="vpc">
+          <mxGeometry x="550" y="100" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="certificate_service" value="Certificate Service" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="vpc">
+          <mxGeometry x="700" y="100" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <!-- Database -->
+        <mxCell id="rds_primary" value="PostgreSQL\\nPrimary" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="vpc">
+          <mxGeometry x="300" y="300" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <!-- Storage -->
+        <mxCell id="s3_docs" value="S3 Documents" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="aws_cloud">
+          <mxGeometry x="600" y="50" width="78" height="78" as="geometry"/>
+        </mxCell>
+        
+        <!-- Connections -->
+        <mxCell id="conn1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="aws_cloud" source="cloudfront" target="waf">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="conn2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="aws_cloud" source="waf" target="api_gateway">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="conn3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="api_gateway" target="invoice_service">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>'''
+        
+        # Guardar archivo DrawIO
+        drawio_path.write_text(xml_content, encoding='utf-8')
+        
+        print(f"✅ DrawIO generado: {drawio_path}")
+        return str(drawio_path)
+    
     def _generate_png(self, schema: UniversalDiagramSchema) -> str:
         """Genera PNG usando diagrams library"""
         

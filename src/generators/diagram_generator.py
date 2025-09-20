@@ -234,19 +234,6 @@ class RefinedDiagramGenerator:
 # Alias para compatibilidad
 DiagramGenerator = RefinedDiagramGenerator
         
-    def setup_styles(self):
-        """Configura estilos para diagramas"""
-        self.edge_styles = {
-            "primary": {"color": self.colors.get("primary", "#232F3E"), "style": "bold"},
-            "secondary": {"color": self.colors.get("secondary", "#FF9900"), "style": "dashed"},
-            "data": {"color": self.colors.get("info", "#2196F3"), "style": "dotted"},
-            "security": {"color": self.colors.get("danger", "#F44336"), "style": "bold"},
-            "monitoring": {"color": self.colors.get("warning", "#FF9800"), "style": "dashed"}
-        }
-        
-    def create_network_diagram(self, title: str, filename: str) -> str:
-        """Genera diagrama detallado de red y VPC"""
-        
         graph_attr = {
             "fontsize": str(self.fonts.get("title", 16)),
             "bgcolor": "white",

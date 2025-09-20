@@ -140,19 +140,13 @@ class WorkflowOrchestrator:
         
         print("\n4️⃣ GENERANDO DIAGRAMAS")
         
-        from generators.universal_generator import UniversalGenerator
-        from validators.xml_validator import MCPIntegrator
-        import sys
-        sys.path.append('/home/giovanemere/Migracion')
-        from templates.drawio_templates import DrawIOTemplates
-        
         diagrams = {}
         
         try:
             # Generar PNG usando diagram_generator
             from generators.diagram_generator import DiagramGenerator
             
-            diagram_generator = DiagramGenerator(config["mcp"])
+            diagram_generator = DiagramGenerator(config["mcp"], str(self.paths.outputs_png_dir))
             
             # Generar diagramas PNG
             png_types = ["network", "microservices", "security", "data_flow"]
@@ -161,33 +155,20 @@ class WorkflowOrchestrator:
                 try:
                     png_path = diagram_generator.generate_diagram(
                         diagram_type, 
-                        str(self.paths.outputs_png_dir / self.project_name)
+                        str(self.paths.outputs_png_dir / project_name)
                     )
                     diagrams[f"png_{diagram_type}"] = png_path
                     print(f"✅ PNG {diagram_type}: {Path(png_path).name}")
                 except Exception as e:
                     print(f"⚠️ Error PNG {diagram_type}: {e}")
             
-            # Generar DrawIO usando MCP integration
-            integrator = MCPIntegrator()
-            standard_model = integrator.convert_mcp_to_standard_model(config["mcp"])
+            # Generar DrawIO usando universal_generator
+            from generators.universal_generator import UniversalGenerator
+            universal_generator = UniversalGenerator(config["mcp"], str(self.paths.outputs_dir))
             
-            # Generar DrawIO
-            drawio_xml = DrawIOTemplates.generate_drawio_xml(standard_model)
-            
-            drawio_path = get_output_path("drawio", f"{self.project_name}_complete.drawio", self.project_name)
-            with open(drawio_path, 'w', encoding='utf-8') as f:
-                f.write(drawio_xml)
-            
-            diagrams["drawio_complete"] = str(drawio_path)
-            print(f"✅ DrawIO completo: {drawio_path.name}")
-            
-            # Validar DrawIO generado
-            validation = integrator.validate_mcp_generated_xml(drawio_xml, config["mcp"])
-            if validation["overall_valid"]:
-                print(f"✅ DrawIO validado correctamente")
-            else:
-                print(f"⚠️ DrawIO con advertencias de validación")
+            drawio_path = universal_generator.generate_drawio_xml(config["mcp"])
+            diagrams["drawio_complete"] = drawio_path
+            print(f"✅ DrawIO completo: {Path(drawio_path).name}")
             
         except Exception as e:
             print(f"❌ Error generando diagramas: {e}")
