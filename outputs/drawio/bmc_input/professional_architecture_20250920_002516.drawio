@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" modified="2025-09-20T00:21:33.751606" version="22.1.11">
+<mxfile host="app.diagrams.net" modified="2025-09-20T00:25:16.312266" version="22.1.11">
   <diagram name="Network Architecture" id="diagram_0">
     <mxGraphModel dx="2500" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000">
       <root>
@@ -201,10 +201,10 @@
 <mxCell id="product_pod_1036" value="Product Service Pod - 60M Records" style="fillColor=#E3F2FD;strokeColor=#2196F3;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#2196F3;" vertex="1" parent="1">
           <mxGeometry x="350" y="320" width="200" height="120" as="geometry"/>
         </mxCell>
-<mxCell id="product_task1_1037" value="Task 1\n4vCPU/8GB\n<500ms lookup" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+<mxCell id="product_task1_1037" value="Task 1\n4vCPU/8GB\n&amp;lt;500ms lookup" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="370" y="350" width="78" height="78" as="geometry"/>
         </mxCell>
-<mxCell id="product_task2_1038" value="Task 2\n4vCPU/8GB\n<500ms lookup" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+<mxCell id="product_task2_1038" value="Task 2\n4vCPU/8GB\n&amp;lt;500ms lookup" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="450" y="350" width="78" height="78" as="geometry"/>
         </mxCell>
 <mxCell id="ocr_pod_1039" value="OCR Service Pod" style="fillColor=#FCE4EC;strokeColor=#E91E63;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#E91E63;" vertex="1" parent="1">
@@ -237,7 +237,7 @@
 <mxCell id="s3_docs_1048" value="S3 Documents\nIntelligent Tiering\n90d → Glacier\nVersioning enabled" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="650" y="580" width="78" height="78" as="geometry"/>
         </mxCell>
-<mxCell id="textract_1049" value="Amazon Textract\n>95% accuracy\nForms + Tables\nHandwriting" style="shape=mxgraph.aws4.textract;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+<mxCell id="textract_1049" value="Amazon Textract\n&amp;gt;95% accuracy\nForms + Tables\nHandwriting" style="shape=mxgraph.aws4.textract;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="900" y="580" width="78" height="78" as="geometry"/>
         </mxCell>
 <mxCell id="conn_1050" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;fontColor=#1976D2;" edge="1" parent="1" source="api_gateway" target="cognito">
@@ -401,7 +401,7 @@
 <mxCell id="shield_1068" value="AWS Shield\nAdvanced DDoS\n24/7 DRT support" style="shape=mxgraph.aws4.shield;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="550" y="240" width="78" height="78" as="geometry"/>
         </mxCell>
-<mxCell id="iam_layer_1069" value="Identity & Access Management" style="fillColor=#F3E5F5;strokeColor=#7B1FA2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#7B1FA2;" vertex="1" parent="1">
+<mxCell id="iam_layer_1069" value="Identity &amp; Access Management" style="fillColor=#F3E5F5;strokeColor=#7B1FA2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#7B1FA2;" vertex="1" parent="1">
           <mxGeometry x="50" y="400" width="1200" height="150" as="geometry"/>
         </mxCell>
 <mxCell id="cognito_1070" value="Cognito User Pool\nMFA: TOTP + SMS\nPassword policy\nSocial login" style="shape=mxgraph.aws4.cognito;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
@@ -676,7 +676,7 @@
 <mxCell id="fargate_ocr_1117" value="OCR Service\n4vCPU/8GB\nAuto scaling 2-20\nSpot instances 70%\nCircuit breaker" style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="120" y="550" width="78" height="78" as="geometry"/>
         </mxCell>
-<mxCell id="textract_1118" value="Textract Async\n>95% accuracy\nForms + Tables\nHandwriting\nCustom models" style="shape=mxgraph.aws4.textract;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+<mxCell id="textract_1118" value="Textract Async\n&amp;gt;95% accuracy\nForms + Tables\nHandwriting\nCustom models" style="shape=mxgraph.aws4.textract;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="200" y="550" width="78" height="78" as="geometry"/>
         </mxCell>
 <mxCell id="business_logic_1119" value="Business Logic" style="fillColor=#E8EAF6;strokeColor=#3F51B5;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#3F51B5;" vertex="1" parent="1">
@@ -703,7 +703,7 @@
 <mxCell id="data_storage_1126" value="Data Storage - Multi-Tier Architecture" style="fillColor=#F5F5F5;strokeColor=#666666;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#666666;" vertex="1" parent="1">
           <mxGeometry x="50" y="720" width="1200" height="200" as="geometry"/>
         </mxCell>
-<mxCell id="hot_data_1127" value="Hot Data (< 1 day)" style="fillColor=#FFEBEE;strokeColor=#D32F2F;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#D32F2F;" vertex="1" parent="1">
+<mxCell id="hot_data_1127" value="Hot Data (&amp;lt; 1 day)" style="fillColor=#FFEBEE;strokeColor=#D32F2F;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#D32F2F;" vertex="1" parent="1">
           <mxGeometry x="100" y="760" width="300" height="120" as="geometry"/>
         </mxCell>
 <mxCell id="redis_cluster_1128" value="Redis Cluster\n6 nodes (3 shards)\nMulti-AZ\n99.9% availability\nCluster mode" style="shape=mxgraph.aws4.elasticache;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
@@ -721,7 +721,7 @@
 <mxCell id="s3_processed_1132" value="S3 Processed\nParquet format\nPartitioned by date\nCompression: GZIP\nAthena optimized" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="570" y="790" width="78" height="78" as="geometry"/>
         </mxCell>
-<mxCell id="cold_data_1133" value="Cold Data (> 90 days)" style="fillColor=#E3F2FD;strokeColor=#1976D2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#1976D2;" vertex="1" parent="1">
+<mxCell id="cold_data_1133" value="Cold Data (&amp;gt; 90 days)" style="fillColor=#E3F2FD;strokeColor=#1976D2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#1976D2;" vertex="1" parent="1">
           <mxGeometry x="800" y="760" width="300" height="120" as="geometry"/>
         </mxCell>
 <mxCell id="s3_glacier_1134" value="S3 Glacier\n7-year retention\nCompliance archive\nRestore: 12h\nVault lock" style="shape=mxgraph.aws4.glacier;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">

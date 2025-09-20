@@ -176,19 +176,24 @@ class ProfessionalDrawIOGenerator:
     
     def _create_title(self, text: str, x: int, y: int) -> str:
         """Crea título profesional"""
-        return f'''<mxCell id="title_{self._next_id()}" value="{text}" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1976D2;" vertex="1" parent="1">
+        escaped_text = text.replace('<', '&lt;').replace('>', '&gt;').replace('&', '&amp;').replace('"', '&quot;')
+        return f'''<mxCell id="title_{self._next_id()}" value="{escaped_text}" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1976D2;" vertex="1" parent="1">
           <mxGeometry x="{x}" y="{y}" width="600" height="30" as="geometry"/>
         </mxCell>'''
     
     def _create_container(self, id_name: str, label: str, x: int, y: int, width: int, height: int, fill_color: str, stroke_color: str) -> str:
         """Crea contenedor profesional"""
-        return f'''<mxCell id="{id_name}_{self._next_id()}" value="{label}" style="fillColor={fill_color};strokeColor={stroke_color};dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor={stroke_color};" vertex="1" parent="1">
+        escaped_label = label.replace('<', '&lt;').replace('>', '&gt;').replace('&', '&amp;').replace('"', '&quot;')
+        return f'''<mxCell id="{id_name}_{self._next_id()}" value="{escaped_label}" style="fillColor={fill_color};strokeColor={stroke_color};dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor={stroke_color};" vertex="1" parent="1">
           <mxGeometry x="{x}" y="{y}" width="{width}" height="{height}" as="geometry"/>
         </mxCell>'''
     
     def _create_aws_component(self, id_name: str, label: str, x: int, y: int, shape: str) -> str:
         """Crea componente AWS profesional"""
-        return f'''<mxCell id="{id_name}_{self._next_id()}" value="{label}" style="shape={shape};labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+        # Escapar caracteres XML
+        escaped_label = label.replace('<', '&lt;').replace('>', '&gt;').replace('&', '&amp;').replace('"', '&quot;')
+        
+        return f'''<mxCell id="{id_name}_{self._next_id()}" value="{escaped_label}" style="shape={shape};labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
           <mxGeometry x="{x}" y="{y}" width="78" height="78" as="geometry"/>
         </mxCell>'''
     
