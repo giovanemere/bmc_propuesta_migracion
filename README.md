@@ -221,6 +221,16 @@ source venv/bin/activate
 ./clean.sh drawio
 ./generate.sh drawio
 ```
+### **Mejoras recomendadas para DrawIO**
+
+- **Validación automática del XML generado:** Integra validación usando la API de diagrams.net o drawio-export antes de guardar los archivos.
+- **Preview rápido de diagramas:** Usa drawio-desktop en modo CLI para abrir y revisar los archivos `.drawio` generados.
+- **Layouts automáticos:** Aplica layouts horizontales, verticales o en grid para mejorar la legibilidad y evitar solapamientos.
+- **Estilos y colores consistentes:** Define estilos por tipo de componente (seguridad, datos, red) para facilitar la interpretación visual.
+- **Leyendas y notas explicativas:** Añade leyendas y notas en los diagramas para ayudar a los usuarios a entender la arquitectura.
+- **Miniaturas y reportes HTML:** Genera previews HTML con los diagramas embebidos para revisión rápida y feedback visual inmediato.
+- **Automatización de pruebas de renderizado:** Implementa tests automáticos para asegurar que los diagramas se pueden abrir y editar correctamente en Draw.io.
+- **Ejemplos visuales en la documentación:** Añade screenshots o GIFs en la documentación para mostrar el resultado esperado y facilitar la adopción.
 
 ### **Error: Permisos**
 ```bash
