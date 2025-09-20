@@ -34,11 +34,14 @@ class UnifiedMCPGenerator:
         mermaid_results = self._generate_mermaid_diagrams(base_dir, project_name)
         results.update(mermaid_results)
         
-        # Generar DrawIO detallado y profesional
-        from .enhanced_drawio_generator import EnhancedDrawIOGenerator
-        enhanced_generator = EnhancedDrawIOGenerator(self.config, str(base_dir))
-        detailed_drawio = enhanced_generator.generate_detailed_drawio(project_name)
-        results["drawio_detailed"] = detailed_drawio
+        # Generar múltiples DrawIO equivalentes a PNG
+        from .mcp_multi_drawio_generator import MCPMultiDrawIOGenerator
+        multi_generator = MCPMultiDrawIOGenerator(self.config, str(base_dir))
+        multi_drawio_results = multi_generator.generate_all_drawio_diagrams(project_name)
+        
+        # Agregar todos los DrawIO generados
+        for diagram_type, drawio_path in multi_drawio_results.items():
+            results[f"drawio_{diagram_type}"] = drawio_path
         
         print(f"✓ Unified diagrams generated from MCP infrastructure")
         return results
