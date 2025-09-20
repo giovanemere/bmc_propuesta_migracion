@@ -15,6 +15,7 @@ from core.mcp_engine import MCPEngine
 from cases.bmc_case import run_bmc_case
 from cases.generic_aws_case import run_generic_aws_case
 from cases.refined_bmc_case import run_refined_bmc_case
+from cases.bmc_input_case import run_bmc_input_case
 
 def main():
     """Función principal"""
@@ -33,7 +34,7 @@ Examples:
     
     # Argumentos principales
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--case', choices=['bmc', 'generic', 'refined'], 
+    group.add_argument('--case', choices=['bmc', 'generic', 'refined', 'bmc-input'], 
                       help='Run predefined use case')
     group.add_argument('--file', type=str,
                       help='Input file (MCP .md, JSON, or YAML)')
@@ -67,6 +68,9 @@ Examples:
             elif args.case == 'refined':
                 print("🎨 Running Refined BMC Case...")
                 success = run_refined_bmc_case()
+            elif args.case == 'bmc-input':
+                print("🏛️ Running BMC Input Case...")
+                success = run_bmc_input_case()
                 
         elif args.file:
             # Procesar archivo específico
