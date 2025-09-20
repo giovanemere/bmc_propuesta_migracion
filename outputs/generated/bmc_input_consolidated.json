@@ -1,0 +1,51 @@
+{
+  "project_name": "bmc_input",
+  "mcp": {
+    "project_name": "bmc_input",
+    "microservices": {
+      "invoice_service": {
+        "business_function": "Procesamiento de facturas individuales y por lotes"
+      },
+      "product_service": {
+        "business_function": "Gestión de 60M productos migrados desde Google Cloud"
+      },
+      "ocr_service": {
+        "business_function": "Servicio de carga de facturas en imagen o PDF"
+      },
+      "commission_service": {
+        "business_function": "Cálculos de comisión regulatoria (lote e individual)"
+      },
+      "certificate_service": {
+        "business_function": "Generación de certificados PDF DIAN compliance"
+      }
+    },
+    "aws_services": {
+      "rds": {
+        "engine": "postgresql",
+        "instance_class": "db.r5.2xlarge"
+      },
+      "s3": {
+        "storage_class": "STANDARD",
+        "versioning": true
+      }
+    },
+    "metadata": {
+      "generated_from": "bmc-input-specification.md",
+      "generated_at": "2025-09-19T23:25:13.236359",
+      "version": "dynamic-1.0.0"
+    }
+  },
+  "standard_model": {
+    "metadata": {
+      "version": "1.0.0",
+      "diagram_type": "network"
+    },
+    "canvas": {
+      "width": 2500,
+      "height": 1600,
+      "grid_size": 10
+    }
+  },
+  "timestamp": "2025-09-19T23:27:03.958950",
+  "version": "4.1.0"
+}
