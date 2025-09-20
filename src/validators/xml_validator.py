@@ -183,18 +183,28 @@ class DrawIOXMLValidator:
 class MCPIntegrator:
     """Integrador con el modelo MCP existente"""
     
-    def __init__(self, mcp_config_path: str = "config/bmc-config.json"):
-        self.mcp_config_path = Path(mcp_config_path)
+    def __init__(self, mcp_config_path: str = None):
+        if mcp_config_path is None:
+            from ..core.app_config import get_config
+            self.mcp_config = get_config("bmc")
+            self.mcp_config_path = None
+        else:
+            self.mcp_config_path = Path(mcp_config_path)
+            self.mcp_config = None
         self.validator = DrawIOXMLValidator()
     
     def load_mcp_config(self) -> Dict[str, Any]:
         """Carga configuración MCP existente"""
         
+        if self.mcp_config is not None:
+            return self.mcp_config
+        
         try:
-            with open(self.mcp_config_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return self._get_default_mcp_config()
+            if self.mcp_config_path and self.mcp_config_path.exists():
+                with open(self.mcp_config_path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            else:
+                return self._get_default_mcp_config()
         except json.JSONDecodeError as e:
             raise ValueError(f"Error en configuración MCP: {e}")
     
