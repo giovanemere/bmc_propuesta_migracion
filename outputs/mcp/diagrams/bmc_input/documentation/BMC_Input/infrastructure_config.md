@@ -103,4 +103,4 @@ resource "aws_db_instance" "bmc_postgres" {
 - Error rate > 5% por 2 minutos
 - Latencia > 3000ms por 3 minutos
 
-Generado: 2025-09-19 22:11:02
+Generado: 2025-09-19 22:17:30
