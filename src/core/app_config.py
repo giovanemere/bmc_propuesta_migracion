@@ -105,6 +105,18 @@ class AppConfig:
         if config_name in self._config_cache:
             return self._config_cache[config_name]
         
+        # Para configuración BMC, usar generador dinámico
+        if config_name == "bmc":
+            try:
+                from .dynamic_config_generator import generate_dynamic_config
+                config = generate_dynamic_config()
+                self._config_cache[config_name] = config
+                return config
+            except Exception as e:
+                print(f"⚠️ Error generando configuración dinámica: {e}")
+                # Fallback a configuración por defecto
+                pass
+        
         # Buscar archivo de configuración
         config_paths = [
             self.paths.config_dir / f"{config_name}.json",
