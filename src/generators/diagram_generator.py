@@ -233,10 +233,6 @@ class RefinedDiagramGenerator:
 
 # Alias para compatibilidad
 DiagramGenerator = RefinedDiagramGenerator
-        self.fonts = self.diagram_config.get("fonts", {})
-        
-        # Configurar estilos
-        self.setup_styles()
         
     def setup_styles(self):
         """Configura estilos para diagramas"""

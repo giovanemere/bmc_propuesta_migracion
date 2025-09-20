@@ -15,7 +15,7 @@ from diagrams.aws.security import Cognito, WAF
 from diagrams.onprem.client import Users
 from diagrams.onprem.network import Internet
 
-from ..core.universal_schema import UniversalDiagramSchema, DiagramType, OutputFormat
+from core.universal_schema import UniversalDiagramSchema, DiagramType, OutputFormat
 
 class UniversalGenerator:
     """Generador universal para PNG y DrawIO desde mismo esquema"""

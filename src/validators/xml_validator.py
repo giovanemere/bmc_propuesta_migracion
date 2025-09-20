@@ -185,7 +185,7 @@ class MCPIntegrator:
     
     def __init__(self, mcp_config_path: str = None):
         if mcp_config_path is None:
-            from ..core.app_config import get_config
+            from core.app_config import get_config
             self.mcp_config = get_config("bmc")
             self.mcp_config_path = None
         else:
