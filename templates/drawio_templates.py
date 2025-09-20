@@ -236,9 +236,13 @@ class DrawIOTemplates:
         position = component.get("position", {"x": 100, "y": 100})
         size = component.get("size", {"width": 100, "height": 100})
         
+        # Escapar caracteres especiales en label
+        label = component.get("label", "Component")
+        label = label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
+        
         return cls.AWS_COMPONENT_TEMPLATE.substitute(
             id=component["id"],
-            label=component.get("label", "Component"),
+            label=label,
             gradient_color=style["gradient_color"],
             fill_color=style["fill_color"],
             shape=style["shape"],
@@ -259,9 +263,13 @@ class DrawIOTemplates:
         
         bounds = container.get("bounds", {"x": 100, "y": 100, "width": 400, "height": 300})
         
+        # Escapar caracteres especiales en label
+        label = container.get("label", "Container")
+        label = label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
+        
         container_xml = cls.CONTAINER_TEMPLATE.substitute(
             id=container["id"],
-            label=container.get("label", "Container"),
+            label=label,
             fill_color=style["fill_color"],
             stroke_color=style["stroke_color"],
             stroke_width=style["stroke_width"],
