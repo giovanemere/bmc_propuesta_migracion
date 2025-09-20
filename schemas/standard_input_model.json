@@ -1,0 +1,356 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Standard Diagram Input Model",
+  "description": "Modelo estándar para generación de diagramas PNG y DrawIO",
+  "type": "object",
+  "required": ["metadata", "architecture"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["title", "project_name", "diagram_type"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Título del diagrama"
+        },
+        "project_name": {
+          "type": "string",
+          "description": "Nombre del proyecto"
+        },
+        "diagram_type": {
+          "type": "string",
+          "enum": ["network", "microservices", "security", "data_flow"],
+          "description": "Tipo de diagrama"
+        },
+        "version": {
+          "type": "string",
+          "default": "1.0.0",
+          "description": "Versión del modelo"
+        },
+        "description": {
+          "type": "string",
+          "description": "Descripción del diagrama"
+        },
+        "tags": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Tags para categorización"
+        }
+      }
+    },
+    "canvas": {
+      "type": "object",
+      "properties": {
+        "width": {"type": "integer", "default": 2500},
+        "height": {"type": "integer", "default": 1600},
+        "grid_size": {"type": "integer", "default": 10},
+        "background": {"type": "string", "default": "white"}
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "required": ["components"],
+      "properties": {
+        "components": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Component"}
+        },
+        "containers": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Container"}
+        },
+        "connections": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Connection"}
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "formats": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["png", "drawio", "svg", "pdf"]},
+          "default": ["png", "drawio"]
+        },
+        "auto_layout": {"type": "boolean", "default": true},
+        "theme": {"type": "string", "enum": ["aws", "azure", "gcp"], "default": "aws"}
+      }
+    }
+  },
+  "definitions": {
+    "Position": {
+      "type": "object",
+      "required": ["x", "y"],
+      "properties": {
+        "x": {"type": "integer"},
+        "y": {"type": "integer"}
+      }
+    },
+    "Size": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": {"type": "integer"},
+        "height": {"type": "integer"}
+      }
+    },
+    "Style": {
+      "type": "object",
+      "properties": {
+        "color": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "fill_color": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "stroke_color": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "stroke_width": {"type": "integer", "minimum": 1},
+        "font_size": {"type": "integer", "minimum": 8},
+        "font_style": {"type": "string", "enum": ["normal", "bold", "italic"]}
+      }
+    },
+    "Component": {
+      "type": "object",
+      "required": ["id", "type", "label"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$",
+          "description": "ID único del componente"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "vpc", "subnet", "availability_zone", "internet_gateway",
+            "api_gateway", "cloudfront", "waf", "elb", "nat_gateway",
+            "fargate", "lambda", "ec2", "ecs",
+            "rds", "dynamodb", "elasticache", "redshift",
+            "s3", "efs", "ebs",
+            "cognito", "kms", "secrets_manager",
+            "sqs", "sns", "eventbridge",
+            "users", "client", "server"
+          ],
+          "description": "Tipo de componente AWS"
+        },
+        "label": {
+          "type": "string",
+          "description": "Etiqueta visible del componente"
+        },
+        "position": {"$ref": "#/definitions/Position"},
+        "size": {"$ref": "#/definitions/Size"},
+        "style": {"$ref": "#/definitions/Style"},
+        "properties": {
+          "type": "object",
+          "description": "Propiedades específicas del componente",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "description": {"type": "string"},
+            "capacity": {"type": "string"},
+            "cost": {"type": "number"},
+            "sla": {"type": "string"},
+            "region": {"type": "string"},
+            "availability_zone": {"type": "string"}
+          }
+        }
+      }
+    },
+    "Container": {
+      "type": "object",
+      "required": ["id", "type", "label", "bounds"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"},
+        "type": {
+          "type": "string",
+          "enum": ["vpc", "availability_zone", "subnet", "security_group", "cluster", "namespace"]
+        },
+        "label": {"type": "string"},
+        "bounds": {
+          "type": "object",
+          "required": ["x", "y", "width", "height"],
+          "properties": {
+            "x": {"type": "integer"},
+            "y": {"type": "integer"},
+            "width": {"type": "integer", "minimum": 100},
+            "height": {"type": "integer", "minimum": 100}
+          }
+        },
+        "style": {"$ref": "#/definitions/Style"},
+        "components": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Component"}
+        },
+        "children": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Container"}
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "Connection": {
+      "type": "object",
+      "required": ["id", "from", "to"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"},
+        "from": {"type": "string", "description": "ID del componente origen"},
+        "to": {"type": "string", "description": "ID del componente destino"},
+        "label": {"type": "string"},
+        "type": {
+          "type": "string",
+          "enum": ["http", "https", "tcp", "udp", "sql", "nosql", "message_queue", "api", "data_flow"],
+          "default": "http"
+        },
+        "style": {"$ref": "#/definitions/Style"},
+        "properties": {
+          "type": "object",
+          "properties": {
+            "protocol": {"type": "string"},
+            "port": {"type": "integer"},
+            "bandwidth": {"type": "string"},
+            "latency": {"type": "string"},
+            "encryption": {"type": "boolean"}
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "metadata": {
+        "title": "BMC Network Architecture",
+        "project_name": "bmc_input",
+        "diagram_type": "network",
+        "version": "1.0.0",
+        "description": "Arquitectura de red para BMC Bolsa Comisionista",
+        "tags": ["aws", "vpc", "multi-az"]
+      },
+      "canvas": {
+        "width": 2500,
+        "height": 1600,
+        "grid_size": 10,
+        "background": "white"
+      },
+      "architecture": {
+        "components": [
+          {
+            "id": "internet",
+            "type": "internet_gateway",
+            "label": "Internet",
+            "position": {"x": 100, "y": 100},
+            "size": {"width": 80, "height": 80}
+          },
+          {
+            "id": "users",
+            "type": "users",
+            "label": "BMC Users\n10K concurrent",
+            "position": {"x": 300, "y": 100},
+            "size": {"width": 80, "height": 80},
+            "metadata": {
+              "capacity": "10000 concurrent users",
+              "region": "Colombia"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "id": "aws_cloud",
+            "type": "vpc",
+            "label": "AWS Cloud - us-east-1",
+            "bounds": {"x": 50, "y": 220, "width": 2300, "height": 1300},
+            "children": [
+              {
+                "id": "vpc_main",
+                "type": "vpc",
+                "label": "VPC 10.0.0.0/16",
+                "bounds": {"x": 50, "y": 200, "width": 2100, "height": 1000},
+                "properties": {
+                  "cidr": "10.0.0.0/16",
+                  "dns_hostnames": true,
+                  "dns_resolution": true
+                },
+                "children": [
+                  {
+                    "id": "az_a",
+                    "type": "availability_zone",
+                    "label": "AZ us-east-1a",
+                    "bounds": {"x": 50, "y": 50, "width": 900, "height": 900},
+                    "components": [
+                      {
+                        "id": "nat_1a",
+                        "type": "nat_gateway",
+                        "label": "NAT Gateway 1A",
+                        "position": {"x": 100, "y": 100},
+                        "properties": {
+                          "bandwidth": "45 Gbps",
+                          "elastic_ip": true
+                        }
+                      },
+                      {
+                        "id": "app_1a",
+                        "type": "fargate",
+                        "label": "App Services 1A",
+                        "position": {"x": 100, "y": 300},
+                        "properties": {
+                          "cpu": "2 vCPU",
+                          "memory": "4 GB",
+                          "replicas": 3
+                        }
+                      },
+                      {
+                        "id": "db_1a",
+                        "type": "rds",
+                        "label": "RDS Primary\nus-east-1a",
+                        "position": {"x": 100, "y": 500},
+                        "properties": {
+                          "engine": "postgresql",
+                          "instance_class": "db.r5.2xlarge",
+                          "storage": "1TB",
+                          "multi_az": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "id": "conn_users_internet",
+            "from": "users",
+            "to": "internet",
+            "label": "HTTPS",
+            "type": "https",
+            "style": {"color": "#232F3E", "stroke_width": 3},
+            "properties": {
+              "protocol": "HTTPS",
+              "port": 443,
+              "encryption": true
+            }
+          },
+          {
+            "id": "conn_app_db",
+            "from": "app_1a",
+            "to": "db_1a",
+            "label": "SQL Queries",
+            "type": "sql",
+            "style": {"color": "#2196F3", "stroke_width": 2},
+            "properties": {
+              "protocol": "PostgreSQL",
+              "port": 5432,
+              "encryption": true
+            }
+          }
+        ]
+      },
+      "output": {
+        "formats": ["png", "drawio"],
+        "auto_layout": true,
+        "theme": "aws"
+      }
+    }
+  ]
+}
