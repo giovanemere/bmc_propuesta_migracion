@@ -186,49 +186,140 @@ class RefinedDiagramGenerator:
         return png_path
     
     def _generate_data_flow_png(self) -> str:
-        """Genera diagrama de flujo de datos"""
+        """Genera diagrama de flujo de datos nivel AWS Senior Architect"""
         
         filename = os.path.join(self.output_dir, "data_flow")
         
-        with Diagram("BMC Data Flow Architecture", 
+        with Diagram("BMC Data Flow Architecture - Senior Level", 
                     show=False, 
                     filename=filename,
-                    direction="LR"):
+                    direction="TB"):
             
-            # Entrada de datos
-            with Cluster("Data Input"):
-                upload = Blank("Invoice Upload")
-                batch = Blank("Batch Processing")
+            # External Data Sources - Detailed
+            with Cluster("External Data Sources"):
+                with Cluster("User Channels"):
+                    web_upload = Users("Web Portal\n10K users/day\nMax 50MB/file")
+                    mobile_app = Users("Mobile App\nReal-time upload\nImage compression")
+                    api_clients = APIGateway("API Clients\n1K req/s\nRate limited")
+                
+                with Cluster("B2B Integration"):
+                    sftp_server = Internet("SFTP Server\nScheduled: 02:00 UTC\n100K records/batch")
+                    partner_apis = Internet("Partner APIs\nWebhooks\nOAuth 2.0")
+                    erp_systems = Internet("ERP Systems\nSAP/Oracle\nReal-time CDC")
             
-            # Procesamiento
-            with Cluster("Processing"):
-                ocr = Fargate("OCR Service\nPDF Analysis")
-                invoice = Fargate("Invoice Service\nValidation")
-                product = Fargate("Product Service\nMatching")
-                commission = Fargate("Commission Service\nCalculation")
+            # Ingestion Layer - Enterprise Grade
+            with Cluster("Ingestion Layer - Multi-AZ"):
+                with Cluster("API Gateway Tier"):
+                    api_gw_main = APIGateway("API Gateway\n10K req/s throttle\nCaching: 300s TTL")
+                    api_gw_auth = Cognito("Cognito\nJWT validation\nMFA enabled")
+                
+                with Cluster("Load Balancing"):
+                    alb_ingestion = ELB("ALB Ingestion\nSticky sessions\nHealth checks")
+                    nlb_sftp = ELB("NLB SFTP\nTCP load balancing\nCross-zone enabled")
+                
+                with Cluster("Initial Storage"):
+                    s3_raw_landing = S3("S3 Raw Landing\nMultipart upload\nEvent notifications\nLifecycle: 30d")
+                    s3_quarantine = S3("S3 Quarantine\nFailed uploads\nManual review")
             
-            # Almacenamiento
-            with Cluster("Storage & Output"):
-                rds = RDS("PostgreSQL\nTransactional")
-                s3_data = S3("Data Lake\nAnalytics")
-                certificate = Fargate("Certificate Service\nPDF Generation")
-                s3_docs = S3("Documents\nGenerated PDFs")
+            # Processing Pipeline - Microservices
+            with Cluster("Processing Pipeline - Event-Driven"):
+                with Cluster("Validation Layer"):
+                    lambda_validator = Lambda("File Validator\n1GB memory\n15min timeout\nDLQ enabled")
+                    lambda_virus_scan = Lambda("Virus Scanner\nClamAV integration\nQuarantine on detect")
+                    sqs_validation = SQS("Validation Queue\nFIFO\n5min visibility\n3 retries")
+                
+                with Cluster("OCR Processing"):
+                    fargate_ocr = Fargate("OCR Service\n4vCPU/8GB\nAuto scaling 2-20\nSpot instances")
+                    textract_async = Textract("Textract Async\n>95% accuracy\nForms + Tables\nHandwriting")
+                    comprehend_nlp = Comprehend("Comprehend\nEntity extraction\nSentiment analysis")
+                
+                with Cluster("Business Logic"):
+                    fargate_invoice = Fargate("Invoice Service\n2vCPU/4GB\nBlue/Green deploy\nCircuit breaker")
+                    fargate_product = Fargate("Product Service\n4vCPU/8GB\n60M products\nElastic search")
+                    fargate_commission = Fargate("Commission Service\n2vCPU/4GB\nDIAN compliance\nAudit trail")
             
-            # Notificaciones
-            with Cluster("Notifications"):
-                sqs = SQS("SQS Queue\nAsync Processing")
-                sns = SNS("SNS\nEmail Delivery")
+            # Data Storage - Multi-Tier
+            with Cluster("Data Storage - Multi-Tier Architecture"):
+                with Cluster("Hot Data (< 1 day)"):
+                    redis_cluster = Elasticache("Redis Cluster\n6 nodes\nMulti-AZ\n99.9% availability")
+                    rds_primary = RDS("RDS Primary\nPostgreSQL 14\ndb.r6g.2xlarge\n35-day backup")
+                
+                with Cluster("Warm Data (1-90 days)"):
+                    rds_replica_1 = RDS("Read Replica AZ-1\nCross-AZ\nRead scaling")
+                    rds_replica_2 = RDS("Read Replica AZ-2\nDisaster recovery\nPromotion ready")
+                    s3_processed = S3("S3 Processed\nParquet format\nPartitioned by date\nCompression: GZIP")
+                
+                with Cluster("Cold Data (> 90 days)"):
+                    s3_glacier = S3("S3 Glacier\n7-year retention\nCompliance archive\nRestore: 12h")
+                    redshift_dw = Redshift("Redshift DW\ndc2.large x3\nColumnar storage\nBI analytics")
             
-            # Flujo de datos
-            upload >> ocr >> invoice >> product >> commission
-            [upload, batch] >> invoice
-            [invoice, commission] >> rds
-            commission >> certificate >> s3_docs
-            [invoice, product] >> s3_data
-            certificate >> sqs >> sns
+            # Output & Integration
+            with Cluster("Output & Integration Layer"):
+                with Cluster("Real-time APIs"):
+                    api_gw_output = APIGateway("Output API\nCached responses\nRate limiting\nAPI keys")
+                    lambda_formatter = Lambda("Response Formatter\nJSON/XML/CSV\nSchema validation")
+                
+                with Cluster("Batch Processing"):
+                    fargate_reports = Fargate("Report Generator\n2vCPU/4GB\nScheduled jobs\nPDF/Excel output")
+                    s3_reports = S3("S3 Reports\nGenerated files\nPre-signed URLs\n7-day expiry")
+                
+                with Cluster("Notifications"):
+                    sns_topics = SNS("SNS Topics\nMulti-protocol\nDLQ enabled\nRetry policy")
+                    sqs_notifications = SQS("Notification Queue\nEmail/SMS/Webhook\nBatch processing")
+            
+            # External Integrations
+            with Cluster("External Integrations"):
+                dian_api = Internet("DIAN API\nTax validation\n1K req/hour\nCircuit breaker")
+                email_service = SNS("SES Email\n50K emails/day\nBounce handling\nReputation monitoring")
+                webhook_clients = Internet("Webhook Clients\nAsync delivery\nRetry logic\nSecurity headers")
+            
+            # Data Flow Connections - Detailed
+            # Ingestion flows
+            [web_upload, mobile_app] >> api_gw_main >> api_gw_auth >> alb_ingestion
+            api_clients >> api_gw_main
+            [sftp_server, partner_apis] >> nlb_sftp
+            erp_systems >> api_gw_main
+            
+            # Storage flows
+            alb_ingestion >> s3_raw_landing
+            nlb_sftp >> s3_raw_landing
+            
+            # Processing flows
+            s3_raw_landing >> lambda_validator >> sqs_validation
+            lambda_validator >> lambda_virus_scan
+            lambda_virus_scan >> s3_quarantine  # On virus detection
+            
+            sqs_validation >> fargate_ocr >> textract_async
+            textract_async >> comprehend_nlp
+            comprehend_nlp >> fargate_invoice
+            
+            fargate_invoice >> fargate_product >> fargate_commission
+            
+            # Data persistence flows
+            [fargate_invoice, fargate_product, fargate_commission] >> redis_cluster
+            redis_cluster >> rds_primary
+            rds_primary >> [rds_replica_1, rds_replica_2]
+            
+            # Analytics flows
+            rds_primary >> s3_processed
+            s3_processed >> s3_glacier
+            s3_processed >> redshift_dw
+            
+            # Output flows
+            redis_cluster >> api_gw_output >> lambda_formatter
+            redshift_dw >> fargate_reports >> s3_reports
+            
+            # Notification flows
+            [fargate_invoice, fargate_commission] >> sns_topics >> sqs_notifications
+            sqs_notifications >> email_service
+            sqs_notifications >> webhook_clients
+            
+            # External integration flows
+            fargate_product >> dian_api
+            fargate_commission >> dian_api
         
         png_path = f"{filename}.png"
-        print(f"✅ Data Flow PNG generado: {png_path}")
+        print(f"✅ Senior-Level Data Flow PNG generado: {png_path}")
         return png_path
 
 # Alias para compatibilidad

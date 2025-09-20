@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-09-20T00:08:54.263372" version="22.1.11">
+  <diagram name="BMC_INPUT Dynamic Architecture" id="dynamic-arch">
+    <mxGraphModel dx="2500" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="BMC_INPUT - DYNAMIC ARCHITECTURE (AI Generated)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="600" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1001" value="Invoice\nMemory: 4GB\nCPU: 2vCPU\n- Procesamiento de facturas individuales y por lot..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="200" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1002" value="Product\nMemory: 8GB\nCPU: 4vCPU\n- Gestión de 60M productos migrados desde Google C..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="380" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1003" value="OCR\nMemory: 4GB\nCPU: 2vCPU\n- Servicio de carga de facturas en imagen o PDF
+- ..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="560" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1004" value="Commission\nMemory: 2GB\nCPU: 1vCPU\n- Cálculos de comisión regulatoria (lote e individ..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="740" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1005" value="Certificate\nMemory: 2GB\nCPU: 1vCPU\n- Generación de certificados PDF DIAN compliance
+-..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="920" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1006" value="Invoice Service\nMemory: 4GB\nCPU: 2vCPU\n- Procesamiento de facturas individuales y por lot..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1007" value="Product Service\nMemory: 8GB\nCPU: 4vCPU\n- Gestión de 60M productos migrados desde Google C..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1008" value="OCR Service\nMemory: 4GB\nCPU: 2vCPU\n- Servicio de carga de facturas en imagen o PDF
+- ..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1009" value="Commission Service\nMemory: 2GB\nCPU: 1vCPU\n- Cálculos de comisión regulatoria (lote e individ..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="1640" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1010" value="Certificate Service\nMemory: 2GB\nCPU: 1vCPU\n- Generación de certificados PDF DIAN compliance
+-..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="1820" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1011" value="Nombre\nMemory: 8GB\nCPU: 4vCPU\n** BMC Bolsa Comisionista
+- **Tipo:** Sistema Regu..." style="shape=mxgraph.aws4.fargate;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E8F5E8;strokeColor=#4CAF50;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="2000" y="300" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1012" value="PostgreSQL Primary\nInstance: db.r6g.2xlarge\nStorage: 2TB" style="shape=mxgraph.aws4.rds;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="500" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1013" value="Redis Cluster" style="shape=mxgraph.aws4.elasticache;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="500" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1014" value="Documents Storage" style="shape=mxgraph.aws4.s3;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="500" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comp_1015" value="Main API Gateway" style="shape=mxgraph.aws4.api_gateway;labelPosition=bottom;verticalLabelPosition=top;align=center;verticalAlign=bottom;fillColor=#E3F2FD;strokeColor=#1976D2;fontColor=#0D47A1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="500" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2000" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1001">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2001" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1002">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2002" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1003">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2003" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1004">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2004" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1005">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2005" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1006">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2006" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1007">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2007" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1008">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2008" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1009">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2009" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1010">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="conn_2010" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1976D2;strokeWidth=2;" edge="1" parent="1" source="comp_1015" target="comp_1011">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
