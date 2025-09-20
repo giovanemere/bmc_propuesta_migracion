@@ -14,7 +14,7 @@ show_help() {
     echo "  complete - Flujo completo (default)"
     echo "  config   - Solo configuración"
     echo "  png      - Solo diagramas PNG"
-    echo "  drawio   - Solo diagramas DrawIO"
+    echo "  drawio   - Solo diagramas DrawIO (plantillas)"
     echo "  prompts  - Solo prompts MCP"
     echo "  docs     - Solo documentación"
     echo "  clean    - Limpiar y regenerar todo"
@@ -22,6 +22,7 @@ show_help() {
     echo "Ejemplos:"
     echo "  ./generate.sh           # Flujo completo"
     echo "  ./generate.sh png       # Solo PNG"
+    echo "  ./generate.sh drawio    # Solo DrawIO con plantillas"
     echo "  ./generate.sh clean     # Limpiar y regenerar"
 }
 
@@ -52,8 +53,18 @@ generate_section() {
             python run.py --run png
             ;;
         "drawio")
-            echo "📐 Generando diagramas DrawIO..."
-            python run.py --run drawio
+            echo "📐 Generando diagramas DrawIO con plantillas..."
+            python -c "
+from generators.template_drawio_generator import TemplateDrawIOGenerator
+import json
+
+with open('outputs/generated/bmc.json', 'r') as f:
+    config = json.load(f)
+
+gen = TemplateDrawIOGenerator('outputs')
+results = gen.generate_all_templates(config, 'bmc_input')
+print(f'✅ {len(results)} diagramas DrawIO generados')
+"
             ;;
         "prompts")
             echo "🎯 Generando prompts MCP..."
