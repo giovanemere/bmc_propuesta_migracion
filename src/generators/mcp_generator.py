@@ -34,9 +34,11 @@ class UnifiedMCPGenerator:
         mermaid_results = self._generate_mermaid_diagrams(base_dir, project_name)
         results.update(mermaid_results)
         
-        # Generar DrawIO desde la misma infraestructura
-        drawio_result = self._generate_unified_drawio(base_dir, project_name)
-        results["drawio_unified"] = drawio_result
+        # Generar DrawIO profesional usando PlantUML
+        from .plantuml_drawio_generator import PlantUMLDrawIOGenerator
+        plantuml_generator = PlantUMLDrawIOGenerator(self.config, str(base_dir))
+        professional_drawio = plantuml_generator.generate_professional_drawio(project_name)
+        results["drawio_professional"] = professional_drawio
         
         print(f"✓ Unified diagrams generated from MCP infrastructure")
         return results

@@ -80,4 +80,4 @@ gantt
 
 Los diagramas Mermaid están disponibles en: `outputs/mcp/diagrams/bmc_input/mermaid/`
 
-Generado: 2025-09-19 21:00:14
+Generado: 2025-09-19 22:11:02
