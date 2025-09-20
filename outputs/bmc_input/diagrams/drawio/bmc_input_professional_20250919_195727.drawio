@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2025-09-19T19:54:01.000Z" agent="BMC Professional Generator" version="22.1.11" etag="professional-v2.0">
+<mxfile host="app.diagrams.net" modified="2025-09-19T19:57:27.000Z" agent="BMC Professional Generator" version="22.1.11">
   <diagram name="BMC_Input - Professional Architecture" id="professional_arch">
-    <mxGraphModel dx="2200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400" background="#FFFFFF">
+    <mxGraphModel dx="2200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
@@ -21,22 +21,22 @@
         </mxCell>
         
         <!-- On-Premise Professional -->
-        <mxCell id="onprem_container" value="On-Premise &amp; External Systems" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#D32F2F;strokeWidth=3;fontSize=16;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;glass=1;" vertex="1" parent="1">
+        <mxCell id="onprem_container" value="On-Premise &amp;amp; External Systems" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#D32F2F;strokeWidth=3;fontSize=16;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;glass=1;" vertex="1" parent="1">
           <mxGeometry x="50" y="180" width="400" height="300" as="geometry"/>
         </mxCell>
         
         <!-- Professional Users -->
-        <mxCell id="bmc_users" value="BMC Users&lt;br&gt;&lt;b&gt;Reguladores&lt;/b&gt;&lt;br&gt;10K concurrent&lt;br&gt;Multi-device" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4AB29A;gradientDirection=north;fillColor=#116D5B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.users;shadow=1;" vertex="1" parent="1">
+        <mxCell id="bmc_users" value="BMC Users&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Reguladores&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;10K concurrent&amp;lt;br&amp;gt;Multi-device" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4AB29A;gradientDirection=north;fillColor=#116D5B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.users;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="100" y="230" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- DIAN API Professional -->
-        <mxCell id="dian_api" value="DIAN API&lt;br&gt;&lt;b&gt;Tax Authority&lt;/b&gt;&lt;br&gt;Clasificaciones&lt;br&gt;1K req/hour" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.internet_gateway;shadow=1;" vertex="1" parent="1">
+        <mxCell id="dian_api" value="DIAN API&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Tax Authority&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Clasificaciones&amp;lt;br&amp;gt;1K req/hour" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.internet_gateway;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="300" y="230" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- SFTP Professional -->
-        <mxCell id="sftp_systems" value="SFTP Systems&lt;br&gt;&lt;b&gt;Regulatory&lt;/b&gt;&lt;br&gt;Batch Transfer&lt;br&gt;Nightly Sync" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.storage_gateway;shadow=1;" vertex="1" parent="1">
+        <mxCell id="sftp_systems" value="SFTP Systems&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Regulatory&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Batch Transfer&amp;lt;br&amp;gt;Nightly Sync" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.storage_gateway;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="200" y="350" width="60" height="60" as="geometry"/>
         </mxCell>
         
@@ -51,27 +51,27 @@
         </mxCell>
         
         <!-- Edge Security Professional Layer -->
-        <mxCell id="edge_security" value="Edge Security &amp; CDN Layer - Global Protection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF9800;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;" vertex="1" parent="1">
+        <mxCell id="edge_security" value="Edge Security &amp;amp; CDN Layer - Global Protection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF9800;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="550" y="250" width="800" height="150" as="geometry"/>
         </mxCell>
         
         <!-- CloudFront Professional -->
-        <mxCell id="cloudfront_pro" value="CloudFront&lt;br&gt;&lt;b&gt;Global CDN&lt;/b&gt;&lt;br&gt;SSL/TLS&lt;br&gt;Edge Locations&lt;br&gt;Cache Rules" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.cloudfront;shadow=1;" vertex="1" parent="1">
+        <mxCell id="cloudfront_pro" value="CloudFront&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Global CDN&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;SSL/TLS&amp;lt;br&amp;gt;Edge Locations&amp;lt;br&amp;gt;Cache Rules" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.cloudfront;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="600" y="300" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- WAF Professional -->
-        <mxCell id="waf_pro" value="AWS WAF&lt;br&gt;&lt;b&gt;Web Firewall&lt;/b&gt;&lt;br&gt;DDoS Protection&lt;br&gt;Rate: 2K req/s&lt;br&gt;Geo Blocking" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F54749;gradientDirection=north;fillColor=#C7131F;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.waf;shadow=1;" vertex="1" parent="1">
+        <mxCell id="waf_pro" value="AWS WAF&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Web Firewall&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;DDoS Protection&amp;lt;br&amp;gt;Rate: 2K req/s&amp;lt;br&amp;gt;Geo Blocking" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F54749;gradientDirection=north;fillColor=#C7131F;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.waf;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="750" y="300" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- API Gateway Professional -->
-        <mxCell id="api_gateway_pro" value="API Gateway&lt;br&gt;&lt;b&gt;REST + GraphQL&lt;/b&gt;&lt;br&gt;JWT Validation&lt;br&gt;1K req/s&lt;br&gt;Caching" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.api_gateway;shadow=1;" vertex="1" parent="1">
+        <mxCell id="api_gateway_pro" value="API Gateway&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;REST + GraphQL&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;JWT Validation&amp;lt;br&amp;gt;1K req/s&amp;lt;br&amp;gt;Caching" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.api_gateway;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="900" y="300" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- Cognito Professional -->
-        <mxCell id="cognito_pro" value="Cognito&lt;br&gt;&lt;b&gt;User Pool&lt;/b&gt;&lt;br&gt;MFA: TOTP+SMS&lt;br&gt;Regulatory Auth&lt;br&gt;Session Mgmt" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F54749;gradientDirection=north;fillColor=#C7131F;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.cognito;shadow=1;" vertex="1" parent="1">
+        <mxCell id="cognito_pro" value="Cognito&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;User Pool&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;MFA: TOTP+SMS&amp;lt;br&amp;gt;Regulatory Auth&amp;lt;br&amp;gt;Session Mgmt" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F54749;gradientDirection=north;fillColor=#C7131F;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.cognito;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1050" y="300" width="60" height="60" as="geometry"/>
         </mxCell>
         
@@ -81,30 +81,30 @@
         </mxCell>
         
         <!-- ALB Professional -->
-        <mxCell id="alb_pro" value="Application LB&lt;br&gt;&lt;b&gt;Multi-AZ&lt;/b&gt;&lt;br&gt;Health Checks&lt;br&gt;Target Groups&lt;br&gt;SSL Termination" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#8C4FFF;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.application_load_balancer;shadow=1;" vertex="1" parent="1">
+        <mxCell id="alb_pro" value="Application LB&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Multi-AZ&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Health Checks&amp;lt;br&amp;gt;Target Groups&amp;lt;br&amp;gt;SSL Termination" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#8C4FFF;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.application_load_balancer;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="800" y="480" width="60" height="60" as="geometry"/>
         </mxCell>
         <!-- Invoice_Service Professional -->
-        <mxCell id="invoice_service_pro" value="Invoice_Service&lt;br&gt;&lt;b&gt;2vCPU/4GB&lt;/b&gt;&lt;br&gt;Scale: 2-10&lt;br&gt;Procesamiento de facturas&lt;br&gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
+        <mxCell id="invoice_service_pro" value="Invoice_Service&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;2vCPU/4GB&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Scale: 2-10&amp;lt;br&amp;gt;Procesamiento de facturas&amp;lt;br&amp;gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="600" y="580" width="60" height="60" as="geometry"/>
         </mxCell>
         <!-- Product_Service Professional -->
-        <mxCell id="product_service_pro" value="Product_Service&lt;br&gt;&lt;b&gt;4vCPU/8GB&lt;/b&gt;&lt;br&gt;Scale: 3-15&lt;br&gt;Gestión de 60M&lt;br&gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
+        <mxCell id="product_service_pro" value="Product_Service&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;4vCPU/8GB&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Scale: 3-15&amp;lt;br&amp;gt;Gestión de 60M&amp;lt;br&amp;gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="750" y="580" width="60" height="60" as="geometry"/>
         </mxCell>
         <!-- Ocr_Service Professional -->
-        <mxCell id="ocr_service_pro" value="Ocr_Service&lt;br&gt;&lt;b&gt;2vCPU/4GB&lt;/b&gt;&lt;br&gt;Scale: 2-10&lt;br&gt;Análisis de facturas&lt;br&gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
+        <mxCell id="ocr_service_pro" value="Ocr_Service&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;2vCPU/4GB&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Scale: 2-10&amp;lt;br&amp;gt;Análisis de facturas&amp;lt;br&amp;gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="900" y="580" width="60" height="60" as="geometry"/>
         </mxCell>
         <!-- Commission_Service Professional -->
-        <mxCell id="commission_service_pro" value="Commission_Service&lt;br&gt;&lt;b&gt;1vCPU/2GB&lt;/b&gt;&lt;br&gt;Scale: 2-10&lt;br&gt;Cálculos de comisión&lt;br&gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#9D5AAE;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
+        <mxCell id="commission_service_pro" value="Commission_Service&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;1vCPU/2GB&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Scale: 2-10&amp;lt;br&amp;gt;Cálculos de comisión&amp;lt;br&amp;gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#9D5AAE;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1050" y="580" width="60" height="60" as="geometry"/>
         </mxCell>
         <!-- Certificate_Service Professional -->
-        <mxCell id="certificate_service_pro" value="Certificate_Service&lt;br&gt;&lt;b&gt;1vCPU/2GB&lt;/b&gt;&lt;br&gt;Scale: 2-10&lt;br&gt;Generación de certificados&lt;br&gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D13212;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
+        <mxCell id="certificate_service_pro" value="Certificate_Service&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;1vCPU/2GB&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Scale: 2-10&amp;lt;br&amp;gt;Generación de certificados&amp;lt;br&amp;gt;Health: /health" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D13212;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.fargate;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1200" y="580" width="60" height="60" as="geometry"/>
         </mxCell>
-        None
+        
         
         <!-- Integration Layer Professional -->
         <mxCell id="integration_pro" value="Event-Driven Integration - 10K events/hour (Regulatory Compliant)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFC107;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;" vertex="1" parent="1">
@@ -112,32 +112,32 @@
         </mxCell>
         
         <!-- SQS Professional -->
-        <mxCell id="sqs_pro" value="SQS FIFO&lt;br&gt;&lt;b&gt;Processing Queue&lt;/b&gt;&lt;br&gt;5min Visibility&lt;br&gt;DLQ Enabled&lt;br&gt;Batch Processing" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.sqs;shadow=1;" vertex="1" parent="1">
+        <mxCell id="sqs_pro" value="SQS FIFO&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Processing Queue&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;5min Visibility&amp;lt;br&amp;gt;DLQ Enabled&amp;lt;br&amp;gt;Batch Processing" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.sqs;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="600" y="1040" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- SNS Professional -->
-        <mxCell id="sns_pro" value="SNS Topics&lt;br&gt;&lt;b&gt;Notifications&lt;/b&gt;&lt;br&gt;Multi-channel&lt;br&gt;Email/SMS&lt;br&gt;Webhooks" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.sns;shadow=1;" vertex="1" parent="1">
+        <mxCell id="sns_pro" value="SNS Topics&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Notifications&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Multi-channel&amp;lt;br&amp;gt;Email/SMS&amp;lt;br&amp;gt;Webhooks" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.sns;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="750" y="1040" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- EventBridge Professional -->
-        <mxCell id="eventbridge_pro" value="EventBridge&lt;br&gt;&lt;b&gt;Custom Bus&lt;/b&gt;&lt;br&gt;Event Rules&lt;br&gt;Regulatory Events&lt;br&gt;Schema Registry" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.eventbridge;shadow=1;" vertex="1" parent="1">
+        <mxCell id="eventbridge_pro" value="EventBridge&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Custom Bus&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Event Rules&amp;lt;br&amp;gt;Regulatory Events&amp;lt;br&amp;gt;Schema Registry" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#FF4F8B;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.eventbridge;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="900" y="1040" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- Monitoring Layer Professional -->
-        <mxCell id="monitoring_pro" value="Monitoring &amp; Observability - 99.9% SLA (Regulatory Compliance)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#607D8B;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;" vertex="1" parent="1">
+        <mxCell id="monitoring_pro" value="Monitoring &amp;amp; Observability - 99.9% SLA (Regulatory Compliance)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#607D8B;strokeWidth=3;fontSize=14;fontStyle=1;verticalAlign=top;spacingTop=20;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1200" y="990" width="500" height="150" as="geometry"/>
         </mxCell>
         
         <!-- CloudWatch Professional -->
-        <mxCell id="cloudwatch_pro" value="CloudWatch&lt;br&gt;&lt;b&gt;Metrics &amp; Logs&lt;/b&gt;&lt;br&gt;Custom Metrics&lt;br&gt;Regulatory Alarms&lt;br&gt;Dashboards" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F34482;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.cloudwatch;shadow=1;" vertex="1" parent="1">
+        <mxCell id="cloudwatch_pro" value="CloudWatch&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Metrics &amp;amp; Logs&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Custom Metrics&amp;lt;br&amp;gt;Regulatory Alarms&amp;lt;br&amp;gt;Dashboards" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F34482;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.cloudwatch;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1250" y="1040" width="60" height="60" as="geometry"/>
         </mxCell>
         
         <!-- X-Ray Professional -->
-        <mxCell id="xray_pro" value="X-Ray Tracing&lt;br&gt;&lt;b&gt;Distributed&lt;/b&gt;&lt;br&gt;Service Map&lt;br&gt;Performance&lt;br&gt;Error Analysis" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F34482;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.x_ray;shadow=1;" vertex="1" parent="1">
+        <mxCell id="xray_pro" value="X-Ray Tracing&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Distributed&amp;lt;/b&amp;gt;&amp;lt;br&amp;gt;Service Map&amp;lt;br&amp;gt;Performance&amp;lt;br&amp;gt;Error Analysis" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#F34482;gradientDirection=north;fillColor=#BC1356;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.x_ray;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1400" y="1040" width="60" height="60" as="geometry"/>
         </mxCell>
         

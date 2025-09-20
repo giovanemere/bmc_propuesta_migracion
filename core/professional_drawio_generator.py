@@ -53,24 +53,24 @@ class ProfessionalDrawioGenerator:
         kpis_xml = self._generate_professional_kpis(performance_kpis)
         connections_xml = self._generate_professional_connections()
         
-        # Ensamblar XML completo
-        xml_content = f'''<mxfile host="app.diagrams.net" modified="{self._get_timestamp()}" agent="BMC Professional Generator" version="22.1.11" etag="professional-v2.0">
+        # Ensamblar XML completo con escape correcto
+        xml_content = f'''<mxfile host="app.diagrams.net" modified="{self._get_timestamp()}" agent="BMC Professional Generator" version="22.1.11">
   <diagram name="{project_name} - Professional Architecture" id="professional_arch">
-    <mxGraphModel dx="2200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400" background="#FFFFFF">
+    <mxGraphModel dx="2200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
         
-        {header_xml}
-        {onprem_xml}
-        {aws_cloud_xml}
-        {edge_layer_xml}
-        {app_layer_xml}
-        {data_layer_xml}
-        {integration_xml}
-        {monitoring_xml}
-        {kpis_xml}
-        {connections_xml}
+        {self._escape_xml(header_xml)}
+        {self._escape_xml(onprem_xml)}
+        {self._escape_xml(aws_cloud_xml)}
+        {self._escape_xml(edge_layer_xml)}
+        {self._escape_xml(app_layer_xml)}
+        {self._escape_xml(data_layer_xml)}
+        {self._escape_xml(integration_xml)}
+        {self._escape_xml(monitoring_xml)}
+        {self._escape_xml(kpis_xml)}
+        {self._escape_xml(connections_xml)}
         
       </root>
     </mxGraphModel>
@@ -430,6 +430,19 @@ class ProfessionalDrawioGenerator:
         <mxCell id="conn_monitor1" style="endArrow=classic;html=1;strokeColor=#795548;strokeWidth=1;dashed=1;" edge="1" parent="1" source="invoice_service_pro" target="cloudwatch_pro"/>
         <mxCell id="conn_monitor2" style="endArrow=classic;html=1;strokeColor=#795548;strokeWidth=1;dashed=1;" edge="1" parent="1" source="product_service_pro" target="cloudwatch_pro"/>
         <mxCell id="conn_monitor3" style="endArrow=classic;html=1;strokeColor=#795548;strokeWidth=1;dashed=1;" edge="1" parent="1" source="rds_primary_pro" target="cloudwatch_pro"/>'''
+    
+    def _escape_xml(self, xml_string: str) -> str:
+        """Escapa caracteres especiales en XML"""
+        if not xml_string:
+            return ""
+        
+        # Escapar caracteres especiales pero preservar tags XML válidos
+        xml_string = xml_string.replace('&', '&amp;')
+        xml_string = xml_string.replace('<br>', '&lt;br&gt;')
+        xml_string = xml_string.replace('<b>', '&lt;b&gt;')
+        xml_string = xml_string.replace('</b>', '&lt;/b&gt;')
+        
+        return xml_string
     
     def _get_timestamp(self) -> str:
         """Genera timestamp para el archivo"""

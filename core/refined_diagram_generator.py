@@ -455,15 +455,15 @@ class RefinedDiagramGenerator:
         )
         print("✓ Data flow diagram generated")
         
-        # Generar archivos Draw.io profesionales
-        from .professional_drawio_generator import ProfessionalDrawioGenerator
-        drawio_generator = ProfessionalDrawioGenerator(self.config, temp_output_dir)
+        # Generar archivos Draw.io simples y válidos
+        from .simple_drawio_generator import SimpleDrawioGenerator
+        drawio_generator = SimpleDrawioGenerator(self.config, temp_output_dir)
         
-        # Generar Draw.io profesional completo
-        professional_drawio = drawio_generator.generate_professional_architecture(project_name)
-        results["drawio_professional"] = professional_drawio
+        # Generar Draw.io simple válido
+        simple_drawio = drawio_generator.generate_simple_architecture(project_name)
+        results["drawio_simple"] = simple_drawio
         
-        print("✓ Professional Draw.io generated")
+        print("✓ Simple Draw.io generated")
         
         # Organizar outputs con OutputManager
         from .output_manager import OutputManager
