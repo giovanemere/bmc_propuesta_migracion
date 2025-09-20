@@ -451,14 +451,13 @@ class RefinedDiagramGenerator:
         print("✓ Data flow diagram generated")
         
         # Generar archivos Draw.io equivalentes
-        from .complete_drawio_generator import CompleteDrawioGenerator
-        drawio_generator = CompleteDrawioGenerator(self.config, self.output_dir)
-        drawio_results = drawio_generator.generate_all_drawio_files(project_name)
+        from .enhanced_drawio_generator import EnhancedDrawioGenerator
+        drawio_generator = EnhancedDrawioGenerator(self.config, self.output_dir)
         
-        # Combinar resultados
-        for key, value in drawio_results.items():
-            results[f"drawio_{key}"] = value
+        # Generar Draw.io completo
+        complete_drawio = drawio_generator.generate_complete_architecture_drawio(project_name)
+        results["drawio_complete"] = complete_drawio
         
-        print("✓ Draw.io files generated")
+        print("✓ Enhanced Draw.io files generated")
         
         return results
